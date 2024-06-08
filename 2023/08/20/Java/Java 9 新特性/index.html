@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Java 9 新特性 | Simon 的书柜</title><meta name="author" content="Simon"><meta name="copyright" content="Simon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Java 9 新特性简介经过 4 次跳票，历经曲折的 Java 9 终于在 2017 年 9 月 21 日发布 从  Java 9 开始，Java 的计划发布周期是 6 个月，下一个 Java 的主版本将于 2018 年 3 月发布，命名为 Java 18.3，紧接着再过 6 个月将发布 Java 18.9。这意味着 Java 的更新从传统的以特性驱动的发布周期，转变为以时间驱动的（6 个月为周期">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 9 新特性">
+<meta property="og:url" content="http://yoursite.com/2023/08/20/Java/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/index.html">
+<meta property="og:site_name" content="Simon 的书柜">
+<meta property="og:description" content="Java 9 新特性简介经过 4 次跳票，历经曲折的 Java 9 终于在 2017 年 9 月 21 日发布 从  Java 9 开始，Java 的计划发布周期是 6 个月，下一个 Java 的主版本将于 2018 年 3 月发布，命名为 Java 18.3，紧接着再过 6 个月将发布 Java 18.9。这意味着 Java 的更新从传统的以特性驱动的发布周期，转变为以时间驱动的（6 个月为周期">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg">
+<meta property="article:published_time" content="2023-08-20T15:12:46.000Z">
+<meta property="article:modified_time" content="2024-06-08T04:13:07.146Z">
+<meta property="article:author" content="Simon">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2023/08/20/Java/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Java 9 新特性',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-08 12:13:07'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Simon 的书柜"><span class="site-name">Simon 的书柜</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Java 9 新特性</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-08-20T15:12:46.000Z" title="发表于 2023-08-20 23:12:46">2023-08-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-08T04:13:07.146Z" title="更新于 2024-06-08 12:13:07">2024-06-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/">Java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Java 9 新特性"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Java-9-新特性"><a href="#Java-9-新特性" class="headerlink" title="Java 9 新特性"></a>Java 9 新特性</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>经过 4 次跳票，历经曲折的 Java 9 终于在 2017 年 9 月 21 日发布</p>
+<p>从  Java 9 开始，Java 的计划发布周期是 6 个月，下一个 Java 的主版本将于 2018 年 3 月发布，命名为 Java 18.3，紧接着再过 6 个月将发布 Java 18.9。这意味着 Java 的更新从传统的以特性驱动的发布周期，转变为以时间驱动的（6 个月为周期）的发布模式，并逐步的将 Oracle JDK 原商业特性进行开源</p>
+<p>针对企业客户的需求，Oracle 将以 3 年为周期发布长期支持版本（Long Term Support，LTS）</p>
+<p>Java 9 提供了超过 150 项新功能特性，包括备受期待的模块化系统、可交互的 REPL 工具 Jshell，JDK 编译工具，Java 公共 API 和私有代码，以及安全增强、扩展提升、性能管理改善等。可以说 Java 9 是一个庞大的系统工程，完全做了一个整体改变</p>
+<hr>
+<h2 id="模块化系统"><a href="#模块化系统" class="headerlink" title="模块化系统"></a>模块化系统</h2><p>谈到 Java 9 大家第一个想到的往往就是 Jigsaw 项目。众所周知，Java 已经发展超过二十年，Java 和相关生态在不断丰富的同时也越来越暴露出一些问题：</p>
+<ul>
+<li>Java 运行环境的膨胀和臃肿。每次 JVM 启动的时候，至少会有 30~60 MB 内存加载，主要原因是 JVM 需要加载 rt.jar，不管其中的类是否被 classloader 加载，第一步整个 jar 都会被加载到内存中（而模块化可以根据模块的需要加载程运行需要的 class）</li>
+<li>当代码库越来越大，创建复杂，盘根错节的“意大利面条代码”的几率呈指数级增长。不同版本的类库交叉依赖导致让人头疼的问题，这些都阻碍了 Java 开发和运行的效率</li>
+<li>很难真正的对代码进行封装，而系统并没有真正对不同部分（也就是 jar 文件）之间的依赖关系有个明确的概念。每一个公共类都可以被类路径之下任何其它的公共类访问到，这样就导致无意中使用了并不想公开的 API</li>
+</ul>
+<p>本质上讲，用模块来管理各个 package，通过声明某个 package 暴露。模块（module）的概念，其实就是在 package 外面再包一层，不声明默认就是隐藏。因此，模块化使代码组织上更安全，因为它可以指定哪些部分需要隐藏，哪些部分可以暴露</p>
+<p>实现目标：</p>
+<ul>
+<li>模块化的主要目的在于减少内存的开销</li>
+<li>只需必要模块，而非全部 jdk 模块，可简化各种类库和大型应用的开发和维护</li>
+<li>改进 Java SE 平台，使其可以使用不同大小的计算设备</li>
+<li>改进其安全性，可维护性，提高性能</li>
+</ul>
+<p>模块将由通常的类和新的模块声明文件（module-info.java）组成。该文件是位于 Java 代码结构的顶层，该模块描述符明确定义了我们的模块需要什么依赖关系，以及哪些模块被外部使用。在 exports 子句中未提及的所有的包默认情况下将封装在模块中，不能在外部使用</p>
+<p>正常情况下，如果我们的项目中有多个 module，那么 module A 是不能引用 module B 中的 class 的</p>
+<p>如果 module A 需要引用 module B 中的 class，那么可以先在 module B 中创建 module-info.java，并将需要暴露的 class 声明出去</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/image-20230817232323106.png" alt="image-20230817232323106"></p>
+<p>并添加如下内容</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> 模块名 &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">exports</span> <span class="string">&quot;需要导出的 package 名&quot;</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再在 module A 中同样创建一个 module-info.java 文件，添加如下内容</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> 模块名 &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">requires</span> <span class="string">&quot;需要引入的模块名&quot;</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就能引用 module B 中暴露出来的 package 了</p>
+<hr>
+<h2 id="jshell-命令"><a href="#jshell-命令" class="headerlink" title="jshell 命令"></a>jshell 命令</h2><p>像 Python 和 Scala 之类的语言早就有了交互式编程环境 REPL（read - evaluate - print - loop）了，以交互式的方式对语句和表达式进行求值。开发者只需要输入一些代码，就可以在编译前获得对程序的反馈。而之前的 Java 版本想要执行代码，必须创建文件、声明类、提供测试方法方可实现</p>
+<p>Java 9 中终于有了 REPL 工具：jshell。让 Java 可以像脚本语言一样运行，从控制台启动 jshell，利用 jshell 在没有创建类的情况下直接声明变量，计算表达式和执行语句。即开发时直接在命令行中运行 Java 代码，而无需创建 Java 文件，无需跟人解释 <code>public static void main()</code> 这句废话</p>
+<p>jshell 也可以从文件中加载语句或者将语句保存到文件中</p>
+<p>jshell 也可以是 tab 键进行自动补全和自动添加分号</p>
+<hr>
+<h2 id="接口的私有方法"><a href="#接口的私有方法" class="headerlink" title="接口的私有方法"></a>接口的私有方法</h2><p>Java 8 规定接口中的方法除了抽象方法之外，还可以定义静态方法和默认的方法。一定程度上，拓展了接口的功能，此时的接口更像是一个抽象类</p>
+<p>在 Java 9 中，接口更加的灵活与强大，连方法的访问修饰符都可以声明为 private 了，此时的方法不会成为对外暴露的 api 的一部分</p>
+<hr>
+<h2 id="钻石操作符"><a href="#钻石操作符" class="headerlink" title="钻石操作符"></a>钻石操作符</h2><p>在 Java 8 中，如下操作是会报错的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Comparator&lt;Object&gt; comparator = <span class="keyword">new</span> <span class="title class_">Comparator</span>&lt;&gt;() &#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compare</span><span class="params">(Object o1, Object o2)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译时会报错：Cannot user “&lt;&gt;” with anonymous inner classes</p>
+<p>而在 Java 9 中，将能够与匿名内部类共同使用钻石操作符</p>
+<hr>
+<h2 id="try-with-resource-改进"><a href="#try-with-resource-改进" class="headerlink" title="try-with-resource 改进"></a>try-with-resource 改进</h2><p>Java 8 中，可以使用 try-with-resource 实现资源的自动关闭，但是要求执行后必须关闭的所有资源必须在 try 子句中初始化，否则编译不通过。如下例所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (<span class="type">InputStreamReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(System.in)) &#123;</span><br><span class="line">	<span class="comment">// 文件流操作</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">	e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>而在 Java 9 中，我们可以在 try 子句中使用已经初始化的实例。需要注意的是，该实例会自动转为常量，声明为 final，不可修改</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">InputStreamReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(System.in);</span><br><span class="line"><span class="keyword">try</span> (reader) &#123;</span><br><span class="line">	<span class="comment">// 文件流操作</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">	e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="String-存储结构的变更"><a href="#String-存储结构的变更" class="headerlink" title="String 存储结构的变更"></a>String 存储结构的变更</h2><p>到了 Java 9，String 中字符串的存储不再用 char 数组了，改用 byte 数组</p>
+<p>不仅将 char 数组改为 byte 数组，而且新增了一个 coder 的成员变量</p>
+<p>在程序中，绝大多数字符串只包含英文字母数字等字符，使用 Latin-1 编码，一个字符占用一个 byte。如果使用 char，一个 char 要占用两个 byte，会占用双倍的内存空间</p>
+<p>但是，如果字符串中使用了中文等超出 Latin-1 表示范围的字符，使用 Latin-1 就没办法表示了。这时 JDK 会使用 UTF-16 编码，那么占用的空间和旧版（使用 char[]）是一样的</p>
+<p>coder 变量代表编码的格式，目前 String 支持两种编码格式 Latin-1 和 UTF-16。Latin-1 需要用一个字节来存储，而 UTF-16 需要使用 2 个字节或者 4 个字节来存储</p>
+<hr>
+<h2 id="快速创建只读集合"><a href="#快速创建只读集合" class="headerlink" title="快速创建只读集合"></a>快速创建只读集合</h2><p>在 Java 8 及以前，如果我们要创建一个只读、不可改变的集合，必须构造和分配它，然后添加元素，最后包装成一个不可修改的集合</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; nameList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">nameList.add(<span class="string">&quot;A&quot;</span>);</span><br><span class="line">nameList.add(<span class="string">&quot;B&quot;</span>);</span><br><span class="line">nameList.add(<span class="string">&quot;C&quot;</span>);</span><br><span class="line">nameList = Collections.unmodifiableList(nameList);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>而在 Java 9 中，我们可以使用集合工厂方法来创建只读集合，以上代码可以这么写</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; nameList = List.of(<span class="string">&quot;A&quot;</span>, <span class="string">&quot;B&quot;</span>, <span class="string">&quot;C&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果是 Set 的话</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; nameSet = Set.of(<span class="string">&quot;A&quot;</span>, <span class="string">&quot;B&quot;</span>, <span class="string">&quot;C&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>还可以用来操作 Map</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Integer, String&gt; map = Map.of(<span class="number">1</span>, <span class="string">&quot;A&quot;</span>, <span class="number">2</span>, <span class="string">&quot;B&quot;</span>, <span class="number">3</span>, <span class="string">&quot;C&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="InputStream-的-transferTo-方法"><a href="#InputStream-的-transferTo-方法" class="headerlink" title="InputStream 的 transferTo 方法"></a>InputStream 的 transferTo 方法</h2><p>InputStream 终于有了一份非常有用的方法：transferTo，可以用来将数据直接传送到 OutputStream，这是在处理原始数据流时一种非常有用的方法，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ClassLoader</span> <span class="variable">loader</span> <span class="operator">=</span> <span class="built_in">this</span>.getClass().getClassLoader();</span><br><span class="line"><span class="keyword">try</span> (<span class="type">InputStream</span> <span class="variable">input</span> <span class="operator">=</span> loader.getResourceAsStream(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line">	 <span class="type">OutputStream</span> <span class="variable">output</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;src\\hello1.txt&quot;</span>)) &#123;</span><br><span class="line">	 <span class="comment">// 把输入流中的所有数据自动复制到输出流中</span></span><br><span class="line">	input.transferTo(output);</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">	e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="增强的-Stream-API"><a href="#增强的-Stream-API" class="headerlink" title="增强的 Stream API"></a>增强的 Stream API</h2><p>Java 的 Stream API 是 Java 标准库最好的改进之一，让开发者能够快速运算，从而能够有效的利用数据并行计算。Java 8 提供的 Stream 能够利用多核架构实现声明式的数据处理</p>
+<p>在 Java 9 中，Stream API 变得更好，Stream 接口中添加了 4 个新的方法：takeWhile、dropWhile、ofNullable 和 iterate 方法新的重载方法，可以提供一个 Predicate 来指定什么时候结束迭代</p>
+<p>除了 Stream 本身的拓展，Optional 和 Stream 之间的结合也得到了改进。现在可以通过 Optional 的新方法 stream() 将一个 Optional 对象转换为一个（可能是空的）Stream 对象</p>
+<ul>
+<li><p>takeWhile 的使用</p>
+<p>用于从 Stream 中获取一部分元素，接收一个 Predicate 来进行选择。在有序的 Stream 中，takeWhile 返回从头开始的尽量多的元素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line">list.stream().takeWhile(x -&gt; x &gt; <span class="number">3</span>).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dropWhile 的使用</p>
+<p>dropWhile 与 takeWhile 相反，返回剩余的元素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line">list.stream().dropWhile(x -&gt; x &gt; <span class="number">3</span>).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ofNullable 的使用</p>
+<p>Java 8 中 Stream 不能为单个 null，否则会报空指针异常。而 Java 9 中的 ofNullable 方法允许我们创建一个单元素 Stream，可以包含一个非空元素，也可以创建一个空的 Stream</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; stream2 = Stream.ofNullable(<span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>iterate 重载方法的使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原来的控制终止方式</span></span><br><span class="line">Stream.iterate(<span class="number">1</span>, i -&gt; i + <span class="number">1</span>).limit(<span class="number">10</span>).forEach(System.out::println);</span><br><span class="line"><span class="comment">// Java 9 的控制终止方式</span></span><br><span class="line">Stream.iterate(<span class="number">1</span>, i -&gt; i &lt; <span class="number">10</span>, i -&gt; i + <span class="number">1</span>).forEach(System.out::println);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="Optional-获取-Stream-的方法"><a href="#Optional-获取-Stream-的方法" class="headerlink" title="Optional 获取 Stream 的方法"></a>Optional 获取 Stream 的方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = Arrays.asList(<span class="string">&quot;A&quot;</span>, <span class="string">&quot;B&quot;</span>, <span class="string">&quot;C&quot;</span>);</span><br><span class="line">Optional&lt;List&lt;String&gt;&gt; optional = Optional.ofNullable(list);</span><br><span class="line">Stream&lt;List&lt;String&gt;&gt; stream = optional.stream(); </span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Simon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2023/08/20/Java/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/">http://yoursite.com/2023/08/20/Java/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com" target="_blank">Simon 的书柜</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a></div><div class="post_share"><div class="social-share" data-image="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/08/29/Java/Java%2010%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="Java 10 新特性"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%2010%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Java 10 新特性</div></div></a></div><div class="next-post pull-right"><a href="/2023/08/17/Java/Java%208%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="Java 8 新特性"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%208%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Java 8 新特性</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/03/27/Java/JDBC%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%8A%80%E6%9C%AF/" title="JDBC 数据库连接技术"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/JDBC%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%8A%80%E6%9C%AF/preview.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-27</div><div class="title">JDBC 数据库连接技术</div></div></a></div><div><a href="/2023/09/01/Java/Java%2011%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="Java 11 新特性"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%2011%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-01</div><div class="title">Java 11 新特性</div></div></a></div><div><a href="/2023/08/29/Java/Java%2010%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="Java 10 新特性"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%2010%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-29</div><div class="title">Java 10 新特性</div></div></a></div><div><a href="/2023/02/19/Java/Nacos%20%E5%92%8C%20Eureka%20%E7%9A%84%E5%AF%B9%E6%AF%94/" title="Nacos 和 Eureka 的对比"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Nacos%20%E5%92%8C%20Eureka%20%E5%AF%B9%E6%AF%94/preview.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-19</div><div class="title">Nacos 和 Eureka 的对比</div></div></a></div><div><a href="/2023/08/17/Java/Java%208%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="Java 8 新特性"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%208%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-17</div><div class="title">Java 8 新特性</div></div></a></div><div><a href="/2022/09/18/Java/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BC%98%E9%9B%85%E7%9A%84%20Restful%20Response/" title="如何构建一个优雅的 Restful Response"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BC%98%E9%9B%85%E7%9A%84%20Restful%20Response/F100009910.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-18</div><div class="title">如何构建一个优雅的 Restful Response</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Simon</div><div class="author-info__description">攀登亦是风景</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-9-%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">Java 9 新特性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.2.</span> <span class="toc-text">模块化系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jshell-%E5%91%BD%E4%BB%A4"><span class="toc-number">1.3.</span> <span class="toc-text">jshell 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E7%9A%84%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">接口的私有方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%92%BB%E7%9F%B3%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="toc-number">1.5.</span> <span class="toc-text">钻石操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#try-with-resource-%E6%94%B9%E8%BF%9B"><span class="toc-number">1.6.</span> <span class="toc-text">try-with-resource 改进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String-%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E7%9A%84%E5%8F%98%E6%9B%B4"><span class="toc-number">1.7.</span> <span class="toc-text">String 存储结构的变更</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%88%9B%E5%BB%BA%E5%8F%AA%E8%AF%BB%E9%9B%86%E5%90%88"><span class="toc-number">1.8.</span> <span class="toc-text">快速创建只读集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#InputStream-%E7%9A%84-transferTo-%E6%96%B9%E6%B3%95"><span class="toc-number">1.9.</span> <span class="toc-text">InputStream 的 transferTo 方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E5%BC%BA%E7%9A%84-Stream-API"><span class="toc-number">1.10.</span> <span class="toc-text">增强的 Stream API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optional-%E8%8E%B7%E5%8F%96-Stream-%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.11.</span> <span class="toc-text">Optional 获取 Stream 的方法</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/05/12/%E5%89%8D%E7%AB%AF/Anaular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/" title="Anaular 中文文档"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Angular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Anaular 中文文档"/></a><div class="content"><a class="title" href="/2024/05/12/%E5%89%8D%E7%AB%AF/Anaular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/" title="Anaular 中文文档">Anaular 中文文档</a><time datetime="2024-05-12T06:08:47.000Z" title="发表于 2024-05-12 14:08:47">2024-05-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/29/%E5%89%8D%E7%AB%AF/TypeScript%20%E6%95%99%E7%A8%8B/" title="TypeScript 教程"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/TypeScript%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TypeScript 教程"/></a><div class="content"><a class="title" href="/2024/03/29/%E5%89%8D%E7%AB%AF/TypeScript%20%E6%95%99%E7%A8%8B/" title="TypeScript 教程">TypeScript 教程</a><time datetime="2024-03-29T10:01:05.000Z" title="发表于 2024-03-29 18:01:05">2024-03-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/10/%E5%89%8D%E7%AB%AF/Sass%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Sass 预处理语言"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Sass%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Sass 预处理语言"/></a><div class="content"><a class="title" href="/2024/03/10/%E5%89%8D%E7%AB%AF/Sass%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Sass 预处理语言">Sass 预处理语言</a><time datetime="2024-03-10T12:36:21.000Z" title="发表于 2024-03-10 20:36:21">2024-03-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/09/%E5%89%8D%E7%AB%AF/Less%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Less 预处理语言"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Less%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Less 预处理语言"/></a><div class="content"><a class="title" href="/2024/01/09/%E5%89%8D%E7%AB%AF/Less%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Less 预处理语言">Less 预处理语言</a><time datetime="2024-01-09T06:37:03.000Z" title="发表于 2024-01-09 14:37:03">2024-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/16/%E4%BA%91%E5%8E%9F%E7%94%9F/Docker%20%E5%AE%9E%E6%88%98/" title="Docker 实战"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/Docker%20%E5%AE%9E%E6%88%98/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker 实战"/></a><div class="content"><a class="title" href="/2023/12/16/%E4%BA%91%E5%8E%9F%E7%94%9F/Docker%20%E5%AE%9E%E6%88%98/" title="Docker 实战">Docker 实战</a><time datetime="2023-12-16T10:47:40.000Z" title="发表于 2023-12-16 18:47:40">2023-12-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Simon</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

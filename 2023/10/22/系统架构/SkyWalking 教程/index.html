@@ -1,0 +1,345 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SkyWalking 教程 | Simon 的书柜</title><meta name="author" content="Simon"><meta name="copyright" content="Simon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="SkyWalking 教程APM 系统简介APM（Application Performance Management）即应用性能管理系统，即对企业系统即时监控以实现对应用程序性能管理和故障管理的系统化的解决方案。应用性能管理，主要指对企业的关键业务进行检、优化，提供企业应用的可靠性和质量，保证用户得到良好的服务，降低 IT 总拥有成本 APM 系统是可以帮助理解系统行为、用于分析性能问题的工具，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SkyWalking 教程">
+<meta property="og:url" content="http://yoursite.com/2023/10/22/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/SkyWalking%20%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Simon 的书柜">
+<meta property="og:description" content="SkyWalking 教程APM 系统简介APM（Application Performance Management）即应用性能管理系统，即对企业系统即时监控以实现对应用程序性能管理和故障管理的系统化的解决方案。应用性能管理，主要指对企业的关键业务进行检、优化，提供企业应用的可靠性和质量，保证用户得到良好的服务，降低 IT 总拥有成本 APM 系统是可以帮助理解系统行为、用于分析性能问题的工具，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/preview.jpg">
+<meta property="article:published_time" content="2023-10-22T08:59:53.000Z">
+<meta property="article:modified_time" content="2024-06-08T04:13:07.152Z">
+<meta property="article:author" content="Simon">
+<meta property="article:tag" content="系统架构">
+<meta property="article:tag" content="链路追踪">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/preview.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2023/10/22/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/SkyWalking%20%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SkyWalking 教程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-08 12:13:07'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/preview.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Simon 的书柜"><span class="site-name">Simon 的书柜</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">SkyWalking 教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-22T08:59:53.000Z" title="发表于 2023-10-22 16:59:53">2023-10-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-08T04:13:07.152Z" title="更新于 2024-06-08 12:13:07">2024-06-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="SkyWalking 教程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="SkyWalking-教程"><a href="#SkyWalking-教程" class="headerlink" title="SkyWalking 教程"></a>SkyWalking 教程</h1><h2 id="APM-系统"><a href="#APM-系统" class="headerlink" title="APM 系统"></a>APM 系统</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>APM（Application Performance Management）即应用性能管理系统，即对企业系统即时监控以实现对应用程序性能管理和故障管理的系统化的解决方案。应用性能管理，主要指对企业的关键业务进行检、优化，提供企业应用的可靠性和质量，保证用户得到良好的服务，降低 IT 总拥有成本</p>
+<p>APM 系统是可以帮助理解系统行为、用于分析性能问题的工具，以便发生故障的时候，能够快速定位和解决问题</p>
+<hr>
+<h3 id="分布式链路追踪"><a href="#分布式链路追踪" class="headerlink" title="分布式链路追踪"></a>分布式链路追踪</h3><p>随着分布式系统和微服务架构的出现，一次用户的请求会经过多个系统，不同系统之间的调用关系十分复杂，任何一个系统出错都有可能整个请求的处理结果。以往的监控系统往往只能知道单个系统的健康状况、一次请求的成功失败，无法快速定位失败的根本原因</p>
+<p>除此之外，复杂的分布式系统也面临着以下问题：</p>
+<ul>
+<li>性能分析：一个服务依赖多个服务，被依赖的服务也依赖了其它服务了。如果某个接口耗时突然变长，那未必是直接调用的下游服务慢了，也可能是下游的下游造成的，如果快速定位耗时变长的根本原因呢</li>
+<li>链路梳理：需求迭代很快，系统之间调用关系变化频繁，靠人工很难梳理清楚系统链路拓扑</li>
+</ul>
+<p>为了解决这些问题，Google 推出了一个分布式链路追踪系统 Dapper，之后各个互联网公司都参照 Dapper 的思想推出了自己的分布式链路追踪系统，而这些系统就是分布式系统下的 APM 系统</p>
+<hr>
+<h3 id="OpenTracing"><a href="#OpenTracing" class="headerlink" title="OpenTracing"></a>OpenTracing</h3><p>分布式链路追踪最开始由 Google 在 Drapper 的论文中提出，而 OpenTracing 通过提供平台无关、厂商无关的 API，使得开发人员能够方便的添加或更换追踪系统的实现</p>
+<hr>
+<h3 id="主流的开源-APM-产品"><a href="#主流的开源-APM-产品" class="headerlink" title="主流的开源 APM 产品"></a>主流的开源 APM 产品</h3><ul>
+<li><p>PinPoint</p>
+<p>PinPoint 是由一个韩国团队开发并开源，针对 Java 编写的大规模分布式系统设计，通过 JavaAgent 做字节码植入，实现加入 TraceId 和获取性能数据的目的，对应用代码零侵入</p>
+<p>官方网站：<a target="_blank" rel="noopener" href="https://github.com/naver/pinpoint">https://github.com/naver/pinpoint</a></p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/image-20230908204011131.png" alt="image-20230908204011131"></p>
+</li>
+<li><p>SkyWalking</p>
+<p>SkyWalking 是 Apache 基金会下面的一个开源 APM 项目，为微服务架构和云原生系统架构设计。它通过探针自动收集所需的指标，并进行分布式追踪。通过这些调用链路以及指标，SkyWalking APM 会感知应用间关系和服务间关系，并进行相应的指标统计。SkyWalking 支持链路追踪和监控应用组件，基本覆盖主流框架和容器，比如国产的 Dubbo 和 motan 等，国际化的 Spring Boot 和 Spring Cloud</p>
+<p>官方网站：<a target="_blank" rel="noopener" href="https://skywalking.apache.org/">https://skywalking.apache.org/</a></p>
+</li>
+<li><p>Zipkin</p>
+<p>Zipkin 是由 Twitter 开源，是分布式链路调用监控系统，聚合各业务系统调用延迟数据，达到链路调用监控追踪。Zipkin 基于 Google 的论文 Drapper 实现，主要完成数据的收集、存储、搜索和页面展示</p>
+<p>官方网站：<a target="_blank" rel="noopener" href="https://zipkin.io/">https://zipkin.io/</a></p>
+</li>
+<li><p>CAT</p>
+<p>CAT 是由大众点评开源的项目，基于 Java 开发的实时应用监控平台，包括实时应用监控、业务监控，可以提供十几张报表展示</p>
+<p>官方网站：<a target="_blank" rel="noopener" href="https://github.com/dianping/cat">https://github.com/dianping/cat</a></p>
+</li>
+</ul>
+<hr>
+<h2 id="SkyWalking"><a href="#SkyWalking" class="headerlink" title="SkyWalking"></a>SkyWalking</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>根据官方的解释，SkyWalking 是一个可观测性分析平台和性能监控平台，提供分布式链路追踪、服务网格遥测分析、度量聚合和可视化一体化解决方案</p>
+<p>下面是 SkyWalking 的几大特点：</p>
+<ul>
+<li>多语言自动探针，Java、.NET Core 和 Node.js</li>
+<li>多种监控手段，语言探针和 Service Mesh</li>
+<li>轻量高效，不需要额外搭建大数据平台</li>
+<li>模块化架构，UI、存储、集群管理多种机制可选</li>
+<li>支持告警</li>
+<li>优秀的可视化效果</li>
+</ul>
+<p>SkyWalking 整体架构如下：</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/image-20230909170625937.png" alt="image-20230909170625937"></p>
+<p>SkyWalking 提供 Tracing 和 Metrics 数据的聚合和获取</p>
+<p>Mertrics 的特点是，它是可累加的，具有原子性，每个都是一个逻辑计量单元，或者一个时间段内的柱状图。例如，队列的当前深度可以被定义为一个计量单元，在写入或读取时被更新统计；输入 HTTP 请求的数量可以被定义为一个计数器，用于简单累加；请求的执行时间可以被定义为一个柱状图，在指定时间片上更新和统计汇总</p>
+<p>Tracing 的最大特点是，它在单次请求范围内处理信息。任何的数据、元数据信息都被绑定到系统的单个事务上。例如，一次调用远程服务的 RPC 执行过程；一次实际的 SQL 查询语句；一次 HTTP 请求的业务性 ID</p>
+<p>总结，Metric 主要用于进行数据的统计，比如 HTTP 请求数的计算，Tracing 主要包含某一次请求的链路数据，详细内容可以查看 SkyWalking 开发者吴晟翻译的这篇文章：<a target="_blank" rel="noopener" href="http://blog.oneapm.com/apm-tech/811.html">http://blog.oneapm.com/apm-tech/811.html</a></p>
+<p>整体架构主要包含以下三个部分：</p>
+<ul>
+<li>探针（agent）负责数据的收集，包含了 Metrics 和 Tracing 的数据，agent 会被安装到服务所在的服务器上，以方便数据的获取</li>
+<li>可观测性分析平台 AOP，接收探针发送的数据，并在内存中使用分析引擎进行数据的整合运算，然后将数据存储到对应的存储介质上，比如 ElasticSeatch、MySQL、H2 等，同时 AOP 还使用查询引擎提供查询接口</li>
+<li>SkyWalking 提供单独的 UI 进行数据的查看，UI 会调用 OAP 提供的接口，获取数据并进行展示</li>
+</ul>
+<hr>
+<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><p>SkyWalking 相较于其它的分布式链路监控工具，具有以下特点：</p>
+<ul>
+<li>社区相当活跃，SkyWalking 已经进入 Apache 孵化，目前的 star 数已经超过 22 k，开发者是中国人，学习和交流更加方便</li>
+<li>SkyWalking 几乎支持所有的主流开发语言，相较于其它工具，比如 PinPoint，只支持 Java、PHP 和 Python，具有较大优势</li>
+<li>探针无侵入性，对比 CAT 具有侵入性的探针，优势较大，不修改原有项目代码就可完成集成</li>
+<li>探针性能优秀，有网友对 PinPoint 和 SkyWalking 进行过测试，由于 PinPoint 收集的数据过多，所以对性能损耗较大，而 SkyWalking 的探针性能十分出色</li>
+<li>支持的组件较多，特别是对 RPC 框架的支持，SkyWalking 对 Dubbo、gRPC 等有原生的支持，甚至连小众的 motan 和 sofarpc 都支持</li>
+</ul>
+<hr>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><h3 id="部署-OAP-服务"><a href="#部署-OAP-服务" class="headerlink" title="部署 OAP 服务"></a>部署 OAP 服务</h3><ol>
+<li><p>前往官网 Download 页面 <a target="_blank" rel="noopener" href="https://skywalking.apache.org/downloads/#SkyWalkingAPM%EF%BC%8C%E4%B8%8B%E8%BD%BD">https://skywalking.apache.org/downloads/#SkyWalkingAPM，下载</a> SkyWalking APM，点击 Distribution，选择需要下载的版本和格式。本文下载的 9.3.0 版本的 tar 包</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/image-20230909181905100.png" alt="image-20230909181905100"></p>
+</li>
+<li><p>下载所需语言的 Agent，同样是 Distribution 下下载</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/image-20230909182212617.png" alt="image-20230909182212617"></p>
+</li>
+<li><p>解压部署</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.创建并进入 skywalking 目录</span></span><br><span class="line"><span class="built_in">mkdir</span> /usr/local/skywalking</span><br><span class="line"><span class="built_in">cd</span> /usr/local/skywalking</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.将刚刚下载的两个文件上传到当前目录下</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.解压 skywalking apm</span></span><br><span class="line">tar -zxf apm安装包名</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.此时的 skywalking 就已经可以启动了，skywalking apm 的 bin 目前，输入以下指令便会启动 opt 和 ui，默认使用的数据库是 H2，重启会丢失数据</span></span><br><span class="line"><span class="comment"># 需要注意的是，skywalking 是由 Java 实现的，启动 skywalking 的环境必须已经部署 jdk</span></span><br><span class="line">sh start.sh</span><br><span class="line"><span class="comment"># 启动成功后就可通过 ip地址/8080 访问 ui 界面了</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h3 id="Agent-探针"><a href="#Agent-探针" class="headerlink" title="Agent 探针"></a>Agent 探针</h3><p>启动 ui 之后，在上面暂时还看不到任何数据，因为我们还没有启动项目并接入 SkyWalking OAP，这就需要用到刚刚下载的 agent 包了</p>
+<p>Agent 探针可以让我们不修改代码的情况下，对 Java 应用上使用到的组件进行动态监控，获取运行数据发送到 OAP 上进行统计和存储。Agent 探针在 Java 中时使用 Java Agent 技术实现的，不需要更改任何代码，Java Agent 会通过虚拟机接口在运行期修改代码</p>
+<p>这时候就需要用到刚才下载的 Java Agent jar 包了，我们需要准备好一个可以直接启动的 jar 包项目，然后在启动的时候添加一个参数即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar -javaagent:刚刚下载的agent包的全路径 可以启动的jar包项目</span><br></pre></td></tr></table></figure>
+
+<p>启动完成后，调用 jar 包项目的接口，即可在 SkyWalking UI 上看到数据了</p>
+<hr>
+<h2 id="实战进阶"><a href="#实战进阶" class="headerlink" title="实战进阶"></a>实战进阶</h2><h3 id="ES-持久化"><a href="#ES-持久化" class="headerlink" title="ES 持久化"></a>ES 持久化</h3><p>SkyWalking 默认使用的数据库是 H2，这是一个内存型数据库，重启会造成数据的丢失。因此需要使用持久化数据库存储，SkyWalking 支持多种类型的数据存储方式，包括 ES、MySQL，TiDB、postgresql 以及 SkyWalking 团队自己开发的 banyandb，一般使用 ES 较多</p>
+<p>修改数据存储方式，需要修改 config 目录下的 application.yaml 文件</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">storage:</span></span><br><span class="line">  <span class="attr">selector:</span> <span class="string">$&#123;SW_STORAGE:h2&#125;</span></span><br><span class="line">  <span class="attr">elasticsearch:</span></span><br><span class="line">    <span class="attr">namespace:</span> <span class="string">$&#123;SW_NAMESPACE:&quot;&quot;&#125;</span></span><br><span class="line">    <span class="attr">clusterNodes:</span> <span class="string">$&#123;SW_STORAGE_ES_CLUSTER_NODES:localhost:9200&#125;</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">$&#123;SW_STORAGE_ES_HTTP_PROTOCOL:&quot;http&quot;&#125;</span></span><br><span class="line">    <span class="attr">connectTimeout:</span> <span class="string">$&#123;SW_STORAGE_ES_CONNECT_TIMEOUT:3000&#125;</span></span><br><span class="line">    <span class="attr">socketTimeout:</span> <span class="string">$&#123;SW_STORAGE_ES_SOCKET_TIMEOUT:30000&#125;</span></span><br><span class="line">    <span class="attr">responseTimeout:</span> <span class="string">$&#123;SW_STORAGE_ES_RESPONSE_TIMEOUT:15000&#125;</span></span><br><span class="line">    <span class="attr">numHttpClientThread:</span> <span class="string">$&#123;SW_STORAGE_ES_NUM_HTTP_CLIENT_THREAD:0&#125;</span></span><br><span class="line">    <span class="attr">user:</span> <span class="string">$&#123;SW_ES_USER:&quot;&quot;&#125;</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">$&#123;SW_ES_PASSWORD:&quot;&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>找到如上配置位置，首先将 selector 改为 elasticsearch，如果然后修改连接地址，如果有用户名及密码的话还需要修改用户名和密码</p>
+<p>修改完成后，重启 SkyWalking 即可，访问接口产生数据后，再重启数据库，就会发现数据库依然存在了</p>
+<hr>
+<h3 id="gPRC-导入日志"><a href="#gPRC-导入日志" class="headerlink" title="gPRC 导入日志"></a>gPRC 导入日志</h3><p>除了查看请求的响应时间及拓扑图，SkyWalking 也可以存储服务器日志，通过 SkyWalking UI 查看请求日志，具体操作如下：</p>
+<ol>
+<li><p>引入依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.skywalking<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>apm-toolkit-logback-1.x<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>9.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建 logback.xml 文件，添加日志配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">&quot;true&quot;</span> <span class="attr">scanPeriod</span>=<span class="string">&quot;60 seconds&quot;</span> <span class="attr">debug</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 日志存放路径 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;log.path&quot;</span> <span class="attr">value</span>=<span class="string">&quot;logs&quot;</span> /&gt;</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">&lt;!-- 日志输出格式 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;log.pattern&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">value</span>=<span class="string">&quot;%d&#123;HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;20&#125; %tid - [%method,%line] - %msg%n&quot;</span>/&gt;</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">&lt;!-- 控制台输出 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;console&quot;</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.encoder.LayoutWrappingEncoder&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">layout</span> <span class="attr">class</span>=<span class="string">&quot;org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogBackLayout&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">    <span class="comment">&lt;!-- 日志传输到skywalking中的appender，通过grpc传输 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">&quot;gpc-log&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.apache.skywalking.apm.toolkit.log.logback.v1.x.log.GRPCLogClientAppender&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span> <span class="attr">class</span>=<span class="string">&quot;ch.qos.logback.core.encoder.LayoutWrappingEncoder&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">layout</span> <span class="attr">class</span>=<span class="string">&quot;org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Pattern</span>&gt;</span>$&#123;log.pattern&#125;<span class="tag">&lt;/<span class="name">Pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">&lt;!--系统操作日志--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">&quot;info&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;console&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">&quot;gpc-log&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置完成后，重启项目，发起请求，就可以再 SkyWalking UI 上看到添加了 traceId 的日志了</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/image-20230915001802927.png" alt="image-20230915001802927"></p>
+</li>
+</ol>
+<hr>
+<h3 id="告警通知"><a href="#告警通知" class="headerlink" title="告警通知"></a>告警通知</h3><p>告警通知中需要了解的指标有：</p>
+<ul>
+<li><p>metrics-name</p>
+<p>指标名称，也就是 OAL 脚本中的指标名。可以配置的告警指标有：服务、实例、端点、服务关系、实例关系、端点关系，只支持 long、int、double 类型</p>
+</li>
+<li><p>op</p>
+<p>操作符</p>
+</li>
+<li><p>threshold</p>
+<p>阈值</p>
+</li>
+<li><p>period</p>
+<p>告警规则多久被检查一次，是一个时间窗口</p>
+</li>
+<li><p>count</p>
+<p>在一个时间窗口内，满足 op 超过阈值的次数达到 count 值，就会触发告警</p>
+</li>
+<li><p>slience-period</p>
+<p>在时间 N 中触发告警后，在 N + slience-period 这段时间内不告警</p>
+</li>
+<li><p>message</p>
+<p>告警时通知的消息</p>
+</li>
+</ul>
+<p>在 apm 的 config 目录下，可以看到一个 alarm-settings.yml 文件，里面配置了一些简单的配置规则，具体内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Sample alarm rules.</span></span><br><span class="line"><span class="attr">rules:</span></span><br><span class="line">  <span class="comment"># Rule unique name, must be ended with `_rule`.</span></span><br><span class="line">  <span class="attr">service_resp_time_rule:</span></span><br><span class="line">    <span class="attr">metrics-name:</span> <span class="string">service_resp_time</span></span><br><span class="line">    <span class="attr">op:</span> <span class="string">&quot;&gt;&quot;</span></span><br><span class="line">    <span class="attr">threshold:</span> <span class="number">1000</span></span><br><span class="line">    <span class="attr">period:</span> <span class="number">10</span></span><br><span class="line">    <span class="attr">count:</span> <span class="number">3</span></span><br><span class="line">    <span class="attr">silence-period:</span> <span class="number">5</span></span><br><span class="line">    <span class="attr">message:</span> <span class="string">Response</span> <span class="string">time</span> <span class="string">of</span> <span class="string">service</span> &#123;<span class="string">name</span>&#125; <span class="string">is</span> <span class="string">more</span> <span class="string">than</span> <span class="string">1000ms</span> <span class="string">in</span> <span class="number">3</span> <span class="string">minutes</span> <span class="string">of</span> <span class="string">last</span> <span class="number">10</span> <span class="string">minutes.</span></span><br><span class="line">  <span class="attr">service_sla_rule:</span></span><br><span class="line">    <span class="comment"># Metrics value need to be long, double or int</span></span><br><span class="line">    <span class="attr">metrics-name:</span> <span class="string">service_sla</span></span><br><span class="line">    <span class="attr">op:</span> <span class="string">&quot;&lt;&quot;</span></span><br><span class="line">    <span class="attr">threshold:</span> <span class="number">8000</span></span><br><span class="line">    <span class="comment"># The length of time to evaluate the metrics</span></span><br><span class="line">    <span class="attr">period:</span> <span class="number">10</span></span><br><span class="line">    <span class="comment"># How many times after the metrics match the condition, will trigger alarm</span></span><br><span class="line">    <span class="attr">count:</span> <span class="number">2</span></span><br><span class="line">    <span class="comment"># How many times of checks, the alarm keeps silence after alarm triggered, default as same as period.</span></span><br><span class="line">    <span class="attr">silence-period:</span> <span class="number">3</span></span><br><span class="line">    <span class="attr">message:</span> <span class="string">Successful</span> <span class="string">rate</span> <span class="string">of</span> <span class="string">service</span> &#123;<span class="string">name</span>&#125; <span class="string">is</span> <span class="string">lower</span> <span class="string">than</span> <span class="number">80</span><span class="string">%</span> <span class="string">in</span> <span class="number">2</span> <span class="string">minutes</span> <span class="string">of</span> <span class="string">last</span> <span class="number">10</span> <span class="string">minutes</span></span><br><span class="line">  <span class="attr">service_resp_time_percentile_rule:</span></span><br><span class="line">    <span class="comment"># Metrics value need to be long, double or int</span></span><br><span class="line">    <span class="attr">metrics-name:</span> <span class="string">service_percentile</span></span><br><span class="line">    <span class="attr">op:</span> <span class="string">&quot;&gt;&quot;</span></span><br><span class="line">    <span class="attr">threshold:</span> <span class="number">1000</span><span class="string">,1000,1000,1000,1000</span></span><br><span class="line">    <span class="attr">period:</span> <span class="number">10</span></span><br><span class="line">    <span class="attr">count:</span> <span class="number">3</span></span><br><span class="line">    <span class="attr">silence-period:</span> <span class="number">5</span></span><br><span class="line">    <span class="attr">message:</span> <span class="string">Percentile</span> <span class="string">response</span> <span class="string">time</span> <span class="string">of</span> <span class="string">service</span> &#123;<span class="string">name</span>&#125; <span class="string">alarm</span> <span class="string">in</span> <span class="number">3</span> <span class="string">minutes</span> <span class="string">of</span> <span class="string">last</span> <span class="number">10</span> <span class="string">minutes,</span> <span class="string">due</span> <span class="string">to</span> <span class="string">more</span> <span class="string">than</span> <span class="string">one</span> <span class="string">condition</span> <span class="string">of</span> <span class="string">p50</span> <span class="string">&gt;</span> <span class="number">1000</span><span class="string">,</span> <span class="string">p75</span> <span class="string">&gt;</span> <span class="number">1000</span><span class="string">,</span> <span class="string">p90</span> <span class="string">&gt;</span> <span class="number">1000</span><span class="string">,</span> <span class="string">p95</span> <span class="string">&gt;</span> <span class="number">1000</span><span class="string">,</span> <span class="string">p99</span> <span class="string">&gt;</span> <span class="number">1000</span></span><br><span class="line">  <span class="attr">service_instance_resp_time_rule:</span></span><br><span class="line">    <span class="attr">metrics-name:</span> <span class="string">service_instance_resp_time</span></span><br><span class="line">    <span class="attr">op:</span> <span class="string">&quot;&gt;&quot;</span></span><br><span class="line">    <span class="attr">threshold:</span> <span class="number">1000</span></span><br><span class="line">    <span class="attr">period:</span> <span class="number">10</span></span><br><span class="line">    <span class="attr">count:</span> <span class="number">2</span></span><br><span class="line">    <span class="attr">silence-period:</span> <span class="number">5</span></span><br><span class="line">    <span class="attr">message:</span> <span class="string">Response</span> <span class="string">time</span> <span class="string">of</span> <span class="string">service</span> <span class="string">instance</span> &#123;<span class="string">name</span>&#125; <span class="string">is</span> <span class="string">more</span> <span class="string">than</span> <span class="string">1000ms</span> <span class="string">in</span> <span class="number">2</span> <span class="string">minutes</span> <span class="string">of</span> <span class="string">last</span> <span class="number">10</span> <span class="string">minutes</span></span><br><span class="line">  <span class="attr">database_access_resp_time_rule:</span></span><br><span class="line">    <span class="attr">metrics-name:</span> <span class="string">database_access_resp_time</span></span><br><span class="line">    <span class="attr">threshold:</span> <span class="number">1000</span></span><br><span class="line">    <span class="attr">op:</span> <span class="string">&quot;&gt;&quot;</span></span><br><span class="line">    <span class="attr">period:</span> <span class="number">10</span></span><br><span class="line">    <span class="attr">count:</span> <span class="number">2</span></span><br><span class="line">    <span class="attr">message:</span> <span class="string">Response</span> <span class="string">time</span> <span class="string">of</span> <span class="string">database</span> <span class="string">access</span> &#123;<span class="string">name</span>&#125; <span class="string">is</span> <span class="string">more</span> <span class="string">than</span> <span class="string">1000ms</span> <span class="string">in</span> <span class="number">2</span> <span class="string">minutes</span> <span class="string">of</span> <span class="string">last</span> <span class="number">10</span> <span class="string">minutes</span></span><br><span class="line">  <span class="attr">endpoint_relation_resp_time_rule:</span></span><br><span class="line">    <span class="attr">metrics-name:</span> <span class="string">endpoint_relation_resp_time</span></span><br><span class="line">    <span class="attr">threshold:</span> <span class="number">1000</span></span><br><span class="line">    <span class="attr">op:</span> <span class="string">&quot;&gt;&quot;</span></span><br><span class="line">    <span class="attr">period:</span> <span class="number">10</span></span><br><span class="line">    <span class="attr">count:</span> <span class="number">2</span></span><br><span class="line">    <span class="attr">message:</span> <span class="string">Response</span> <span class="string">time</span> <span class="string">of</span> <span class="string">endpoint</span> <span class="string">relation</span> &#123;<span class="string">name</span>&#125; <span class="string">is</span> <span class="string">more</span> <span class="string">than</span> <span class="string">1000ms</span> <span class="string">in</span> <span class="number">2</span> <span class="string">minutes</span> <span class="string">of</span> <span class="string">last</span> <span class="number">10</span> <span class="string">minutes</span></span><br></pre></td></tr></table></figure>
+
+<p>在文件的最下方还有一个 webhooks 参数，配置该参数，当触发告警时就会请求该路径</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">webhooks:</span></span><br><span class="line"><span class="comment">#  - http://127.0.0.1/notify/</span></span><br><span class="line"><span class="comment">#  - http://127.0.0.1/go-wechat/</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>查看 SkyWalking 官方文档，可以看到，除了支持自定义接口，SkyWalking 的告警通知还支持微信、钉钉、飞书等多种通知方式</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/image-20231017234919578.png" alt="image-20231017234919578"></p>
+<p>以钉钉为例，如果我们想把告警信息通知到钉钉机器人，添加以下配置即可：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dingtalkHooks:</span></span><br><span class="line">  <span class="attr">textTemplate:</span> <span class="string">|-</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">      &quot;msgtype&quot;: &quot;text&quot;,</span></span><br><span class="line"><span class="string">      &quot;text&quot;: &#123;</span></span><br><span class="line"><span class="string">        # 消息内容</span></span><br><span class="line"><span class="string">        &quot;content&quot;: &quot;Apache SkyWalking Alarm: \n %s.&quot;</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    &#125;    </span></span><br><span class="line"><span class="string"></span>  <span class="attr">webhooks:</span></span><br><span class="line">    <span class="comment"># 钉钉机器人路径</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">url:</span> <span class="string">https://oapi.dingtalk.com/robot/send?access_token=dummy_token</span></span><br><span class="line">      <span class="comment"># 签名</span></span><br><span class="line">      <span class="attr">secret:</span> <span class="string">dummysecret</span></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="自定义链路追踪"><a href="#自定义链路追踪" class="headerlink" title="自定义链路追踪"></a>自定义链路追踪</h3><ol>
+<li><p>引入依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.skywalking/apm-toolkit-trace --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.skywalking<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>apm-toolkit-trace<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>之后便可以在代码中绑定或获取 traceId</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 向上下文对象绑定 key/value</span><br><span class="line">TraceContent.putCorrelation(&quot;key&quot;, &quot;value&quot;);</span><br><span class="line">// 获取 traceId</span><br><span class="line">String traceId = TraceContent.traceId();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以使用 @Trace 注解追踪指定方法，可以使用 @Tags 和 @Tag 注解实现多个数据的绑定</p>
+</li>
+</ol>
+<hr>
+<h2 id="Java-Agent"><a href="#Java-Agent" class="headerlink" title="Java Agent"></a>Java Agent</h2><h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><p>在 JVM 进程运行期间获取应用运行的 JVM 信息、变量信息等等。哪怕需要正在生产环境运行期间的 JVM 中的数据，也可以通过 JDK 自带的 Jmap、Jstack 等工具获取</p>
+<p>JVM 的设计人员很聪明，在 JVM 设计之初，他们就考虑了虚拟机状态监控、DEBUG、线程和内存分析等功能</p>
+<p>在 JDK1.5 之前，JVM 规范定义了 JVMPI（Java Virtual Machine Profiler Interface）语义，JVMPI 提供了一批 JVM 分析接口。 JVMPI 可以监控就 JVM 发生的各种事件，比如，JVM 创建、关闭、Java 类被加载、创建对象或 GC 回收等 37 种事件。除了 JVMPI ，JVM 规范还定义了 JVMDI（Java Virtual Machine Debug Interface）语义，JVMDI 提供了一批 JVM 调试接口</p>
+<p>JDK 1.5 及之后的版本将 JVMPI 和 JVMDI 合二为一，形成了一套 JVM 语义——JVMTI（JVMTM Tool Interface），包括 JVM 分析接口和 JVM 调试接口<br>JVMTI 是开发和监控工具使用的编程接口，它提供了一种方法，用于检查状态和控制在 Java 虚拟机（VM）中运行的应用程序的执行。JVMTI 旨在为需要访问 VM 状态的所有工具提供 VM 接口，包括但不限于：评测、调试、监视、线程分析和覆盖率分析工具</p>
+<p>简单来说，JVMTI 是一套 JVM 制定的规范，在不同的 JVM 中实现方式也不一定都一样。JVMTI 提供的是 Native API 调用方式（即大家更熟知的 JNI 调用方式）</p>
+<p>JVMTI 接口用 C&#x2F;C++ 语言来暴露 Native API，并最终以动态链路库的形式被 JVM 加载并运行</p>
+<p>在 Java Agent 问世之前，苦逼的开发人员只能通过 JVMTI 的 Native API 调用方式完成代码的动态侵入，非常的繁琐、不友好，而且门槛有点高</p>
+<p>因此，在 JDK1.5 版本以后，JVM 提供了 Java Agent 技术来解决上述痛点</p>
+<p>与普通 Java 程序通过 main 方法启动不同，Java Agent 并不是一个可以单独启动的程序，它必须依附在一个 Java 应用程序（JVM）上，与主程序运行在同一个 JVM 进程中，通过 Instrumentation 接口与 JVM 进行交互</p>
+<p>Java Agent 提供了一种在加载字节码时对字节码进行修改的能力，有两种执行方式：</p>
+<ol>
+<li>在应用运行之前，通过 premain() 方法来实现「在应用启动时侵入并代理应用」，这种方式是利用 Instrumentation 接口实现的</li>
+<li>在应用运行之后，通过 Attach API 和 agentmain() 方法来实现「在应用启动后的某一个运行阶段中侵入并代理应用」，这种方式是利用 Attach 接口实现的</li>
+</ol>
+<hr>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p>调试代码</p>
+<p>通过 IDE（Intellij Idea 和 Eclipse）调试代码示程序员必备技能之一，通过 IDEA 调试代码就是基于 Java Agent 技术实现的</p>
+</li>
+<li><p>热部署</p>
+<p>常见的热部署工具有 Intellij Idea 的 HotSwap 和 Jrebel</p>
+</li>
+<li><p>在线诊断</p>
+<p>Arthas 就是一款非常优秀的 Java 在线诊断工具</p>
+</li>
+<li><p>性能分析</p>
+<p>TProfiler 采用 Java Agent 技术，在 JVM 启动时把时间采集程序注入到字节码中，整个过程无需修改应用源码，非常的方便</p>
+</li>
+<li><p>APM</p>
+<p>很多优秀应用程序性能监测产品如 Pinpoint、Skywalking、Zipkin 等，都是基于 Java Agent 实现的</p>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Simon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2023/10/22/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/SkyWalking%20%E6%95%99%E7%A8%8B/">http://yoursite.com/2023/10/22/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/SkyWalking%20%E6%95%99%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com" target="_blank">Simon 的书柜</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a><a class="post-meta__tags" href="/tags/%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA/">链路追踪</a></div><div class="post_share"><div class="social-share" data-image="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/preview.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/10/28/%E6%95%B0%E6%8D%AE%E5%BA%93/ElasticSearch%20%E5%AE%9E%E6%88%98/" title="ElasticSearch 实战"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93/ElasticSearch%20%E5%AE%9E%E6%88%98/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">ElasticSearch 实战</div></div></a></div><div class="next-post pull-right"><a href="/2023/09/01/Java/Java%2011%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="Java 11 新特性"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%2011%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Java 11 新特性</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/03/18/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F/" title="如何设计一个秒杀系统"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F/image-20220522000516990.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-18</div><div class="title">如何设计一个秒杀系统</div></div></a></div><div><a href="/2022/03/28/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="电商系统常见问题"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/image-20220522000149668.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-28</div><div class="title">电商系统常见问题</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Simon</div><div class="author-info__description">攀登亦是风景</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SkyWalking-%E6%95%99%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">SkyWalking 教程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#APM-%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">APM 系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA"><span class="toc-number">1.1.2.</span> <span class="toc-text">分布式链路追踪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenTracing"><span class="toc-number">1.1.3.</span> <span class="toc-text">OpenTracing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%B5%81%E7%9A%84%E5%BC%80%E6%BA%90-APM-%E4%BA%A7%E5%93%81"><span class="toc-number">1.1.4.</span> <span class="toc-text">主流的开源 APM 产品</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SkyWalking"><span class="toc-number">1.2.</span> <span class="toc-text">SkyWalking</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-number">1.2.2.</span> <span class="toc-text">优势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="toc-number">1.3.</span> <span class="toc-text">快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2-OAP-%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.3.1.</span> <span class="toc-text">部署 OAP 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Agent-%E6%8E%A2%E9%92%88"><span class="toc-number">1.3.2.</span> <span class="toc-text">Agent 探针</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E8%BF%9B%E9%98%B6"><span class="toc-number">1.4.</span> <span class="toc-text">实战进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ES-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">1.4.1.</span> <span class="toc-text">ES 持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gPRC-%E5%AF%BC%E5%85%A5%E6%97%A5%E5%BF%97"><span class="toc-number">1.4.2.</span> <span class="toc-text">gPRC 导入日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%8A%E8%AD%A6%E9%80%9A%E7%9F%A5"><span class="toc-number">1.4.3.</span> <span class="toc-text">告警通知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA"><span class="toc-number">1.4.4.</span> <span class="toc-text">自定义链路追踪</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-Agent"><span class="toc-number">1.5.</span> <span class="toc-text">Java Agent</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="toc-number">1.5.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.5.2.</span> <span class="toc-text">应用场景</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/05/12/%E5%89%8D%E7%AB%AF/Anaular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/" title="Anaular 中文文档"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Angular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Anaular 中文文档"/></a><div class="content"><a class="title" href="/2024/05/12/%E5%89%8D%E7%AB%AF/Anaular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/" title="Anaular 中文文档">Anaular 中文文档</a><time datetime="2024-05-12T06:08:47.000Z" title="发表于 2024-05-12 14:08:47">2024-05-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/29/%E5%89%8D%E7%AB%AF/TypeScript%20%E6%95%99%E7%A8%8B/" title="TypeScript 教程"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/TypeScript%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TypeScript 教程"/></a><div class="content"><a class="title" href="/2024/03/29/%E5%89%8D%E7%AB%AF/TypeScript%20%E6%95%99%E7%A8%8B/" title="TypeScript 教程">TypeScript 教程</a><time datetime="2024-03-29T10:01:05.000Z" title="发表于 2024-03-29 18:01:05">2024-03-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/10/%E5%89%8D%E7%AB%AF/Sass%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Sass 预处理语言"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Sass%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Sass 预处理语言"/></a><div class="content"><a class="title" href="/2024/03/10/%E5%89%8D%E7%AB%AF/Sass%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Sass 预处理语言">Sass 预处理语言</a><time datetime="2024-03-10T12:36:21.000Z" title="发表于 2024-03-10 20:36:21">2024-03-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/09/%E5%89%8D%E7%AB%AF/Less%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Less 预处理语言"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Less%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Less 预处理语言"/></a><div class="content"><a class="title" href="/2024/01/09/%E5%89%8D%E7%AB%AF/Less%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Less 预处理语言">Less 预处理语言</a><time datetime="2024-01-09T06:37:03.000Z" title="发表于 2024-01-09 14:37:03">2024-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/16/%E4%BA%91%E5%8E%9F%E7%94%9F/Docker%20%E5%AE%9E%E6%88%98/" title="Docker 实战"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/Docker%20%E5%AE%9E%E6%88%98/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker 实战"/></a><div class="content"><a class="title" href="/2023/12/16/%E4%BA%91%E5%8E%9F%E7%94%9F/Docker%20%E5%AE%9E%E6%88%98/" title="Docker 实战">Docker 实战</a><time datetime="2023-12-16T10:47:40.000Z" title="发表于 2023-12-16 18:47:40">2023-12-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Simon</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
