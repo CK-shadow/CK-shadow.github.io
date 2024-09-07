@@ -1,0 +1,648 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>秒杀系统的架构与设计 | Simon 的书柜</title><meta name="author" content="Simon"><meta name="copyright" content="Simon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="秒杀系统的架构与设计目标与挑战秒杀系统的目标与挑战对于 C 端用户来说，最重要的目标就是页面流畅不卡顿，不出现白屏，接口要稳定，数据要准确 对于 B 端用户来说，最重要的目标就是数据准确，资金安全，价格隔离和渠道隔离 对于平台来说，最重要的目标就是保证 B 端和 C 端目标落地，并做到业务隔离和数据隔离 秒杀系统面临的挑战有  巨大的瞬时流量 热点数据，可能达到几十万甚至上百万，Redis 都扛不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="秒杀系统的架构与设计">
+<meta property="og:url" content="http://yoursite.com/2024/06/15/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Simon 的书柜">
+<meta property="og:description" content="秒杀系统的架构与设计目标与挑战秒杀系统的目标与挑战对于 C 端用户来说，最重要的目标就是页面流畅不卡顿，不出现白屏，接口要稳定，数据要准确 对于 B 端用户来说，最重要的目标就是数据准确，资金安全，价格隔离和渠道隔离 对于平台来说，最重要的目标就是保证 B 端和 C 端目标落地，并做到业务隔离和数据隔离 秒杀系统面临的挑战有  巨大的瞬时流量 热点数据，可能达到几十万甚至上百万，Redis 都扛不">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/preview.jpg">
+<meta property="article:published_time" content="2024-06-15T01:37:58.000Z">
+<meta property="article:modified_time" content="2024-09-07T09:58:00.755Z">
+<meta property="article:author" content="Simon">
+<meta property="article:tag" content="系统架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/preview.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2024/06/15/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '秒杀系统的架构与设计',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-09-07 17:58:00'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/preview.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Simon 的书柜"><span class="site-name">Simon 的书柜</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">秒杀系统的架构与设计</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-15T01:37:58.000Z" title="发表于 2024-06-15 09:37:58">2024-06-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-09-07T09:58:00.755Z" title="更新于 2024-09-07 17:58:00">2024-09-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="秒杀系统的架构与设计"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="秒杀系统的架构与设计"><a href="#秒杀系统的架构与设计" class="headerlink" title="秒杀系统的架构与设计"></a>秒杀系统的架构与设计</h1><h2 id="目标与挑战"><a href="#目标与挑战" class="headerlink" title="目标与挑战"></a>目标与挑战</h2><h3 id="秒杀系统的目标与挑战"><a href="#秒杀系统的目标与挑战" class="headerlink" title="秒杀系统的目标与挑战"></a>秒杀系统的目标与挑战</h3><p>对于 C 端用户来说，最重要的目标就是页面流畅不卡顿，不出现白屏，接口要稳定，数据要准确</p>
+<p>对于 B 端用户来说，最重要的目标就是数据准确，资金安全，价格隔离和渠道隔离</p>
+<p>对于平台来说，最重要的目标就是保证 B 端和 C 端目标落地，并做到业务隔离和数据隔离</p>
+<p>秒杀系统面临的挑战有</p>
+<ul>
+<li>巨大的瞬时流量</li>
+<li>热点数据，可能达到几十万甚至上百万，Redis 都扛不住</li>
+<li>库存超卖</li>
+<li>恶意刷单流量</li>
+</ul>
+<hr>
+<h3 id="秒杀系统大流量的应对之道"><a href="#秒杀系统大流量的应对之道" class="headerlink" title="秒杀系统大流量的应对之道"></a>秒杀系统大流量的应对之道</h3><p><strong>分离之道</strong></p>
+<ul>
+<li>资源分离，主要是前后端资源分离，前端资源可以通过 CDN 加速</li>
+<li>接口分离，秒杀接口与其它接口分离，高频访问接口与低频访问接口分离</li>
+<li>数据分离，秒杀数据与其它数据分离，动态数据与静态数据分离</li>
+<li>业务分离，秒杀业务与其它业务进行分离</li>
+<li>系统分离，在系统分离层面，一般会将详情页系统、结算页系统、购物车系统和订单系统系统进行分离，并且会申请单独的域名和负载均衡器等，并会对相应的微服务集群进行分组隔离</li>
+<li>流量分离，秒杀系统与其它系统的流量进行分离</li>
+</ul>
+<p><strong>限流之道</strong></p>
+<ul>
+<li>提前预约秒杀，通过将抢购的用户控制在预约人数之中，在一定程度上大大减少秒杀的峰值流量，对秒杀系统起到一定的防护作用</li>
+<li>打散客户流量，通过设置答题、验证码和滑块等方式，根据用户操作速度不同，将大并发流量分散到一小段时间内，也能起到一定的防刷保护作用</li>
+<li>消息队列，使用消息队列进行削峰</li>
+<li>网关限流</li>
+<li>API 限流</li>
+<li>应用层限流，通过设置最大线程数等方式来实现限流</li>
+<li>安全校验，对黄牛、刷单的恶意请求进行拦截</li>
+<li>像一些大型互联网公司，为了兼得用户体验和系统资源，不会间的的使用答题、验证码等方式打散客户流量，更倾向于采用非公平的策略，使用有损逐级限流和分层过滤的方式来达到限流目的</li>
+</ul>
+<p><strong>快速响应之道</strong></p>
+<ul>
+<li>多用缓存，包括但不限于本地缓存和分布式缓存</li>
+<li>数据和计算尽量少</li>
+<li>流程尽量简单</li>
+</ul>
+<p><strong>准确一致之道</strong></p>
+<ul>
+<li>缓存与数据库数据一致</li>
+<li>本地缓存与分布式缓存一致</li>
+<li>商品库存与订单数据一致</li>
+<li>前后端数据一致</li>
+</ul>
+<p><strong>全链路压测之道</strong></p>
+<hr>
+<h2 id="需求梳理"><a href="#需求梳理" class="headerlink" title="需求梳理"></a>需求梳理</h2><h3 id="系统需求"><a href="#系统需求" class="headerlink" title="系统需求"></a>系统需求</h3><p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602234811036.png" alt="image-20240602234811036"></p>
+<p>用户角度的需求</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602234913877.png" alt="image-20240602234913877"></p>
+<p>运营角度的需求</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602234922066.png" alt="image-20240602234922066"></p>
+<p>业务流程</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602234933548.png" alt="image-20240602234933548"></p>
+<hr>
+<h3 id="流程梳理"><a href="#流程梳理" class="headerlink" title="流程梳理"></a>流程梳理</h3><p>在用户访问秒杀系统时，请求流量首先会通过 DNS 将域名解析成 IP 地址，通过 IP 地址访问到服务器。进入 Nginx，由 Nginx 进行一系列的负载均衡和限流等功能，到达系统的业务网关，通过业务网关进行路由、限充、服务降级以及风控等，进入到 Web 服务，Web 服务会对外提供交互接口，解析接收的请求数据，以及聚合查询的数据等。随后进入到基础服务，基础服务的功能比较单一和灵活，基本都是一些简单的业务处理。最后会进入数据服务层，数据服务主要就是存储、操作和查询数据，可以包含 Redis、MySQL 和其他数据服务</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602235029370.png" alt="image-20240602235029370"></p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602235037169.png" alt="image-20240602235037169"></p>
+<p>对于秒杀系统这种瞬时高并发大流量的系统来说，可以将一些校验操作前置化，采用分层过滤的原则来控制流量最终充入系统的大小。并且使用分层过滤的原则和设计可以对流量做精细化筛选，尽量保证流入到下游系统的流量，都是优质的系统流量，分层过滤的漏洞槿型可以设计成如图所示</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602235044169.png" alt="image-20240602235044169"></p>
+<hr>
+<h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><h3 id="系统架构设计"><a href="#系统架构设计" class="headerlink" title="系统架构设计"></a>系统架构设计</h3><p><strong>技术选型</strong></p>
+<p>开发框架：SpringBoot、SpringCloud、SpringCloud Alibaba、Dubbo</p>
+<p>缓存：Redis + Guava</p>
+<p>数据库：MySQL</p>
+<p>流量网关：OpenResty + Lua</p>
+<p>业务网关：SpringCloud Gateway</p>
+<p>持久层框架：MyBatis</p>
+<p>服务配置与注册发现：Nacos</p>
+<p>单机异步：Cola</p>
+<p>分布式事务：Hmily、Seata、RocketMQ</p>
+<p>分库分表：ShardingSphere</p>
+<p>日志：ELK（Elasticsearch、Logstash、Kibana）</p>
+<p>链路追踪：Sleuth、Zipkin、Prometheus</p>
+<p>容器：Docker</p>
+<p>容器化管理：Swarm、Portainer</p>
+<p>监控：Prometheus、Grafana</p>
+<p>系统限流：OpenResty + Lua、Sentinel</p>
+<p>消息中间件：RocketMQ</p>
+<p>单元测试：Junit</p>
+<p>压测工具：JMeter</p>
+<p><strong>一般系统架构设计</strong></p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602235147462.png" alt="image-20240602235147462"></p>
+<p>这种系统架构在一般系统中没什么问题，但是放在秒杀系统中，则会存在很多问题</p>
+<p>一个是 Web 服务器的性能问题，Nginx 只做了反向代理和负载均衡的功能，绝大部分的流量仍旧会打在 Web 服务器上。Tomcat 是通过线程池来处理请求的，如此多的请求，如果 Tomcat 线程池的等待队列被占满后，不仅会影响性能，还会使大量的请求被拒绝</p>
+<p>另一个是静态资源的加载问题，静态资源无论是放在 CDN 还是放在 Web 服务器，都会影响加载速度且占用大量带宽</p>
+<p><strong>秒杀系统的总体架构设计</strong></p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602235156731.png" alt="image-20240602235156731"></p>
+<p>针对于一般系统的两个问题，秒杀系统架构做了两点优化</p>
+<p>一是将静态资源放在了 CDN，提升了加载速度。另一个是放大 Nginx 的职责，减少落在 Web 服务器上的请求流量。除了在 Nginx 层进行限流，Web 服务器也可以进行限流、降级等流量管控措施，避免大量请求冲垮服务器</p>
+<p><strong>秒杀系统的容器化架构设计</strong></p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602235204572.png" alt="image-20240602235204572"></p>
+<p><strong>DDD 分层业务架构设计</strong></p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240602235231495.png" alt="image-20240602235231495"></p>
+<p>展示层：也叫用户 UI 层，是 DDD 设计的最上层，对外提供 API 接口，接收客户端请求，解析参数，返回结果数据，并对异常进行处理</p>
+<p>应用层：也叫 Application 层，应用层主要处理容易变化的业务场景，可对相关的事件、调度和其它聚合操作进行相关的操作</p>
+<p>领域层：也叫 Domain 层，可以说是 DDD 设计的精髓所在，将业务系统中相对不变的部分抽象出来封装成领域模型</p>
+<p>基础设施层：也叫 Infrastructure 层，基础设施层会对其他各层提供通用的基础能力</p>
+<hr>
+<h3 id="数据模型设计"><a href="#数据模型设计" class="headerlink" title="数据模型设计"></a>数据模型设计</h3><p>对于用户数据模型来说，简化后的字段模型包括：用户 ID、用户名、密码和状态，整体如下</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>类型</th>
+<th>长度</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>bigint</td>
+<td>20</td>
+<td>无</td>
+<td>用户 ID</td>
+</tr>
+<tr>
+<td>user_name</td>
+<td>varchar</td>
+<td>20</td>
+<td>空字符串</td>
+<td>用户名</td>
+</tr>
+<tr>
+<td>password</td>
+<td>varchar</td>
+<td>64</td>
+<td>空字符串</td>
+<td>密码</td>
+</tr>
+<tr>
+<td>status</td>
+<td>int</td>
+<td>2</td>
+<td>1</td>
+<td>用户状态：1 正常、2 冻结</td>
+</tr>
+</tbody></table>
+<p>对于秒杀活动来说，简化后的字段模型包括：活动 ID、活动名称、开始时间、结束时间、状态、描述，整体如下</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>类型</th>
+<th>长度</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>bigint</td>
+<td>20</td>
+<td>无</td>
+<td>活动 ID</td>
+</tr>
+<tr>
+<td>activity_name</td>
+<td>varchar</td>
+<td>128</td>
+<td>空字符串</td>
+<td>活动名称</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>datetime</td>
+<td>默认</td>
+<td>NULL</td>
+<td>开始时间</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>datetime</td>
+<td>默认</td>
+<td>NULL</td>
+<td>结束时间</td>
+</tr>
+<tr>
+<td>status</td>
+<td>int</td>
+<td>2</td>
+<td>0</td>
+<td>状态：0 已发布、1 已上线、2 已下线</td>
+</tr>
+<tr>
+<td>activity_desc</td>
+<td>varchar</td>
+<td>255</td>
+<td>空字符串</td>
+<td>活动描述</td>
+</tr>
+</tbody></table>
+<p>对于秒杀商品来说，简化后的字段模型包括：商品 ID、商品名称、活动 ID、开始时间、结束时间、活动原价格、商品秒杀价格、商品初始库存、商品当前可用库存、商品描述、商品图片、商品状态和限购个数，整体如下</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>类型</th>
+<th>长度</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>bigint</td>
+<td>20</td>
+<td>无</td>
+<td>商品 ID</td>
+</tr>
+<tr>
+<td>goods_name</td>
+<td>varchar</td>
+<td>128</td>
+<td>空字符串</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td>activity_id</td>
+<td>bigint</td>
+<td>20</td>
+<td>0</td>
+<td>活动 ID</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>datetime</td>
+<td>默认</td>
+<td>NULL</td>
+<td>开始时间</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>datetime</td>
+<td>默认</td>
+<td>NULL</td>
+<td>结束时间</td>
+</tr>
+<tr>
+<td>original_price</td>
+<td>decimal</td>
+<td>10,2</td>
+<td>0.00</td>
+<td>活动原价格</td>
+</tr>
+<tr>
+<td>activity_price</td>
+<td>decimal</td>
+<td>10,2</td>
+<td>0.00</td>
+<td>活动秒杀价格</td>
+</tr>
+<tr>
+<td>initial_stock</td>
+<td>int</td>
+<td>10</td>
+<td>0</td>
+<td>商品初始库存</td>
+</tr>
+<tr>
+<td>available_stock</td>
+<td>int</td>
+<td>10</td>
+<td>0</td>
+<td>商品当前可用库存</td>
+</tr>
+<tr>
+<td>description</td>
+<td>varchar</td>
+<td>255</td>
+<td>空字符串</td>
+<td>商品描述</td>
+</tr>
+<tr>
+<td>img_url</td>
+<td>varchar</td>
+<td>100</td>
+<td>空字符串</td>
+<td>商品图片</td>
+</tr>
+<tr>
+<td>status</td>
+<td>int</td>
+<td>2</td>
+<td>0</td>
+<td>商品状态</td>
+</tr>
+<tr>
+<td>limit_num</td>
+<td>int</td>
+<td>11</td>
+<td>1</td>
+<td>限购个数</td>
+</tr>
+</tbody></table>
+<p>对于秒杀订单来说，简化后的字段模型包括：订单 ID、用户 ID、商品 ID、商品名称、秒杀价格、下单商品数量、订单总金额、活动 ID、订单状态和创建时间，整体如下</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>类型</th>
+<th>长度</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>bigint</td>
+<td>20</td>
+<td>无</td>
+<td>订单 ID</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>bigint</td>
+<td>20</td>
+<td>0</td>
+<td>用户 ID</td>
+</tr>
+<tr>
+<td>goods_id</td>
+<td>bigint</td>
+<td>20</td>
+<td>0</td>
+<td>商品 ID</td>
+</tr>
+<tr>
+<td>goods_name</td>
+<td>varchar</td>
+<td>128</td>
+<td>空字符串</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td>activity_price</td>
+<td>decimal</td>
+<td>10,2</td>
+<td>0.00</td>
+<td>秒杀价格</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>int</td>
+<td>10</td>
+<td>0</td>
+<td>下单商品数量</td>
+</tr>
+<tr>
+<td>order_price</td>
+<td>decimai</td>
+<td>10,2</td>
+<td>0.00</td>
+<td>订单总金额</td>
+</tr>
+<tr>
+<td>activity_id</td>
+<td>bigint</td>
+<td>20</td>
+<td>0</td>
+<td>活动 ID</td>
+</tr>
+<tr>
+<td>status</td>
+<td>int</td>
+<td>2</td>
+<td>0</td>
+<td>订单状态</td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>datetime</td>
+<td>默认</td>
+<td>NULL</td>
+<td>创建时间</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h2><p>基于 DDD 架构设计搭建项目，总体结构与工程依赖关系如下：</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240606235814366.png" alt="image-20240606235814366"></p>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20240606235819184.png" alt="image-20240606235819184"></p>
+<hr>
+<h2 id="常规系统设计"><a href="#常规系统设计" class="headerlink" title="常规系统设计"></a>常规系统设计</h2><h3 id="用户部分"><a href="#用户部分" class="headerlink" title="用户部分"></a>用户部分</h3><p>使用 JWT 进行用户的登录授权认证</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240607000429188.png" alt="image-20240607000429188"></p>
+<hr>
+<h3 id="活动部分"><a href="#活动部分" class="headerlink" title="活动部分"></a>活动部分</h3><p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240608233955633.png" alt="image-20240608233955633"></p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240608234006652.png" alt="image-20240608234006652"></p>
+<hr>
+<h3 id="商品部分"><a href="#商品部分" class="headerlink" title="商品部分"></a>商品部分</h3><p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240608234549880.png" alt="image-20240608234549880"></p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240608234555462.png" alt="image-20240608234555462"></p>
+<hr>
+<h3 id="订单部分"><a href="#订单部分" class="headerlink" title="订单部分"></a>订单部分</h3><p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240608234718379.png" alt="image-20240608234718379"></p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240608234722519.png" alt="image-20240608234722519"></p>
+<hr>
+<h2 id="常规系统经典问题"><a href="#常规系统经典问题" class="headerlink" title="常规系统经典问题"></a>常规系统经典问题</h2><p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240608235523118.png" alt="image-20240608235523118"></p>
+<hr>
+<h2 id="混合型缓存"><a href="#混合型缓存" class="headerlink" title="混合型缓存"></a>混合型缓存</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>良好的缓存设计不仅能提升系统的总体性能，还能作为抗瞬时流量洪峰的有效防线</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240609235115089.png" alt="image-20240609235115089"></p>
+<p>经过前置的流量管控、流量清洗和限流等措施的第一道防线，本地缓存的第二道防线，分布式缓存的第三道防线，真正进入数据库的流量就会比较小了</p>
+<hr>
+<h3 id="读取缓存流程"><a href="#读取缓存流程" class="headerlink" title="读取缓存流程"></a>读取缓存流程</h3><p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240609235311065.png" alt="image-20240609235311065"></p>
+<hr>
+<h3 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h3><p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240609235821743.png" alt="image-20240609235821743"></p>
+<hr>
+<h2 id="缓存领域事件"><a href="#缓存领域事件" class="headerlink" title="缓存领域事件"></a>缓存领域事件</h2><p>对活动和商品数据整合缓存后，就面临一个比较棘手的问题，那就是数据一致性的问题，最直接的就是缓存数据与数居库数据一致性的问题，将活动和商品数据整合缓存后，当运营端发布了活动或者商品，或者对活动或者商品的状态进行了变更，如果缓存中的数据未发生变化，那么客户端获取活动或者商品数据时，就会获取到脏数据</p>
+<p>很容易想到的一种方案就是:在运营管理端发布活动或者商品，或者变更活动或者商品的状态时，同步缓存数据。但是这种方案会增加数据操作失败的风险。还有一种方案就是在运营管理端对活动和商品进行管理时，同步清除爱存中的数据，这种方案在流量比较小的系统中是可行的，如果放到类似秒杀系统这种高并发、大流量的场景中，直接清除缓存中的数据，如果对流量控制不佳，很有可能使大量的流量瞬间打入数据库而导致数据库宕机崩溃</p>
+<p>当活动和商品数据整合缓存后，在运营管理端对活动和商品进行管理时，可以对外发布一个事件，发布事件后即可不再关注处理事件的细节，类似于生产者-消费者模式，生产者生产消息，将消息发布到对应的消息队列或者消息中间而不必关注消费者是如何从消息队列或者消息中间件中获取数据并消费</p>
+<p>当在运营管理端对活动和商品进行管理时，执行完操作数据库的业务逻辑后，对外发布一个事件，方法即可结束。而在系统的其他领域层，会监听对应的事件，当接收到对应的事件后，更新缓存中的数据</p>
+<p>在秒杀系统中，针对秒杀系统中缓存数据的变更，领域事件发布的流程如图所示</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240614232343369.png" alt="image-20240614232343369"></p>
+<hr>
+<h2 id="库存扣减"><a href="#库存扣减" class="headerlink" title="库存扣减"></a>库存扣减</h2><h3 id="常见的库存扣减方式"><a href="#常见的库存扣减方式" class="headerlink" title="常见的库存扣减方式"></a>常见的库存扣减方式</h3><p><strong>下单减库存</strong></p>
+<p>下单扣减库存的方式比较容易理解，就是用户提交订单后，在商品的总库存中减去用户购买的商品数量。这种减库存方式是最简单的，也是将商品库存统计得最准确的。但是经常会碰到用户提交订单下付款的问题</p>
+<p>这就会存在一个问题:恶意刷单。例如，用户 A 作为商家参与了某平台的“双11”秒杀活动，该平台扣减库存的方式为单减库存，如果用户A的竞争对手通过恶意下单的方式将用户 A 参与秒杀的商品全部下单，让用户 A 的商品库存减为 0,旦是并不付款，那么用户 A 参与“双11”秒杀的商品就不能正常售卖这就是下单减库存存在的问题</p>
+<p><strong>付款减库存</strong></p>
+<p>既然下单减库存存在问题，那么再来分析一下付款减库存。库存减库存就是在用户提交订单后，并不会立刻扣减商品的库存，而是等到用户真正付款后才会扣减库存。这种方式会经常遇到用户明明下单成功了，却提示不能付款的问其原因就是当某个用户下单后，执行付款操作时，相应的商品可能已经被其他人买走了</p>
+<p>付款减库存有可能造成另一个更为严重的后果:库存超卖。因为在用户提交订单时，系统不会扣减库存，所以最终用户成功下单的订单数量可能远远大于商品的库存数量</p>
+<p><strong>预扣减库存</strong></p>
+<p>预扣减库存比前面两种方式复杂一些。用户提交订单后，为用户预留购买数量的商品库存，例如预留 10 min，一旦超过 10 min 就释放为用户预留的库存，其他的用户可以继续下单购买。用户下单预扣减库存之后，在付款时，系统会检验对立的订单是否存在有效的预留库存，如果存在，则真正扣减库存并付款。如果不存在，则再次尝试预扣减库存。如果库存呢不足，则不再付款。如果预扣减库存成功，则真正扣减库存并付款</p>
+<p>但是，预扣减库存并没有完全解决下单减库存和付款减库存两种方式中的问题</p>
+<p>例如，对恶意下单来说，虽然将有效的付款时间控制在一小段时间内，但是恶意用户完全有可能在一段时间后再次下单。也有可能在开始下单时，一次性选择所有的库存下单。仍然不能彻底解决问题</p>
+<hr>
+<h3 id="扣减库存的解决方案"><a href="#扣减库存的解决方案" class="headerlink" title="扣减库存的解决方案"></a>扣减库存的解决方案</h3><p>秒杀系统中的主要问题是恶意下单和库存超卖，以下方案可以在一定程度上解决恶意下单问题：</p>
+<ol>
+<li>为经常提交订单却不付款的用户添加对应的标签，当这些用户下单时，进行特殊处理，例如不扣减库存等(具体可以根据需求确定)</li>
+<li>在秒杀活动期间，为商品设置同一个人的最多购买件数，比如最多购买 2 件。维度可以是单一用户ID、同一手机、同一收件地址、同一设备 IP 等</li>
+<li>对秒杀商品进行限制，例如在北京、上海、广州、深圳这些一线城市投放，那么就只有收货地址是这些城市的用才能参与抢购，而且各地区库存量是隔离的，互不影响</li>
+<li>对不付款重复下单的操作进行限制，例如，对同一商品下单时，首先校验当前用户是否存在未付款的订单，如果存在则提示用户付款后再提交新订单</li>
+</ol>
+<p>通过前面对三种扣减库存方式的介绍，也许有不少人会认为高并发秒杀系统会采用预扣减库存的方式，其实，在真正的高并发、大流量场景下，大部分秒杀系统会采用下单减库存的方式。在下单扣减库存的业务场景中，需要保证高并发、大流量下商品的库存不能被扣减至负数</p>
+<ol>
+<li>扣减库存时，只有商品剩余库存数量大于用户购买数量时，才扣减库存，否则提示库存不足</li>
+<li>扣减库存后，在应用程序的事务中判断商品库存是否为负，如果是，则回滚事务不再扣减库存</li>
+<li>在数据库中设置库存字段为无符号整数，从数据库层面保证无法出现负数的情况</li>
+</ol>
+<hr>
+<h3 id="基于数据库实现库存扣减"><a href="#基于数据库实现库存扣减" class="headerlink" title="基于数据库实现库存扣减"></a>基于数据库实现库存扣减</h3><p>基于数据库实现库存扣减的核心在于一条 SQL 语句，通过 SQL 的执行条件和设置库存字段不小于 0 来保证库存扣减的安全</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> secki1l_goods <span class="keyword">set</span> available_stock <span class="operator">=</span> available_stock <span class="operator">-</span> #&#123;count&#125; <span class="keyword">where</span> id <span class="operator">=</span> #&#123;id&#125; <span class="keyword">and</span> available_stock <span class="operator">&gt;=</span> #&#123;count&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这种实现方式最为简单，无需额外中间件，安全性也很有保障。缺点在于每次库存扣减都需要执行数据库写操作，并且在库存扣减完成之后，每次下单仍需要执行 DB SQL，对于数据库而言具有很大的压力。适用于并发量不大，库存扣减速度比较平缓的场景</p>
+<hr>
+<h3 id="基于分布式锁实现库存扣减"><a href="#基于分布式锁实现库存扣减" class="headerlink" title="基于分布式锁实现库存扣减"></a>基于分布式锁实现库存扣减</h3><p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240615170730719.png" alt="image-20240615170730719"></p>
+<p>使用 Redis 分布式锁来实现库存扣减过程中的数据安全，并将库存数据放到 Redis 中，可以将数据库读写的压力转到 Redis 上，性能更好</p>
+<p>但是这样锁的粒度较大，并不能完全发挥服务性能，并且如果在执行过程中服务器宕机，没能及时释放锁，即使设置了锁的超时时间，也会导致在一段时间内用户无法下单</p>
+<hr>
+<h3 id="基于-Lua-脚本实现库存扣减"><a href="#基于-Lua-脚本实现库存扣减" class="headerlink" title="基于 Lua 脚本实现库存扣减"></a>基于 Lua 脚本实现库存扣减</h3><p>使用 Lua 脚本扣减库存，利用的是 Redis 的单线程特性，在同一时间内只会有一个 Lua 脚本在执行，并且将 Lua 脚本内的所有操作视为一个原子操作，不会有并发数据问题，从而替代分布式锁，减少锁粒度，提升性能</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- lua逻辑：首先判断活动库存是否存在，如果库存不存在则返回-1，接下来判断传入的要扣减的库存是否大于0，如果要扣减的库存不大于0，则返回-2，库存不足返回-3，扣减库存成功返回1</span></span><br><span class="line"><span class="comment">-- 两个入参：</span></span><br><span class="line"><span class="comment">-- KEYS[1] : 活动库存的key</span></span><br><span class="line"><span class="comment">-- ARGV[1] : 活动库存的扣减数量</span></span><br><span class="line"><span class="keyword">local</span> stock = redis.call(<span class="string">&#x27;get&#x27;</span>, KEYS[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 商品库存不存在</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> stock <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 获取Redis库存和扣减的库存数量</span></span><br><span class="line"><span class="keyword">local</span> intStock = <span class="built_in">tonumber</span>(stock)</span><br><span class="line"><span class="keyword">local</span> paramStock = <span class="built_in">tonumber</span>(ARGV[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 参数不能小于或者等于0</span></span><br><span class="line"><span class="keyword">if</span> paramStock &lt;= <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-2</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 库存不足</span></span><br><span class="line"><span class="keyword">if</span> intStock &lt; paramStock <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-3</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 正常扣减库存</span></span><br><span class="line">redis.call(<span class="string">&#x27;decrby&#x27;</span>,KEYS[<span class="number">1</span>], paramStock)</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><h3 id="分库分表设计"><a href="#分库分表设计" class="headerlink" title="分库分表设计"></a>分库分表设计</h3><p>对商品库存进行分库分表设计时，一个很重要的设计就是对分片键的设计。所谓的分片键就是指定一个字段，通过这个字段将数据路由到对应的数据库和数据表中。在秒杀系统分片键的设计上，尽量将同一个用户的同一次事务中的相关操作路由到同一个数据库中，降低跨库操作的事务成本</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240615224649905.png" alt="image-20240615224649905"></p>
+<p>可以看到，对于商品商品库存来说，分库分表后，会分成一个商品库和两个库存库，其中商品库中存放的是秒杀商品信息，主要在用户抢购下单的业务场景中，以读操作为主。库存库中则存放的是库存分桶数据，每个库存库中存放了个分桶后的库存信息。这些分库分表的数据，大家可以根据实际重要灵活调整</p>
+<p>对于商品库存的分库分表来说，在实际场景下，可以根据商品 id 进行分片。也就是说，这里我们选择的分片键是商品的，同一个商品的库存会被路由到同一个数据库中，不会出现跨数据库的操作</p>
+<hr>
+<h3 id="分桶设计"><a href="#分桶设计" class="headerlink" title="分桶设计"></a>分桶设计</h3><p>在分库分表的基础上，为了进一步提升数据库的并发写性能，可以对商品的库存进行分桶存储。当运营人员在配置库存信息时，可以设置库存的总量和分桶数量，比如，要将 1500 个商品分配到 5 个分桶中，则每个分桶中会分得 300 个商品库存</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240616120057960.png" alt="image-20240616120057960"></p>
+<p>这样，每个分桶就能够承担一部分写压力，从而将商品的库存写压力分担出去，使得秒杀系统的库存数据库能够具备更高的并发写能力</p>
+<p>当用户抢购下单时，会根据分桶的数量对用户的 id 进行取模来定位对应的库存分桶，比如用户的 id 为 10001，目前库存的分桶数量设置为 5，则用户抢购下单时，会将当前用户抢购下单时，扣减商品库存的请求路由到分桶 1</p>
+<p>每个分桶中保存的是当前商品的一部分库存信息，那如何确定主商品的总库存</p>
+<ul>
+<li>第一个方案就是在多个分桶中选择一个主分桶用来存储商品的总库存</li>
+<li>第二个方案就是在商品数据表中存储商品的总库存和分桶数量，每个分桶中存储当前分桶的商品总库存和当前可用库存</li>
+</ul>
+<p>考虑到对商品库存的并发写操作，以及后续运营人员可能要调整商品的库存信息，采用方案二也就是在商品数据表中存储商品总库存和分桶数量，每个分桶中存储当前分桶的商品总库存和当前可用库存</p>
+<hr>
+<h3 id="分桶库存扣减策略"><a href="#分桶库存扣减策略" class="headerlink" title="分桶库存扣减策略"></a>分桶库存扣减策略</h3><p>id 为 10001 的用户抢购下单时会被路由到分桶 1，id 为 10002 的用户抢购下单时，会被路由到分桶 2。有可能存在的一种情况是:此时分桶 1 中没有库存了，分桶 2 中有库存，那对于 id 为 10001 的用户来说，该怎么处理呢。此时，可以考虑三种方案：</p>
+<ol>
+<li>设计库存分桶的争抢机制，类似 Java 中的 Fork&#x2F;Join 框架，如果当前分桶中的库存不足，则按照一定的规则争抢其他分桶中的库存</li>
+<li>每个分桶中预留一些冗余的库存，某个分桶库存不足，向其他分桶借用</li>
+<li>路由到不同库存分桶的用户看到的剩余库存量不同，如果某个分桶的库存不足，直接向路由到该分桶的用户提示库存不足</li>
+</ol>
+<p>方案 1 和方案 2 在实现上比较复杂，要充分考虑在高并发、大流量场景下如何实现库存的争抢机制，并要考虑不能出现库存超卖和少卖的问题，无疑是在系统的架构设计和实现层面增加了复杂度。在这种秒杀场景下，大可不必非要实现方案 1 和方案 2，换个角度思考，对于平台和商户来说，保证所有商品都能售罄，并保证数据一致。对于用户来说，完全必要保证库存数据的强一致性，只要保证用户能看到对应分桶中的库存就可以了，完全没必要保证用户看到库存数据的强一致性</p>
+<hr>
+<h2 id="防刷方案"><a href="#防刷方案" class="headerlink" title="防刷方案"></a>防刷方案</h2><h3 id="基于条件的防刷限流"><a href="#基于条件的防刷限流" class="headerlink" title="基于条件的防刷限流"></a>基于条件的防刷限流</h3><p>基于条件限流防刷。主要基于条件来实现接口的访问频率，例如请求中携带 Token 来进行校验，以此来达到接口防刷的目的，重点掌握基于条件防刷的实现原理与落地实现方案，并能够将其灵活立用到自身实际项目中</p>
+<hr>
+<h3 id="基于-Token-编排机制的防刷限流"><a href="#基于-Token-编排机制的防刷限流" class="headerlink" title="基于 Token 编排机制的防刷限流"></a>基于 Token 编排机制的防刷限流</h3><p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240616154518650.png" alt="image-20240616154518650"></p>
+<p>可以看到，访问下一个接口时，会在 header 中带上一个接口的 header 里返回的 x-st-token，下一个接口会对 x-sttoken 进行校验，如果校验成功，则执行后续业务逻辑，并返回结果。如果校验失败，则直接返回错误信息</p>
+<p>这里每一个接口的 header 里返回的 x-st-token 都不同，下一个接口对上一个接口返回的 x-st-token 进行严格校验，如果校验失败，直接返回错误信息，只有校验成功，才会执行接口业务逻辑，以此达到接口编排的效果</p>
+<hr>
+<h3 id="基于黑名单的防刷限流"><a href="#基于黑名单的防刷限流" class="headerlink" title="基于黑名单的防刷限流"></a>基于黑名单的防刷限流</h3><p>主要就是利用 Lua 共享缓存功能，去统计一段时间窗口内某个用户或者 IP 的请求频率，如果请求的频率达到设定的阈值，就可以认为这是刷单流量，将其放入黑名单。被放入黑名单的用户或者 IP 访问接口时，会被拦截</p>
+<p>黑名单功能可以被所有的接口共享，一旦某个用户或者 IP 被拉进黑名单，这个用户或者IP访问所有接口时，都会被拦截，这样，就能够将刷单流量挡在秒杀系统之外</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240616154815325.png" alt="image-20240616154815325"></p>
+<hr>
+<h2 id="风控系统"><a href="#风控系统" class="headerlink" title="风控系统"></a>风控系统</h2><p>一上来就设计和实现一个非常完善的风控系统是不可能的。在设计和实现风控规则时，我们要做到高度可扩展可编排和可配置，随时可以扩展其他的风控规则，也能够随时对这些风控规则进行编排，同时，能够随时配置风控的是具体规则</p>
+<p>当请求进入业务网关时，会触发风控规则，此时会执行风控链中的校验规则，只有经过所有过滤器链的校验之后，请求才会被业务网关路由到正确的服务上执行后续业务逻辑</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/image-20240616175748831.png" alt="image-20240616175748831"></p>
+<p>可以看到，用户在访问秒杀系统时，请求会首先到达流量网关，经过流量网关的流控、限流、防刷和黑白名单等校验，到达业务网关。在业务网关会经过多重风控校验和鉴权校验。而在多重风控校验设计中，会提供风控扩展点接口，后续要新增风控规则时，只需要新建一个扩展点实现类，实现风控扩展点接口即可，并且可以对这些具体的风控逻辑进行编排，使其按照自己想要的顺序执行完全做到可配置和可编排</p>
+<p>实现了风控可扩展点接口的具体实现类，就是风控要执行的具体逻辑了，在执行风控逻辑时，会以责任链模式以此执行风控可扩展接口实现类中的逻辑，例如:账户风控、IP 风控、设备风控、防攻击风控、自定义风控、其他风控等等。只有通过所有风控逻辑的校验之后，接下来就是对请求进行鉴权校验，通过鉴权校验的请求才会被业务网关路由到目标微服务执行具体业务逻辑</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Simon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2024/06/15/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/">http://yoursite.com/2024/06/15/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com" target="_blank">Simon 的书柜</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a></div><div class="post_share"><div class="social-share" data-image="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/preview.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/05/12/%E5%89%8D%E7%AB%AF/Anaular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/" title="Anaular 中文文档"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Angular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Anaular 中文文档</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/10/22/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/SkyWalking%20%E6%95%99%E7%A8%8B/" title="SkyWalking 教程"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%B8%AD%E9%97%B4%E4%BB%B6/SkyWalking%20%E6%95%99%E7%A8%8B/preview.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-22</div><div class="title">SkyWalking 教程</div></div></a></div><div><a href="/2022/03/18/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F/" title="如何设计一个秒杀系统"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F/image-20220522000516990.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-18</div><div class="title">如何设计一个秒杀系统</div></div></a></div><div><a href="/2022/03/28/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="电商系统常见问题"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/image-20220522000149668.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-28</div><div class="title">电商系统常见问题</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Simon</div><div class="author-info__description">攀登亦是风景</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.</span> <span class="toc-text">秒杀系统的架构与设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E4%B8%8E%E6%8C%91%E6%88%98"><span class="toc-number">1.1.</span> <span class="toc-text">目标与挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%9B%AE%E6%A0%87%E4%B8%8E%E6%8C%91%E6%88%98"><span class="toc-number">1.1.1.</span> <span class="toc-text">秒杀系统的目标与挑战</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E5%A4%A7%E6%B5%81%E9%87%8F%E7%9A%84%E5%BA%94%E5%AF%B9%E4%B9%8B%E9%81%93"><span class="toc-number">1.1.2.</span> <span class="toc-text">秒杀系统大流量的应对之道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E6%A2%B3%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">需求梳理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%9C%80%E6%B1%82"><span class="toc-number">1.2.1.</span> <span class="toc-text">系统需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86"><span class="toc-number">1.2.2.</span> <span class="toc-text">流程梳理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.3.</span> <span class="toc-text">架构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.3.1.</span> <span class="toc-text">系统架构设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.3.2.</span> <span class="toc-text">数据模型设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA"><span class="toc-number">1.4.</span> <span class="toc-text">项目搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.5.</span> <span class="toc-text">常规系统设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E9%83%A8%E5%88%86"><span class="toc-number">1.5.1.</span> <span class="toc-text">用户部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B4%BB%E5%8A%A8%E9%83%A8%E5%88%86"><span class="toc-number">1.5.2.</span> <span class="toc-text">活动部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%95%86%E5%93%81%E9%83%A8%E5%88%86"><span class="toc-number">1.5.3.</span> <span class="toc-text">商品部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A2%E5%8D%95%E9%83%A8%E5%88%86"><span class="toc-number">1.5.4.</span> <span class="toc-text">订单部分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E7%B3%BB%E7%BB%9F%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98"><span class="toc-number">1.6.</span> <span class="toc-text">常规系统经典问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E5%9E%8B%E7%BC%93%E5%AD%98"><span class="toc-number">1.7.</span> <span class="toc-text">混合型缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-number">1.7.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E7%BC%93%E5%AD%98%E6%B5%81%E7%A8%8B"><span class="toc-number">1.7.2.</span> <span class="toc-text">读取缓存流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B"><span class="toc-number">1.7.3.</span> <span class="toc-text">技术选型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E9%A2%86%E5%9F%9F%E4%BA%8B%E4%BB%B6"><span class="toc-number">1.8.</span> <span class="toc-text">缓存领域事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%93%E5%AD%98%E6%89%A3%E5%87%8F"><span class="toc-number">1.9.</span> <span class="toc-text">库存扣减</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%BA%93%E5%AD%98%E6%89%A3%E5%87%8F%E6%96%B9%E5%BC%8F"><span class="toc-number">1.9.1.</span> <span class="toc-text">常见的库存扣减方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A3%E5%87%8F%E5%BA%93%E5%AD%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.9.2.</span> <span class="toc-text">扣减库存的解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%9E%E7%8E%B0%E5%BA%93%E5%AD%98%E6%89%A3%E5%87%8F"><span class="toc-number">1.9.3.</span> <span class="toc-text">基于数据库实现库存扣减</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E7%8E%B0%E5%BA%93%E5%AD%98%E6%89%A3%E5%87%8F"><span class="toc-number">1.9.4.</span> <span class="toc-text">基于分布式锁实现库存扣减</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-Lua-%E8%84%9A%E6%9C%AC%E5%AE%9E%E7%8E%B0%E5%BA%93%E5%AD%98%E6%89%A3%E5%87%8F"><span class="toc-number">1.9.5.</span> <span class="toc-text">基于 Lua 脚本实现库存扣减</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8"><span class="toc-number">1.10.</span> <span class="toc-text">分库分表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.10.1.</span> <span class="toc-text">分库分表设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%A1%B6%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.10.2.</span> <span class="toc-text">分桶设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%A1%B6%E5%BA%93%E5%AD%98%E6%89%A3%E5%87%8F%E7%AD%96%E7%95%A5"><span class="toc-number">1.10.3.</span> <span class="toc-text">分桶库存扣减策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E5%88%B7%E6%96%B9%E6%A1%88"><span class="toc-number">1.11.</span> <span class="toc-text">防刷方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%9D%A1%E4%BB%B6%E7%9A%84%E9%98%B2%E5%88%B7%E9%99%90%E6%B5%81"><span class="toc-number">1.11.1.</span> <span class="toc-text">基于条件的防刷限流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-Token-%E7%BC%96%E6%8E%92%E6%9C%BA%E5%88%B6%E7%9A%84%E9%98%B2%E5%88%B7%E9%99%90%E6%B5%81"><span class="toc-number">1.11.2.</span> <span class="toc-text">基于 Token 编排机制的防刷限流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E9%BB%91%E5%90%8D%E5%8D%95%E7%9A%84%E9%98%B2%E5%88%B7%E9%99%90%E6%B5%81"><span class="toc-number">1.11.3.</span> <span class="toc-text">基于黑名单的防刷限流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A3%8E%E6%8E%A7%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.12.</span> <span class="toc-text">风控系统</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/06/15/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/" title="秒杀系统的架构与设计"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="秒杀系统的架构与设计"/></a><div class="content"><a class="title" href="/2024/06/15/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/" title="秒杀系统的架构与设计">秒杀系统的架构与设计</a><time datetime="2024-06-15T01:37:58.000Z" title="发表于 2024-06-15 09:37:58">2024-06-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/12/%E5%89%8D%E7%AB%AF/Anaular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/" title="Anaular 中文文档"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Angular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Anaular 中文文档"/></a><div class="content"><a class="title" href="/2024/05/12/%E5%89%8D%E7%AB%AF/Anaular%20%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3/" title="Anaular 中文文档">Anaular 中文文档</a><time datetime="2024-05-12T06:08:47.000Z" title="发表于 2024-05-12 14:08:47">2024-05-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/29/%E5%89%8D%E7%AB%AF/TypeScript%20%E6%95%99%E7%A8%8B/" title="TypeScript 教程"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/TypeScript%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TypeScript 教程"/></a><div class="content"><a class="title" href="/2024/03/29/%E5%89%8D%E7%AB%AF/TypeScript%20%E6%95%99%E7%A8%8B/" title="TypeScript 教程">TypeScript 教程</a><time datetime="2024-03-29T10:01:05.000Z" title="发表于 2024-03-29 18:01:05">2024-03-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/10/%E5%89%8D%E7%AB%AF/Sass%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Sass 预处理语言"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Sass%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Sass 预处理语言"/></a><div class="content"><a class="title" href="/2024/03/10/%E5%89%8D%E7%AB%AF/Sass%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Sass 预处理语言">Sass 预处理语言</a><time datetime="2024-03-10T12:36:21.000Z" title="发表于 2024-03-10 20:36:21">2024-03-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/09/%E5%89%8D%E7%AB%AF/Less%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Less 预处理语言"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Less%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Less 预处理语言"/></a><div class="content"><a class="title" href="/2024/01/09/%E5%89%8D%E7%AB%AF/Less%20%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" title="Less 预处理语言">Less 预处理语言</a><time datetime="2024-01-09T06:37:03.000Z" title="发表于 2024-01-09 14:37:03">2024-01-09</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Simon</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
