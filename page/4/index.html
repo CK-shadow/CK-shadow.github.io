@@ -5,19 +5,108 @@
 <meta property="og:site_name" content="Simon 的书柜">
 <meta property="og:description" content="攀登亦是风景">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp">
+<meta property="og:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp">
 <meta property="article:author" content="Simon">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/page/4/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+<meta name="twitter:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/page/4/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
   root: '/',
   algolia: undefined,
   localSearch: undefined,
   translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
   copy: {
     success: '复制成功',
-    error: '复制错误',
+    error: '复制失败',
     noSupport: '浏览器不支持'
   },
   relativeDate: {
@@ -33,14 +122,14 @@
     month: '个月前'
   },
   copyright: undefined,
-  lightbox: 'fancybox',
+  lightbox: 'null',
   Snackbar: undefined,
   infinitegrid: {
-    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
     buttonText: '加载更多'
   },
   isPhotoFigcaption: false,
-  islazyload: false,
+  islazyloadPlugin: false,
   isAnchor: false,
   percent: {
     toc: true,
@@ -49,268 +138,103 @@
   autoDarkmode: false
 }</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
   title: 'Simon 的书柜',
-  isPost: false,
-  isHome: true,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2026-07-03 23:00:17'
-}</script><script>(win=>{
-      win.saveToLocal = {
-        set: (key, value, ttl) => {
-          if (ttl === 0) return
-          const now = Date.now()
-          const expiry = now + ttl * 86400000
-          const item = {
-            value,
-            expiry
-          }
-          localStorage.setItem(key, JSON.stringify(item))
-        },
-      
-        get: key => {
-          const itemStr = localStorage.getItem(key)
-      
-          if (!itemStr) {
-            return undefined
-          }
-          const item = JSON.parse(itemStr)
-          const now = Date.now()
-      
-          if (now > item.expiry) {
-            localStorage.removeItem(key)
-            return undefined
-          }
-          return item.value
-        }
-      }
-    
-      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = url
-        script.async = true
-        script.onerror = reject
-        script.onload = script.onreadystatechange = function() {
-          const loadState = this.readyState
-          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-          script.onload = script.onreadystatechange = null
-          resolve()
-        }
-
-        Object.keys(attr).forEach(key => {
-          script.setAttribute(key, attr[key])
-        })
-
-        document.head.appendChild(script)
-      })
-    
-      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
-        const link = document.createElement('link')
-        link.rel = 'stylesheet'
-        link.href = url
-        if (id) link.id = id
-        link.onerror = reject
-        link.onload = link.onreadystatechange = function() {
-          const loadState = this.readyState
-          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-          link.onload = link.onreadystatechange = null
-          resolve()
-        }
-        document.head.appendChild(link)
-      })
-    
-      win.activateDarkMode = () => {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = () => {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
-    
-        if (t === 'dark') activateDarkMode()
-        else if (t === 'light') activateLightMode()
-      
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
-    
-      const detectApple = () => {
-        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-          document.documentElement.classList.add('apple')
-        }
-      }
-      detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">55</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">58</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/cat.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Simon 的书柜"><span class="site-name">Simon 的书柜</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Simon 的书柜</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2022/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="Redis 核心技术与实战：实战问题分析"><img class="post-bg" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 核心技术与实战：实战问题分析"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="Redis 核心技术与实战：实战问题分析">Redis 核心技术与实战：实战问题分析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-02-27T00:51:32.000Z" title="发表于 2022-02-27 08:51:32">2022-02-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/">数据库与存储</a></span></div><div class="content">String 类型的问题为什么 String 类型内存开销大比如，在我们想要保存一个 key 和 value 都是 10 位数的字符串时，按道理来说，两个值都用 8 字节的 Long 类型表示，一共 16 字节就够了，但实际上会耗费 64 字节，那么多用的内存空间都哪儿去了呢
-当保存 64 位有符号整数时，String 类型会把它保存为一个 8 字节的 Long 类型整数，这种保存方式通常也叫作 int 编码方式。但是，当你保存的数据中包含字符时，String 类型就会用简单动态字符串（Simple Dynamic String，SDS）结构体来保存
-
-
-buf：字节数组，保存实际数据。为了表示字节数组的结束，Redis 会自动在数组最后加一个“\0”，这就会额外占用 1 个字节的开销
-len：占 4 个字节，表示 buf 的已用长度
-alloc：也占个 4 字节，表示 buf 的实际分配长度，一般大于 len
-
-Redis 的数据类型有很多，而且，不同数据类型都有些相同的元数据要记录（比如最后一次访问的时间、被引用的次数等），所以，Redis 会用一个 RedisObject 结构体 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/02/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AB%98%E5%8F%AF%E7%94%A8/" title="Redis 核心技术与实战：核心原理与高可用"><img class="post-bg" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AB%98%E5%8F%AF%E7%94%A8/preview.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 核心技术与实战：核心原理与高可用"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/02/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AB%98%E5%8F%AF%E7%94%A8/" title="Redis 核心技术与实战：核心原理与高可用">Redis 核心技术与实战：核心原理与高可用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-02-06T08:57:01.000Z" title="发表于 2022-02-06 16:57:01">2022-02-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/">数据库与存储</a></span></div><div class="content">数据结构键值存储结构众所周知，Redis 是一个 key-value 数据库，为了实现从键到值的快速访问，Redis 使用了一个哈希表来保存所有键值对。这个哈希表的数据结构就类似于 Java 中的 HashMap，但是 value 并不保存实际数据，而是对应数据的指针
-
-当你往哈希表中写入更多数据时，哈希冲突是不可避免的问题。Redis 解决哈希冲突的方式，就是链式哈希。链式哈希也很容易理解，就是指同一个哈希桶中的多个元素用一个链表来保存，它们之间依次用指针连接，即 HashMap 在 JDK 8 之前的存储方式。这样，当链表的元素较多时，查询的时间复杂度就变成 O(n)。因此，Redis 也会对哈希表进行 rehash 操作
-为了使 rehash 操作更高效，Redis 默认使用了两个全局哈希表：哈希表 1 和哈希表 2。一开始，当你刚插入数据时，默认使用哈希表 1，此时的哈希表 2 并没有被分配空间。随着数据逐步增多，Redis 开始执行 rehash，这个过程分为三步：
-
-给哈希表 2 分配更大的空间，例如是当前哈希表 1 大小的两倍
-把哈希表 1 中的数据重新映射并拷贝到哈希表 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/12/21/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/Spring%20%E5%85%A8%E5%AE%B6%E6%A1%B6/%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E4%B9%8B%20OpenFeign/" title="远程调用之 OpenFeign"><img class="post-bg" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/Spring%20%E5%85%A8%E5%AE%B6%E6%A1%B6/%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E4%B9%8B%20OpenFeign/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="远程调用之 OpenFeign"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/12/21/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/Spring%20%E5%85%A8%E5%AE%B6%E6%A1%B6/%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E4%B9%8B%20OpenFeign/" title="远程调用之 OpenFeign">远程调用之 OpenFeign</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-12-21T06:01:31.000Z" title="发表于 2021-12-21 14:01:31">2021-12-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%A1%86%E6%9E%B6%E5%92%8C%E4%B8%AD%E9%97%B4%E4%BB%B6/">框架和中间件</a></span></div><div class="content">什么是 OpenFeignOpenFeign 是 Spring Cloud 的二级子项目，不同于 Feign，Feign 是 Netflix 公司下的，而 OpenFeign 是 Spring Cloud 下的
-OpenFeign 是一种声明式、模板化的 HTTP 客户端。声明式调用是指像调用本地方法一样调用远程方法，无需感知操作远程 HTTP 请求，
-
-使用案例快速开始
-引入依赖
-1234&lt;dependency&gt;    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;    &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;&lt;/dependency&gt;
-
-在启动类上添加注解
-123456789@EnableFeignClients@SpringBootApplicationpublic class SpringCloudDemoApplication &#123;    public static void main ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/12/10/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/Spring%20%E5%85%A8%E5%AE%B6%E6%A1%B6/Nacos%20%E5%92%8C%20Eureka%20%E7%9A%84%E5%AF%B9%E6%AF%94/" title="Nacos 和 Eureka 的对比"><img class="post-bg" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/Spring%20%E5%85%A8%E5%AE%B6%E6%A1%B6/Nacos%20%E5%92%8C%20Eureka%20%E7%9A%84%E5%AF%B9%E6%AF%94/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nacos 和 Eureka 的对比"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/12/10/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/Spring%20%E5%85%A8%E5%AE%B6%E6%A1%B6/Nacos%20%E5%92%8C%20Eureka%20%E7%9A%84%E5%AF%B9%E6%AF%94/" title="Nacos 和 Eureka 的对比">Nacos 和 Eureka 的对比</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-12-10T07:10:29.000Z" title="发表于 2021-12-10 15:10:29">2021-12-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%A1%86%E6%9E%B6%E5%92%8C%E4%B8%AD%E9%97%B4%E4%BB%B6/">框架和中间件</a></span></div><div class="content">功能对比
-
-
-
-Spring Cloud Nacos
-Spring Cloud Eureka
-
-
-
-CAP 模型
-支持 CP 和 AP 模型
-AP 模型
-
-
-客户端更新服务信息
-使用注册 + DNS-F + 健康检查模式，DNS-F 客户端使用监听模式，pull&#x2F;push 拉取更新信息
-客户端定时轮询服务端获取其它服务 IP 信息，相比之下服务端压力较大、延迟较大
-
-
-伸缩性
-使用 Raft 选举算法，性能、可用性、容错性较好，新加入节点无需与所有节点广播同步信息
-广播同步信息，集群机器数量较多后压力较大
-
-
-健康检查方式
-支持客户端&#x2F;服务端关闭健康检查，检查方式有 TCP、HTTP、SQL，支持自己构建健康检查器
-客户端向服务端发送 HTTP 心跳
-
-
-负载均衡
-支持
-支持
-
-
-手动上下线服务
-控制台页面或 API
-API
-
-
-跨中心同步
-支持
-不支持
-
-
-k8s 集成
-支持
-不支持
-
-
-分组
-可根据业务或环境进行分组管理
-不支持
-
-
-权重
-支持
-不支持
-
-
-对比结果：
-
-相比于 Nacos，Eureka 集成更为简单，只需代码配置即可，而 Nacos 需要单独安 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/11/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9A%E7%B4%A2%E5%BC%95%E4%B8%8E%E4%BC%98%E5%8C%96/" title="MongoDB实战：索引与优化"><img class="post-bg" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9A%E7%B4%A2%E5%BC%95%E4%B8%8E%E4%BC%98%E5%8C%96/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MongoDB实战：索引与优化"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/11/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9A%E7%B4%A2%E5%BC%95%E4%B8%8E%E4%BC%98%E5%8C%96/" title="MongoDB实战：索引与优化">MongoDB实战：索引与优化</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-11-28T23:59:16.000Z" title="发表于 2021-11-29 07:59:16">2021-11-29</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/">数据库与存储</a></span></div><div class="content">简介与 MySQL 类似，MongoDB 也可以设置索引，并且 MongoDB 索引的数据结构也是 B+ 树
-
-索引的分类
-按照索引包含的字段的数量，可分为单键索引和组合索引（也称为复合索引）
-按照字段的类型，可分住主键索引和非主键索引
-按照索引节点与物理数据的对应方式，可分为聚簇索引和非聚簇索引
-按照索引特性的不同，又可以分为唯一索引、稀疏索引、文本索引、地理空间索引等
-
-与大多数数据库一样，MongoDB 支持各种丰富的索引类型，包括单键索引、复合索引、唯一索引等一些常用结构。由于采用了灵活可变的文档类型，因此同样支持嵌套字段、数组的索引。通过建立合适的索引，可以极大提升数据的检索速度，在一些特殊的应用场景，MongoDB 还支持地理空间索引、文本检索索引、TTL 索引等
-
-索引操作创建索引
-1db.collection.createIndex(keys, options)
-
-
-
-语法中 Key 值为你要创建的索引字段，1 为指定按升序创建索引，如果你想按降序来创建索引指定为 -1 即可
-options 为可选参数，可选参数列表如下
-
-
-
-Parameter
-Type
-Descri ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/11/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9ASpringBoot%E6%95%B4%E5%90%88/" title="MongoDB实战：SpringBoot整合"><img class="post-bg" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9ASpringBoot%E6%95%B4%E5%90%88/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MongoDB实战：SpringBoot整合"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/11/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9ASpringBoot%E6%95%B4%E5%90%88/" title="MongoDB实战：SpringBoot整合">MongoDB实战：SpringBoot整合</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-11-16T01:49:19.000Z" title="发表于 2021-11-16 09:49:19">2021-11-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/">数据库与存储</a></span></div><div class="content">准备工作
-引入依赖
-1234&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-data-mongodb&lt;/artifactId&gt;&lt;/dependency&gt;
-
-添加配置文件
-1234spring:  data:    mongodb:      uri: mongodb://username:password@ip:port/database?authSource=admin
-
-注入操作对象
-12@Resoureprivate MongoTemplate mongoTemplate;
-
-创建实体类
-123456789101112131415161718@Data// 表示 user 集合中的一个文档@Document(&quot;user&quot;)public class User &#123;	// 指定文档 id	@Id	private Integer id;		// 指 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/10/24/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" title="MongoDB实战：基础入门"><img class="post-bg" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MongoDB实战：基础入门"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/10/24/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" title="MongoDB实战：基础入门">MongoDB实战：基础入门</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-10-24T05:49:22.000Z" title="发表于 2021-10-24 13:49:22">2021-10-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/">数据库与存储</a></span></div><div class="content">简介什么是 MongoDBMongoDB 是一个文档数据库（以 JSON 为数据模型），由 C++ 编写，旨在为 WEB 应用提供可扩展的高性能数据存储解决方案。文档指的是 “JSON Document”，并非一般我们理解的 Word、PDF 等文档
-MongoDB 是一个介于关系型数据库和非关系型数据库之间的产品，是非关系型数据库中功能最丰富、最像关系型数据库的。它支持的数据结构非常松散，数据格式是 BSON，一种类似于 JSON 的二进制存储格式，简称 Binary JSON，和 JSON 一样支持内嵌的文档对象和数组对象，因此可以存储比较复杂的数据结构
-MongoDB 最大的特点是它支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系型数据库单表查询的绝大部分功能，而且还支持对数据建立索引。原则上 MySQL 和 Oracle 能做的事，MongoDB 都能做，包括 ACID 事务
-MongoDB 在数据库最排名中排第 5，仅次于 Oracle、MySQL 等 RDBMS，在 NoSQL 数据库中排在首位，自诞生依赖，其项目应用广度、社区活跃度指数持续 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/09/30/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/Spring%20%E5%85%A8%E5%AE%B6%E6%A1%B6/%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E7%BB%84%E4%BB%B6%E4%B9%8B%20Sentinel/" title="流量控制组件之 Sentinel"><img class="post-bg" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/Spring%20%E5%85%A8%E5%AE%B6%E6%A1%B6/%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E7%BB%84%E4%BB%B6%E4%B9%8B%20Sentinel/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="流量控制组件之 Sentinel"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/09/30/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/Spring%20%E5%85%A8%E5%AE%B6%E6%A1%B6/%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E7%BB%84%E4%BB%B6%E4%B9%8B%20Sentinel/" title="流量控制组件之 Sentinel">流量控制组件之 Sentinel</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-09-30T05:18:43.000Z" title="发表于 2021-09-30 13:18:43">2021-09-30</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%A1%86%E6%9E%B6%E5%92%8C%E4%B8%AD%E9%97%B4%E4%BB%B6/">框架和中间件</a></span></div><div class="content">分布式系统遇到的问题随着服务的不断增多，服务之间的调用链路也变得更加的复杂。这时候，如果服务链路中的某一个节点出现问题，就会造成整条服务链路的不可用，进而影响其它的服务，比如流量激增造成的服务雪崩
-
-解决方案
-超时机制
-在不做任何处理的情况下，服务提供者不可用会导致消费者请求线程强制等待，而造成系统资源耗尽。加入超时机制， 一旦超时，就释放资源。由于释放资源速度较快，一定程度上可以抑制资源耗尽的问题
-
-限流
-避免流量激增造成服务负载过大
-
-隔离
-用户的请求将不再直接访问服务，而是通过线程池中的空闲线程来访问服务，如果线程池已满，则会进行降级处理，用户的请求不会被阻塞，至少可以看到一个执行结果（例如返回友好的提示信息），而不是无休止的等待或者看到系统崩溃
-信号隔离也可以用于限制并发访问，防止阻塞扩散, 与线程隔离最大不同在于执行依赖代码的线程依然是请求线程（该线程需要通过信号申请, 如果客户端是可信的且可以快速返回，可以使用信号隔离替换线程隔离,降低开销。信号量的大小可以动态调整, 线程池大小不可以
-
-服务熔断
-远程服务不稳定或网络抖动时暂时关闭，就叫服务熔断
-
-服务降级
-所谓降级，就是 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/09/04/Java/%E7%BB%8F%E9%AA%8C%E4%B8%8E%E6%8A%80%E5%B7%A7/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%20Java%20%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C/" title="阿里巴巴 Java 开发手册"><img class="post-bg" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/Java/%E7%BB%8F%E9%AA%8C%E4%B8%8E%E6%8A%80%E5%B7%A7/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%20Java%20%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="阿里巴巴 Java 开发手册"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/09/04/Java/%E7%BB%8F%E9%AA%8C%E4%B8%8E%E6%8A%80%E5%B7%A7/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%20Java%20%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C/" title="阿里巴巴 Java 开发手册">阿里巴巴 Java 开发手册</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-09-03T21:56:37.000Z" title="发表于 2021-09-04 05:56:37">2021-09-04</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">编程规约命名风格
-类名使用 UpperCamelCase 风格，但以下情形例外：DO &#x2F; BO &#x2F; DTO &#x2F; VO &#x2F; AO &#x2F; PO &#x2F; UID 等
-常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长
-抽象类命名使用 Abstract 或 Base 开头；异常类命名使用 Exception 结尾；测试类命名以它要测试的类的名称开始，以 Test 结尾
-POJO 类中的任何布尔类型的变量，都不要加 is 前缀，否则部分框架解析会引起序列化错误
-避免在子父类的成员变量之间、或者不同代码块的局部变量之间采用完全相同的命名， 使可理解性降低
-接口类中的方法和属性不要加任何修饰符号（public 也不要加），保持代码的简洁性，并加上有效的 Javadoc 注释。尽量不要在接口里定义变量，如果一定要定义变量，确定与接口方法相关，并且是整个应用的基础常量
-各层命名规约
-数据对象：xxxDO，xxx 即为数据表名
-数据传输对象：xxxDTO，xxx 为业务领域相关的名称
-展示对象：xxxVO，xxx 一般为网页名称
- ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/07/14/Java/%E7%BB%8F%E9%AA%8C%E4%B8%8E%E6%8A%80%E5%B7%A7/Java%20%E4%B8%9A%E5%8A%A1%E5%BC%80%E5%8F%91%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" title="Java 业务开发常见错误"><img class="post-bg" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/Java/%E7%BB%8F%E9%AA%8C%E4%B8%8E%E6%8A%80%E5%B7%A7/Java%20%E4%B8%9A%E5%8A%A1%E5%BC%80%E5%8F%91%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java 业务开发常见错误"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/07/14/Java/%E7%BB%8F%E9%AA%8C%E4%B8%8E%E6%8A%80%E5%B7%A7/Java%20%E4%B8%9A%E5%8A%A1%E5%BC%80%E5%8F%91%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" title="Java 业务开发常见错误">Java 业务开发常见错误</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-07-14T10:03:59.000Z" title="发表于 2021-07-14 18:03:59">2021-07-14</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">线程安全线程重用导致信息错乱有时我们会使用 ThreadLocal 来缓存一些信息。但是需要注意，程序运行在 Tomcat 中，执行程序的线程是 Tomcat 的工作线程，而 Tomcat 的工作线程是基于线程池的
-所以，线程池会重用固定的几个线程，一旦线程重用，那么很可能首次从 ThreadLocal 获取的值是之前请求遗留的值。这时，ThreadLocal 中的数据就是上一个请求缓存的数据
-因此，使用类似 ThreadLocal 工具来存放一些数据时，需要特别注意在代码运行完后，显式地去清空设置的数据
-123456789101112131415@GetMapping(&quot;right&quot;)public Map right(@RequestParam(&quot;userId&quot;) Integer userId) &#123;    String before  = Thread.currentThread().getName() + &quot;:&quot; + currentUser.get();    currentUser.set(userId);   ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/3/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#content-inner">5</a><a class="page-number" href="/page/6/#content-inner">6</a><a class="extend next" rel="next" href="/page/5/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E8%83%8C%E6%99%AF%E5%9B%BE/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Simon</div><div class="author-info__description">攀登亦是风景</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">55</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">58</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/05/21/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E7%BB%84%E4%BB%B6/Flink%20%E6%95%99%E7%A8%8B%EF%BC%9A%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" title="Flink 教程：核心原理与高级特性"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E7%BB%84%E4%BB%B6/Flink%20%E6%95%99%E7%A8%8B%EF%BC%9A%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flink 教程：核心原理与高级特性"/></a><div class="content"><a class="title" href="/2025/05/21/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E7%BB%84%E4%BB%B6/Flink%20%E6%95%99%E7%A8%8B%EF%BC%9A%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" title="Flink 教程：核心原理与高级特性">Flink 教程：核心原理与高级特性</a><time datetime="2025-05-21T04:55:26.000Z" title="发表于 2025-05-21 12:55:26">2025-05-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/09/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E7%BB%84%E4%BB%B6/Flink%20%E6%95%99%E7%A8%8B%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%20DataStream%20API/" title="Flink 教程：基础入门与 DataStream API"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E7%BB%84%E4%BB%B6/Flink%20%E6%95%99%E7%A8%8B%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%20DataStream%20API/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flink 教程：基础入门与 DataStream API"/></a><div class="content"><a class="title" href="/2025/04/09/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E7%BB%84%E4%BB%B6/Flink%20%E6%95%99%E7%A8%8B%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E4%B8%8E%20DataStream%20API/" title="Flink 教程：基础入门与 DataStream API">Flink 教程：基础入门与 DataStream API</a><time datetime="2025-04-09T10:16:05.000Z" title="发表于 2025-04-09 18:16:05">2025-04-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/27/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20Canal/" title="数据同步工具 Canal"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20Canal/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据同步工具 Canal"/></a><div class="content"><a class="title" href="/2025/02/27/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20Canal/" title="数据同步工具 Canal">数据同步工具 Canal</a><time datetime="2025-02-26T16:01:53.000Z" title="发表于 2025-02-27 00:01:53">2025-02-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/09/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20DataX/" title="数据同步工具 DataX"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20DataX/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据同步工具 DataX"/></a><div class="content"><a class="title" href="/2025/02/09/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20DataX/" title="数据同步工具 DataX">数据同步工具 DataX</a><time datetime="2025-02-09T05:56:36.000Z" title="发表于 2025-02-09 13:56:36">2025-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/21/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/ES6%20%E6%95%99%E7%A8%8B/" title="ES6 教程"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/ES6%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6 教程"/></a><div class="content"><a class="title" href="/2025/01/21/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/ES6%20%E6%95%99%E7%A8%8B/" title="ES6 教程">ES6 教程</a><time datetime="2025-01-21T10:29:42.000Z" title="发表于 2025-01-21 18:29:42">2025-01-21</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+  pageType: 'home'
+}</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/cat.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Simon 的书柜</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">Simon 的书柜</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/2022/12/03/Java/%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E7%BB%84%E4%BB%B6%E4%B9%8B%20Sentinel/" title="流量控制组件之 Sentinel"><img class="post-bg" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E7%BB%84%E4%BB%B6%E4%B9%8BSentinel/pexels-ciboulette-574024.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="流量控制组件之 Sentinel"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/12/03/Java/%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6%E7%BB%84%E4%BB%B6%E4%B9%8B%20Sentinel/" title="流量控制组件之 Sentinel">流量控制组件之 Sentinel</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-12-03T05:31:52.000Z" title="发表于 2022-12-03 13:31:52">2022-12-03</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">流量控制组件之 Sentinel分布式系统遇到的问题随着服务的不断增多，服务之间的调用链路也变得更加的复杂。这时候，如果服务链路中的某一个节点出现问题，就会造成整条服务链路的不可用，进而影响其它的服务，比如流量激增造成的服务雪崩  解决方案 超时机制 在不做任何处理的情况下，服务提供者不可用会导致消费者请求线程强制等待，而造成系统资源耗尽。加入超时机制， 一旦超时，就释放资源。由于释放资源速度较快，一定程度上可以抑制资源耗尽的问题  限流 避免流量激增造成服务负载过大  隔离 用户的请求将不再直接访问服务，而是通过线程池中的空闲线程来访问服务，如果线程池已满，则会进行降级处理，用户的请求不会被阻塞，至少可以看到一个执行结果（例如返回友好的提示信息），而不是无休止的等待或者看到系统崩溃 信号隔离也可以用于限制并发访问，防止阻塞扩散, 与线程隔离最大不同在于执行依赖代码的线程依然是请求线程（该线程需要通过信号申请, 如果客户端是可信的且可以快速返回，可以使用信号隔离替换线程隔离,降低开销。信号量的大小可以动态调整, 线程池大小不可以  服务熔断 远程服务不稳定或网络抖动时暂时关闭，就...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/11/28/Java/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%20Java%20%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C/" title="阿里巴巴 Java 开发手册"><img class="post-bg" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%20Java%20%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C/pexels-kushal-kumar-13079565.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="阿里巴巴 Java 开发手册"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/11/28/Java/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%20Java%20%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C/" title="阿里巴巴 Java 开发手册">阿里巴巴 Java 开发手册</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-11-28T15:41:02.000Z" title="发表于 2022-11-28 23:41:02">2022-11-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">阿里巴巴 Java 开发手册编程规约命名风格 类名使用 UpperCamelCase 风格，但以下情形例外：DO &#x2F; BO &#x2F; DTO &#x2F; VO &#x2F; AO &#x2F; PO &#x2F; UID 等 常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长 抽象类命名使用 Abstract 或 Base 开头；异常类命名使用 Exception 结尾；测试类 命名以它要测试的类的名称开始，以 Test 结尾 POJO 类中的任何布尔类型的变量，都不要加 is 前缀，否则部分框架解析会引起序列化错误 避免在子父类的成员变量之间、或者不同代码块的局部变量之间采用完全相同的命名， 使可理解性降低 接口类中的方法和属性不要加任何修饰符号（public 也不要加），保持代码的简洁性，并加上有效的 Javadoc 注释。尽量不要在接口里定义变量，如果一定要定义变量，确定 与接口方法相关，并且是整个应用的基础常量 各层命名规约 数据对象：xxxDO，xxx 即为数据表名 数据传输对象：xxxDTO，xxx 为业务领域相关的名称 展示对象...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/10/22/Java/Java%20%E4%B8%9A%E5%8A%A1%E5%BC%80%E5%8F%91%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" title="Java 业务开发常见错误"><img class="post-bg" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%20%E4%B8%9A%E5%8A%A1%E5%BC%80%E5%8F%91%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/pexels-kyle-karbowski-9700586.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java 业务开发常见错误"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/10/22/Java/Java%20%E4%B8%9A%E5%8A%A1%E5%BC%80%E5%8F%91%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" title="Java 业务开发常见错误">Java 业务开发常见错误</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-10-22T11:23:32.000Z" title="发表于 2022-10-22 19:23:32">2022-10-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">Java 业务开发常见错误线程安全线程重用导致信息错乱有时我们会使用 ThreadLocal 来缓存一些信息。但是需要注意，程序运行在 Tomcat 中，执行程序的线程是 Tomcat 的工作线程，而 Tomcat 的工作线程是基于线程池的 所以，线程池会重用固定的几个线程，一旦线程重用，那么很可能首次从 ThreadLocal 获取的值是之前请求遗留的值。这时，ThreadLocal 中的数据就是上一个请求缓存的数据 因此，使用类似 ThreadLocal 工具来存放一些数据时，需要特别注意在代码运行完后，显式地去清空设置的数据 123456789101112131415@GetMapping(&quot;right&quot;)public Map right(@RequestParam(&quot;userId&quot;) Integer userId) &#123;    String before  = Thread.currentThread().getName() + &quot;:&quot; + currentUser.get();    currentUse...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/09/18/Java/%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E4%B9%8B%20WebClient/" title="远程调用之 WebClient"><img class="post-bg" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E4%B9%8B%20WebClient/pexels-miguel-%C3%A1-padri%C3%B1%C3%A1n-1591060.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="远程调用之 WebClient"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/09/18/Java/%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E4%B9%8B%20WebClient/" title="远程调用之 WebClient">远程调用之 WebClient</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-18T06:47:33.000Z" title="发表于 2022-09-18 14:47:33">2022-09-18</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">远程调用之 WebClient什么是 WebClient简介在 Spring 5 之前，如果我们想要调用其他系统提供的 HTTP 服务，我们通常可以使用 Spring 提供的 RestTemplate 来访问 RestTemplate 用法很简单，但是它的不足之处在于它的请求是同步阻塞模式，因此存在一定性能瓶颈。当然，如果想要使用异步方式请求，也可以使用 AsyncRestTemplate 从 Spring 5 开始，Spring 中全面引入了 Reactive 响应式编程，WebClient 就属于 Spring WebFlux 的一部分。WebClient 的请求模式属于异步非阻塞、反应式的，能够以少量固定的线程处理高并发的 HTTP 请求。它对同步和异步以及流方案都有很好的支持 因此，从 Spring 5 开始，HTTP 服务之间的通信我们就可以考虑使用 WebClient 来取代之前的 RestTemplate  WebClient 与 RestTemplate 比较WebClient 是一个功能完善的 Http 请求客户端，与 RestTemplate 相比，WebCl...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/09/18/Java/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BC%98%E9%9B%85%E7%9A%84%20Restful%20Response/" title="如何构建一个优雅的 Restful Response"><img class="post-bg" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BC%98%E9%9B%85%E7%9A%84%20Restful%20Response/F100009910.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何构建一个优雅的 Restful Response"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/09/18/Java/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BC%98%E9%9B%85%E7%9A%84%20Restful%20Response/" title="如何构建一个优雅的 Restful Response">如何构建一个优雅的 Restful Response</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-18T06:37:32.000Z" title="发表于 2022-09-18 14:37:32">2022-09-18</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a></span></div><div class="content">如何构建一个优雅的 Restful ResponseJSON Response现在的代码开发中，大都是使用 JSON 来返回响应数据，要实现这个，只需要添加 @RestController 即可 12345678910111213@RestController@RequestMapping(&quot;/product&quot;)public class ProductInfoController &#123;    @Autowired    ProductInfoService productInfoService;    @GetMapping(&quot;/findById&quot;)    public ProductInfoVo findById(Integer id) &#123;        ...    &#125;&#125;     统一状态码返回格式在添加了 @RestController 注解之后，我们返回的响应数据是这样的 1234567&#123;  &quot;productId&quot;: 1,  &quot;productName&qu...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/09/17/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B9%8B%20Yarn%20(%E5%9B%9B)/" title="大数据之 Yarn (四)"><img class="post-bg" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E8%AF%BE%E7%A8%8B%E4%B9%8BYarn%28%E5%9B%9B%29/pexels-lukas-669612.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="大数据之 Yarn (四)"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/09/17/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B9%8B%20Yarn%20(%E5%9B%9B)/" title="大数据之 Yarn (四)">大数据之 Yarn (四)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-17T12:31:32.000Z" title="发表于 2022-09-17 20:31:32">2022-09-17</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="content">大数据之 Yarn(四)简介Yarn 是一个资源调度平台，负责为运算程序提供服务器运算资源，相当于一个分布式的操作系统平台，而 MapReduce 等运算程序则相当于运算在操作系统上的程序  Yarn 资源调度器Yarn 基础架构 Yarn 主要是由 ResourceManager、NodeManager、ApplicationMaster 和 Container 等组件组成 ResourceManager 一个集群只有一个 RM，它是 YARN 的总指挥，负责协调集群上的计算资源，它有以下两个组件：  ApplicationsManager：这个不是 ApplicationMaster，注意区分。它会接受 Job 的提交请求，调度 Container 用于启动 ApplicationMaster，以及负责 ApplicationMaster 的失败重启 Scheduler：调度器纯粹为应用程序分配资源，它不会监控应用的状态，这里的调度就是基于 Container 这个抽象的资源容器，包含内存、CPU、磁盘、网络等  NodeManager 一个集群中有多个 NodeManage...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/09/17/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B9%8B%20MapReduce%20(%E4%B8%89)/" title="大数据之 MapReduce (三)"><img class="post-bg" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E8%AF%BE%E7%A8%8B%E4%B9%8BMapReduce%28%E4%B8%89%29/F100031816.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="大数据之 MapReduce (三)"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/09/17/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B9%8B%20MapReduce%20(%E4%B8%89)/" title="大数据之 MapReduce (三)">大数据之 MapReduce (三)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-09-17T11:16:08.000Z" title="发表于 2022-09-17 19:16:08">2022-09-17</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="content">大数据课程之 MapReduce (三)概述定义MapReduce 是一个分布式运算的编程框架，是用户开发“基于 Hadoop 的数据分析应用”的核心框架 MapReduce 的核心功能是将用户编写的业务逻辑代码和自带默认组件整合成一个完整的分布式运算程序，并发运行在一个 Hadoop 集群上  优缺点优点  易于编程，用户只关心业务逻辑 良好的扩展性，可动态增加服务器 高容错性，任何一台机器挂掉，可以将任务转移到其它节点 适合海量数据计算  缺点  不擅长实时计算 不擅长流式计算 不擅长 DAG 有向无环图计算   核心思想 分布式的运算程序往往需要分成至少 2 个阶段，第一个阶段的  MapTask 并发实例，完全并行运行，互不相干，第二个阶段的 ReduceTask 并发实例互不相干，但是他们的数据依赖于上一个阶段 的所有 MapTask 并发实例的输出 MapReduce 编程模型只能包含一个 Map 阶段和一个 Reduce 阶段，如果用户的业 务逻辑非常复杂，那就只能多个 MapReduce 程序，串行运行  MapReduce 进程一个完整的 MapReduce 程...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/05/22/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B9%8B%20HDFS%20(%E4%BA%8C)/" title="大数据之 HDFS (二)"><img class="post-bg" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E8%AF%BE%E7%A8%8B%E4%B9%8BHDFS%28%E4%BA%8C%29/image-20220522003223149.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="大数据之 HDFS (二)"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/05/22/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B9%8B%20HDFS%20(%E4%BA%8C)/" title="大数据之 HDFS (二)">大数据之 HDFS (二)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-05-21T16:35:53.000Z" title="发表于 2022-05-22 00:35:53">2022-05-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="content">大数据之 HDFS (二)概述产生背景和定义随着数据量不断增加，单台服务器无法存储所有的数据，那么就需要分配到多台服务器中，但不方便管理和维护，因此需要一种系统来管理多台机器上的文件。文件存储在不同的机器之上，但是对于使用者来说，与操作一台服务器并没有太大差别，只需通过一行命令就可以取到想要的数据。这就是分布式文件系统，HDFS 是分布式文件系统的一种 HDFS 适合一次写入，多次读出的场景，一个文件经过创建、写入和关闭之后就不会再修改  优缺点 优点 高容错性，数据自动保存多个副本，某一副本丢失后会自动恢复 适合处理大规模数据，能够处理 PB 级别规模的数据和百万规模以上的文件数量 可构建在廉价的机器上，通过多副本机制提高可靠性   缺点 不适合低延时访问 无法高效的对大量小文件进行存储，大量小文件不仅会占用 NameNode 的内存，而且小文件存储的寻址时间会超过读取时间，违背了 HDFS 的设计目标 不支持文件并发写入和随机修改，只支持数据追加     组成  NameNode 即 Master，实际的管理者 管理 HDFS 的名称空间 配置副本策略 管理数据块映射信息  ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2022/05/22/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B9%8B%20Hadoop%20%E7%AE%80%E4%BB%8B(%E4%B8%80)/" title="大数据之 Hadoop 简介(一)"><img class="post-bg" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E8%AF%BE%E7%A8%8B%E4%B9%8BHadoop%E7%AE%80%E4%BB%8B%28%E4%B8%80%29/image-20220522001934300.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="大数据之 Hadoop 简介(一)"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/05/22/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B9%8B%20Hadoop%20%E7%AE%80%E4%BB%8B(%E4%B8%80)/" title="大数据之 Hadoop 简介(一)">大数据之 Hadoop 简介(一)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-05-21T16:26:38.000Z" title="发表于 2022-05-22 00:26:38">2022-05-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="content">大数据课程之 Hadoop 简介(一)大数据的前世今生Google 在 2004 年前后发表的三篇论文，也就是我们经常听到的“三驾马车”，分别是分布式文件系统 GFS、大数据分布式计算框架 MapReduce 和 NoSQL 数据库系统 BigTable 当时的天才程序员，也是 Lucene 开源项目的创始人 Doug Cutting 正在开发开源搜索引擎 Nutch，阅读了 Google 的论文后，他非常兴奋，紧接着就根据论文原理初步实现了类似 GFS 和 MapReduce 的功能。Doug Cutting 将这些大数据相关的功能从 Nutch 中分离了出来，然后启动了一个独立的项目专门开发维护大数据技术，这就是后来赫赫有名的 Hadoop，主要包括 Hadoop 分布式文件系统 HDFS 和大数据计算引擎 MapReduce Hadoop 发布之后，Yahoo 很快就用了起来。这个时候，Yahoo 的一些人觉得用  MapReduce 进行大数据编程太麻烦了，于是便开发了 Pig。Pig 是一种脚本语言，使用类 SQL 的语法，开发者可以用 Pig  脚本描述要对大数据集上...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2022/03/28/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="电商系统常见问题"><img class="post-bg" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84/%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/image-20220522000149668.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="电商系统常见问题"></a></div><div class="recent-post-info"><a class="article-title" href="/2022/03/28/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="电商系统常见问题">电商系统常见问题</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2022-03-28T14:37:38.000Z" title="发表于 2022-03-28 22:37:38">2022-03-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a></span></div><div class="content">电商系统常见问题如何避免重复下单无论是用户重复点击、网络重传还是一些框架的自动重试功能，都会导致用户重复下单。而要避免用户重复下单，最简单的方式就是保证订单服务接口的幂等性，即在下单的时候传入一个订单号，如果这个订单号已经存在的话，就返回当前订单信息、返回异常信息或者不做处理  电商系统如何存储数据在数据量较少的时候，直接使用传统数据库存储即可，但是数据量变大，数据信息变得复杂的时候，就需要针对不同的数据特点采取不同的存储方式  商品的基本信息存储在传统数据库即可，对于一些读多写少的数据，还可以加上缓存 对于字段不固定的数据，比如商品参数，可以使用 MongoDB 来存储 图片和视频存储在对象存储中，数据库中只用存储对应的路径或 id 即可 将变动较小的页面静态化，并使用 CDN 加速   购物车数据应该怎么存储一个常见的购物车表一般主要有 4 个字段，购物车 id，商品 id，商品数量，是否选中 如果字段比较固定的话，可以将购物车信息存在 Redis 中，牺牲一点安全性带来性能的大幅提升（Redis 数据可能会丢失）。但是考虑到业务的变化，以及 Redis 不支持事务等操作，而...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/3/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#content-inner">5</a><a class="extend next" rel="next" href="/page/5/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Simon</div><div class="author-info-description">攀登亦是风景</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/%E5%89%8D%E7%AB%AF/ES6%20%E6%95%99%E7%A8%8B/" title="ES6 教程"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/ES6%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6 教程"/></a><div class="content"><a class="title" href="/2025/03/13/%E5%89%8D%E7%AB%AF/ES6%20%E6%95%99%E7%A8%8B/" title="ES6 教程">ES6 教程</a><time datetime="2025-03-13T08:17:11.000Z" title="发表于 2025-03-13 16:17:11">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/01/%E5%89%8D%E7%AB%AF/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" title="JQuery 从入门到精通"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JQuery 从入门到精通"/></a><div class="content"><a class="title" href="/2025/01/01/%E5%89%8D%E7%AB%AF/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" title="JQuery 从入门到精通">JQuery 从入门到精通</a><time datetime="2024-12-31T16:00:01.000Z" title="发表于 2025-01-01 00:00:01">2025-01-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/12/09/%E4%BA%91%E5%8E%9F%E7%94%9F/K8S%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/" title="k8s 从入门到实践"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="k8s 从入门到实践"/></a><div class="content"><a class="title" href="/2024/12/09/%E4%BA%91%E5%8E%9F%E7%94%9F/K8S%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/" title="k8s 从入门到实践">k8s 从入门到实践</a><time datetime="2024-12-09T08:53:05.000Z" title="发表于 2024-12-09 16:53:05">2024-12-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/31/Java/Lua%20%E8%84%9A%E6%9C%AC%E5%AE%9E%E6%88%98/" title="Lua 脚本实战"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Lua%20%E8%84%9A%E6%9C%AC%E5%AE%9E%E6%88%98/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lua 脚本实战"/></a><div class="content"><a class="title" href="/2024/10/31/Java/Lua%20%E8%84%9A%E6%9C%AC%E5%AE%9E%E6%88%98/" title="Lua 脚本实战">Lua 脚本实战</a><time datetime="2024-10-31T00:41:19.000Z" title="发表于 2024-10-31 08:41:19">2024-10-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/02/%E5%89%8D%E7%AB%AF/Node.js%20%E6%95%99%E7%A8%8B/" title="Node.js 教程"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Node.js%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Node.js 教程"/></a><div class="content"><a class="title" href="/2024/10/02/%E5%89%8D%E7%AB%AF/Node.js%20%E6%95%99%E7%A8%8B/" title="Node.js 教程">Node.js 教程</a><time datetime="2024-10-02T02:06:08.000Z" title="发表于 2024-10-02 10:06:08">2024-10-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
             <i class="fas fa-folder-open"></i>
             <span>分类</span>
-            <a class="card-more-btn" href="/categories/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a>
-            </div>
-            <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Java/"><span class="card-category-list-name">Java</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/"><span class="card-category-list-name">云原生与运维</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/"><span class="card-category-list-name">前端</span><span class="card-category-list-count">9</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><span class="card-category-list-name">大数据</span><span class="card-category-list-count">8</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/"><span class="card-category-list-name">工具</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/"><span class="card-category-list-name">数据库与存储</span><span class="card-category-list-count">9</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%A1%86%E6%9E%B6%E5%92%8C%E4%B8%AD%E9%97%B4%E4%BB%B6/"><span class="card-category-list-name">框架和中间件</span><span class="card-category-list-count">9</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/"><span class="card-category-list-name">系统架构与设计</span><span class="card-category-list-count">4</span></a></li>
-            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/" style="font-size: 1.2em; color: #999da3">高可用</a> <a href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/" style="font-size: 1.2em; color: #999da3">高并发</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" style="font-size: 1.3em; color: #99a1ac">计算机基础</a> <a href="/tags/MongoDB/" style="font-size: 1.2em; color: #999da3">MongoDB</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.15em; color: #999b9e">工具</a> <a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%BC%95%E6%93%8E/" style="font-size: 1.1em; color: #999">工作流引擎</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" style="font-size: 1.15em; color: #999b9e">前端框架</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 1.1em; color: #999">博客</a> <a href="/tags/Sentinel/" style="font-size: 1.1em; color: #999">Sentinel</a> <a href="/tags/ElasticSearch/" style="font-size: 1.1em; color: #999">ElasticSearch</a> <a href="/tags/Flink/" style="font-size: 1.15em; color: #999b9e">Flink</a> <a href="/tags/Hadoop/" style="font-size: 1.35em; color: #99a3b1">Hadoop</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%BE%E8%AE%A1/" style="font-size: 1.25em; color: #999fa7">系统架构与设计</a> <a href="/tags/%E6%A1%86%E6%9E%B6%E5%92%8C%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 1.5em; color: #99a9bf">框架和中间件</a> <a href="/tags/%E9%93%BE%E8%A1%A8/" style="font-size: 1.1em; color: #999">链表</a> <a href="/tags/Canal/" style="font-size: 1.1em; color: #999">Canal</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 1.1em; color: #999">消息队列</a> <a href="/tags/Angular/" style="font-size: 1.1em; color: #999">Angular</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 1.5em; color: #99a9bf">前端</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 1.15em; color: #999b9e">笔记</a> <a href="/tags/Redis/" style="font-size: 1.2em; color: #999da3">Redis</a> <a href="/tags/%E9%98%9F%E5%88%97/" style="font-size: 1.1em; color: #999">队列</a> <a href="/tags/Yarn/" style="font-size: 1.1em; color: #999">Yarn</a> <a href="/tags/JVM/" style="font-size: 1.1em; color: #999">JVM</a> <a href="/tags/ES6/" style="font-size: 1.1em; color: #999">ES6</a> <a href="/tags/%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8/" style="font-size: 1.15em; color: #999b9e">远程调用</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/" style="font-size: 1.4em; color: #99a5b6">前端基础</a> <a href="/tags/JQuery/" style="font-size: 1.1em; color: #999">JQuery</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 1.45em; color: #99a7ba">大数据</a> <a href="/tags/Spring/" style="font-size: 1.35em; color: #99a3b1">Spring</a> <a href="/tags/Docker/" style="font-size: 1.1em; color: #999">Docker</a> <a href="/tags/markdown/" style="font-size: 1.1em; color: #999">markdown</a> <a href="/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/" style="font-size: 1.1em; color: #999">容器化</a> <a href="/tags/Lua/" style="font-size: 1.1em; color: #999">Lua</a> <a href="/tags/%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/" style="font-size: 1.1em; color: #999">查找算法</a> <a href="/tags/K8S/" style="font-size: 1.1em; color: #999">K8S</a> <a href="/tags/MySQL/" style="font-size: 1.15em; color: #999b9e">MySQL</a> <a href="/tags/HDFS/" style="font-size: 1.1em; color: #999">HDFS</a> <a href="/tags/%E6%9E%B6%E6%9E%84%E5%AE%9E%E6%88%98/" style="font-size: 1.2em; color: #999da3">架构实战</a> <a href="/tags/%E6%A0%88/" style="font-size: 1.1em; color: #999">栈</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/05/"><span class="card-archive-list-date">五月 2025</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/04/"><span class="card-archive-list-date">四月 2025</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/02/"><span class="card-archive-list-date">二月 2025</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/01/"><span class="card-archive-list-date">一月 2025</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/12/"><span class="card-archive-list-date">十二月 2024</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/10/"><span class="card-archive-list-date">十月 2024</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/09/"><span class="card-archive-list-date">九月 2024</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">55</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-07-03T15:00:17.138Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By Simon</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
-  init: (str) => {
+            
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Java/"><span class="card-category-list-name">Java</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/"><span class="card-category-list-name">云原生</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/"><span class="card-category-list-name">前端</span><span class="card-category-list-count">9</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><span class="card-category-list-name">大数据</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="card-category-list-name">数据库</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/"><span class="card-category-list-name">杂项</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/"><span class="card-category-list-name">系统架构</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"><span class="card-category-list-name">计算机基础</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/ElasticSearch/" style="font-size: 1.1em; color: #999">ElasticSearch</a> <a href="/tags/Sass/" style="font-size: 1.1em; color: #999">Sass</a> <a href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/" style="font-size: 1.18em; color: #999ca1">云原生</a> <a href="/tags/MQ/" style="font-size: 1.1em; color: #999">MQ</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 1.1em; color: #999">虚拟机</a> <a href="/tags/Java/" style="font-size: 1.5em; color: #99a9bf">Java</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 1.34em; color: #99a3b0">大数据</a> <a href="/tags/Yarn/" style="font-size: 1.1em; color: #999">Yarn</a> <a href="/tags/TypeScript/" style="font-size: 1.1em; color: #999">TypeScript</a> <a href="/tags/HDFS/" style="font-size: 1.1em; color: #999">HDFS</a> <a href="/tags/JDBC/" style="font-size: 1.1em; color: #999">JDBC</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 1.34em; color: #99a3b0">数据库</a> <a href="/tags/Angular/" style="font-size: 1.1em; color: #999">Angular</a> <a href="/tags/MapReduce/" style="font-size: 1.1em; color: #999">MapReduce</a> <a href="/tags/Butterfly/" style="font-size: 1.1em; color: #999">Butterfly</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 1.1em; color: #999">博客</a> <a href="/tags/Hadoop/" style="font-size: 1.1em; color: #999">Hadoop</a> <a href="/tags/BPM/" style="font-size: 1.1em; color: #999">BPM</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 1.1em; color: #999">数据结构与算法</a> <a href="/tags/%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%AD%E8%A8%80/" style="font-size: 1.18em; color: #999ca1">预处理语言</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" style="font-size: 1.1em; color: #999">计算机基础</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 1.26em; color: #999fa8">微服务</a> <a href="/tags/MongoDB/" style="font-size: 1.1em; color: #999">MongoDB</a> <a href="/tags/HTML/" style="font-size: 1.1em; color: #999">HTML</a> <a href="/tags/MySQL/" style="font-size: 1.1em; color: #999">MySQL</a> <a href="/tags/%E6%9D%82%E9%A1%B9/" style="font-size: 1.1em; color: #999">杂项</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 1.42em; color: #99a6b7">前端</a> <a href="/tags/Less/" style="font-size: 1.1em; color: #999">Less</a> <a href="/tags/CSS/" style="font-size: 1.1em; color: #999">CSS</a> <a href="/tags/%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA/" style="font-size: 1.1em; color: #999">链路追踪</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" style="font-size: 1.34em; color: #99a3b0">系统架构</a> <a href="/tags/Redis/" style="font-size: 1.1em; color: #999">Redis</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      <a class="card-more-btn" href="/archives/"
+            title="查看更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/03/">
+            <span class="card-archive-list-date">
+              三月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/01/">
+            <span class="card-archive-list-date">
+              一月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/12/">
+            <span class="card-archive-list-date">
+              十二月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/10/">
+            <span class="card-archive-list-date">
+              十月 2024
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/09/">
+            <span class="card-archive-list-date">
+              九月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/08/">
+            <span class="card-archive-list-date">
+              八月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/07/">
+            <span class="card-archive-list-date">
+              七月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/06/">
+            <span class="card-archive-list-date">
+              六月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">43</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-07-03T16:02:35.801Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Simon</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: str => {
     window.typed = new Typed('#subtitle', Object.assign({
       strings: str,
       startDelay: 300,
@@ -319,23 +243,40 @@ POJO 类中的任何布尔类型的变量，都不要加 is 前缀，否则部�
       backSpeed: 50,
     }, null))
   },
-  run: (subtitleType) => {
+  run: subtitleType => {
     if (true) {
       if (typeof Typed === 'function') {
         subtitleType()
       } else {
-        getScript('https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.min.js').then(subtitleType)
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js@3.0.0/dist/typed.umd.min.js').then(subtitleType)
       }
     } else {
       subtitleType()
     }
+  },
+  processSubtitle: (content, extraContents = []) => {
+    if (true) {
+      const sub = ["I may not become a great person","but I can be someone with excellent study habits"].slice()
+
+      if (extraContents.length > 0) {
+        sub.unshift(...extraContents)
+      }
+
+      if (typeof content === 'string') {
+        sub.unshift(content)
+      } else if (Array.isArray(content)) {
+        sub.unshift(...content)
+      }
+
+      sub.length > 0 && typedJSFn.init(sub)
+    } else {
+      document.getElementById('subtitle').textContent = typeof content === 'string' ? content :
+        (Array.isArray(content) && content.length > 0 ? content[0] : '')
+    }
   }
 }
+btf.addGlobalFn('pjaxSendOnce', () => { typed.destroy() }, 'typedDestroy')
 </script><script>function subtitleType () {
-  if (true) {
-    typedJSFn.init(["I may not become a great person","but I can be someone with excellent study habits"])
-  } else {
-    document.getElementById("subtitle").textContent = "I may not become a great person"
-  }
+  typedJSFn.processSubtitle(["I may not become a great person","but I can be someone with excellent study habits"])
 }
 typedJSFn.run(subtitleType)</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

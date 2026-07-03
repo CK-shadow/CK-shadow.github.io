@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>如何自定义一个 Spring Boot Starter | Simon 的书柜</title><meta name="author" content="Simon"><meta name="copyright" content="Simon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="如何自定义一个 Spring Boot Starter机制starter 是 SpringBoot 中一种非常重要的机制，它可以繁杂的配置统一集成到 starter 中，我们只需要通过 maven 将 starter 依赖引入到项目中，SpringBoot 就能自动扫描并加载相应的默认配置。starter 的出现让开发人员从繁琐的框架配置中解放出来，将更多的精力专注于业务逻辑的开发，极大的提高了开">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何自定义一个 Spring Boot Starter">
+<meta property="og:url" content="http://yoursite.com/2023/11/26/Java/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/index.html">
+<meta property="og:site_name" content="Simon 的书柜">
+<meta property="og:description" content="如何自定义一个 Spring Boot Starter机制starter 是 SpringBoot 中一种非常重要的机制，它可以繁杂的配置统一集成到 starter 中，我们只需要通过 maven 将 starter 依赖引入到项目中，SpringBoot 就能自动扫描并加载相应的默认配置。starter 的出现让开发人员从繁琐的框架配置中解放出来，将更多的精力专注于业务逻辑的开发，极大的提高了开">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/preview.jpg">
+<meta property="article:published_time" content="2023-11-26T09:50:50.000Z">
+<meta property="article:modified_time" content="2024-06-08T04:13:07.147Z">
+<meta property="article:author" content="Simon">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/preview.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "如何自定义一个 Spring Boot Starter",
+  "url": "http://yoursite.com/2023/11/26/Java/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/",
+  "image": "https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/preview.jpg",
+  "datePublished": "2023-11-26T09:50:50.000Z",
+  "dateModified": "2024-06-08T04:13:07.147Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Simon",
+      "url": "http://yoursite.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2023/11/26/Java/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '如何自定义一个 Spring Boot Starter',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/preview.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Simon 的书柜</span></a><a class="nav-page-title" href="/"><span class="site-name">如何自定义一个 Spring Boot Starter</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">如何自定义一个 Spring Boot Starter</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-11-26T09:50:50.000Z" title="发表于 2023-11-26 17:50:50">2023-11-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-08T04:13:07.147Z" title="更新于 2024-06-08 12:13:07">2024-06-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/">Java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="如何自定义一个-Spring-Boot-Starter"><a href="#如何自定义一个-Spring-Boot-Starter" class="headerlink" title="如何自定义一个 Spring Boot Starter"></a>如何自定义一个 Spring Boot Starter</h1><h2 id="机制"><a href="#机制" class="headerlink" title="机制"></a>机制</h2><p>starter 是 SpringBoot 中一种非常重要的机制，它可以繁杂的配置统一集成到 starter 中，我们只需要通过 maven 将 starter 依赖引入到项目中，SpringBoot 就能自动扫描并加载相应的默认配置。starter 的出现让开发人员从繁琐的框架配置中解放出来，将更多的精力专注于业务逻辑的开发，极大的提高了开发效率</p>
+<hr>
+<h2 id="为什么要自定义-Starter"><a href="#为什么要自定义-Starter" class="headerlink" title="为什么要自定义 Starter"></a>为什么要自定义 Starter</h2><p>如今我们的服务几乎都是基于 Spring Boot 构建而来，我们可以将一些可独立于业务代码之外的功能和配置模块封装成一个个 starter，SpringBoot 会为我们完成自动装配，这样复用的时候只需要将其在 pom 中引用依赖即可</p>
+<hr>
+<h2 id="命名规则"><a href="#命名规则" class="headerlink" title="命名规则"></a>命名规则</h2><p>为了区分官方提供的和第三方提供的，官方建议：</p>
+<p>SpringBoot 官方提供的 starter 以 spring-boot-starter-xxx 的形式命名，例如：</p>
+<ul>
+<li>spring-boot-starter-aop</li>
+<li>spring-boot-starter-data-jdbc</li>
+</ul>
+<p>第三方自定义的 starter 使用 xxx-spring-boot-starter 的形式命名，例如 ：</p>
+<ul>
+<li>mybatis-spring-boot-starter</li>
+<li>druid-spring-boot-starter</li>
+</ul>
+<hr>
+<h2 id="创建步骤"><a href="#创建步骤" class="headerlink" title="创建步骤"></a>创建步骤</h2><p>自定义 starter 可以分为以下几步：</p>
+<ol>
+<li>创建工程</li>
+<li>添加 POM 依赖</li>
+<li>定义 propertie 类</li>
+<li>定义 Service 类</li>
+<li>定义配置类</li>
+<li>创建 spring.factories 文件</li>
+<li>构建 starter验证</li>
+</ol>
+<hr>
+<h3 id="创建工程"><a href="#创建工程" class="headerlink" title="创建工程"></a>创建工程</h3><p>使用 IntelliJ IDEA 创建一个空项目（Empty Project），如下图</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/image-20231110215211508.png" alt="image-20231110215211508"></p>
+<p>在该项目中创建两个 Maven Module，一个 hello-spring-boot-starter 和一个 hello-example</p>
+<p><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/image-20231110215833820.png" alt="image-20231110215833820"></p>
+<hr>
+<h3 id="添加-POM-依赖"><a href="#添加-POM-依赖" class="headerlink" title="添加 POM 依赖"></a>添加 POM 依赖</h3><p>在 hello-spring-boot-starter 中 pom.xml 中添加如下依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;-- 核心启动器，包含自动配置，日志及yaml --&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="定义-Properties"><a href="#定义-Properties" class="headerlink" title="定义 Properties"></a>定义 Properties</h3><p>如果我们需要从 application.yaml 或 application.properties 中拿到一些使用者配置的数据，那么我们就需要定义一个 properties 类。这个 properties 类主要作用是将 application.yaml 或 application.properties 中的配置信息映射成实体类，比如我们这里指定 prefix &#x3D; “hello.test” 这样，我们就能将以 hello.test 为前缀的配置项拿到了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix =&quot;hello.test&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloProperties</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> enable;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="定义-Service-类"><a href="#定义-Service-类" class="headerlink" title="定义 Service 类"></a>定义 Service 类</h3><p>这个类不是自定义 starter 必须的，如果不需要定义上面的 properties，那么这个 Service 类也不需要， 所以这个 Service 的目的是使用上面定义的 properties 类或供外部调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloService</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> HelloProperties helloProperties;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">sayHello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;hello &quot;</span>+ helloProperties.getName() + <span class="string">&quot; welcome to my homepage:&quot;</span> + helloProperties.getUrl();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="定义配置类"><a href="#定义配置类" class="headerlink" title="定义配置类"></a>定义配置类</h3><p>HelloAutoConfiguration 使用了以下 5 个注解：</p>
+<ul>
+<li>@Configuration：表示该类是一个配置类</li>
+<li>@EnableConfigurationProperties(xxxProperties.class)：该注解的作用是为 xxxProperties 开启属性配置功能，并将这个类以组件的形式注入到容器中</li>
+<li>@ConditionalOnProperty(prefix &#x3D; “xxx”, name&#x3D; “x”, matchIfMissing &#x3D; true) : 当指定的配置项等于你想要的时候，配置类生效</li>
+<li>@ConditionalOnMissingBean(xxx.class)：该注解表示当容器中没有 xxx 类时，该方法才生效</li>
+<li>@Bean：该注解用于将方法的返回值以 Bean 对象的形式添加到容器中</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(HelloProperties.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(prefix = &quot;hello.test&quot;, name = &quot;enable&quot;, matchIfMissing = true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloAutoConfiguration</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean(HelloService.class)</span></span><br><span class="line">    <span class="keyword">public</span> HelloService <span class="title function_">helloService</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HelloService</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="创建-spring-factories-文件"><a href="#创建-spring-factories-文件" class="headerlink" title="创建 spring.factories 文件"></a>创建 spring.factories 文件</h3><p>Spring Factories 机制是 Spring Boot 中的一种服务发现机制，这种扩展机制与 Java SPI 机制十分相似。Spring Boot 会自动扫描所有 Jar 包类路径下 META-INF&#x2F;spring.factories 文件，并读取其中的内容，进行实例化，这种机制也是 Spring Boot Starter 的基础。因此我们自定义 starter 时，需要在项目类路径下创建一个 spring.factories 文件</p>
+<p>在 hello-spring-boot-starter 的路径下（resources ）中创建一个 META-INF 文件夹，并在 META-INF 文件夹中创建一个 spring.factories 文件</p>
+<p>将 Spring Boot 的 EnableAutoConfiguration 接口与自定义 starter 的自动配置类 HelloAutoConfiguration 组成一组键值对添加到 spring.factories 文件中，以方便 Spring Boot 在启动时，获取到自定义 starter 的自动配置:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\</span><br><span class="line">com.example.hello.starter.config.HelloAutoConfiguration</span><br></pre></td></tr></table></figure>
+
+
+
+<p>需要注意的是，在 SpringBoot 3.X 的版本中，配置文件不再是 spring.factories，而是 &#x2F;META-INF&#x2F;spring&#x2F;org.springframework.boot.autoconfigure.Autoconfigurtion.imports 文件，内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.example.hello.starter.config.HelloAutoConfiguration</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="构建-Starter"><a href="#构建-Starter" class="headerlink" title="构建 Starter"></a>构建 Starter</h3><p>在  hello-spring-boot-starter 下执行 mvn clean install 命令，将其打成 jar 包 </p>
+<hr>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ul>
+<li><p>在 hello-example 下 pom.xml 中添加我们自定义的 hello-spring-boot-starter：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.example<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hello-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 application.yaml 或 application.properties 中配置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hello.test.enable=true</span><br><span class="line">hello.test.name=Simon</span><br><span class="line">hello.test.url=https://baidu.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建 Controller 类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> HelloService helloService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/test&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">test</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> helloService.sayHello();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动项目后，访问 localhost:8080&#x2F;test，即可返回数据了</p>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Simon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2023/11/26/Java/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/">http://yoursite.com/2023/11/26/Java/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://yoursite.com" target="_blank">Simon 的书柜</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a></div><div class="post-share"><div class="social-share" data-image="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%20Spring%20Starter/preview.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2023/12/16/%E4%BA%91%E5%8E%9F%E7%94%9F/Docker%20%E5%AE%9E%E6%88%98/" title="Docker 实战"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/Docker%20%E5%AE%9E%E6%88%98/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Docker 实战</div></div><div class="info-2"><div class="info-item-1">Docker 实战简介为什么会有 Docker之前在服务器配置一个应用的运行环境，要安装各种软件，Java&#x2F;RabbitMQ&#x2F;MySQL&#x2F;JDBC 驱动包等。安装和配置这些东西有多麻烦就不说了，它还不能跨平台。假如我们是在 Windows 上安装的这些环境，到了 Linux 又得重新装。况且就算不跨操作系统，换另一台同样操作系统的服务器，要移植应用也是非常麻烦的 传统上认为，软件编码开发&#x2F;测试结束后，所产出的成果即是程序或是能够编译执行的二进制字节码等( java 为例)。而为了让这些程序可以顺利执行，开发团队也得准备完整的部署文件，让运维团队得以部署应用程式，开发需要清楚的告诉运维部署团队，用的全部配置文件 + 所有软件环境。不过，即便如此，仍然常常发生部署失败的状况。Docker 的出现使得 Docker 得以打破过去「程序即应用」的观念。透过镜像(images)将作业系统核心除外，运作应用程式所需要的系统环境，由下而上打包，达到应用程式跨平台间的无缝接轨运作 Docker 是基于 Go 语言实现的云开源项目。Docker 的主要目标是...</div></div></div></a><a class="pagination-related" href="/2023/10/28/%E6%95%B0%E6%8D%AE%E5%BA%93/ElasticSearch%20%E5%AE%9E%E6%88%98/" title="ElasticSearch 实战"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93/ElasticSearch%20%E5%AE%9E%E6%88%98/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">ElasticSearch 实战</div></div><div class="info-2"><div class="info-item-1">ElasticSearch 实战概述简介The Elastic Stack, 包括 Elasticsearch、 Kibana、 Beats 和 Logstash（也称为 ELK Stack）。能够安全可靠地获取任何来源、任何格式的数据，然后实时地对数据进行搜索、分析和可视化 Elaticsearch，简称为 ES， ES 是一个开源的高扩展的分布式全文搜索引擎， 是整个 ElasticStack 技术栈的核心 它可以近乎实时的存储、检索数据；本身扩展性很好，可以扩展到上百台服务器，处理 PB 级别的数据  安装官方网站：https://www.elastic.co/cn/ 官方文档：https://www.elastic.co/guide/index.html 安装教程：https://blog.csdn.net/qq_46533159/article/details/127916528  Restful 和 JSONREST 指的是一组架构约束条件和原则。满足这些约束条件和原则的应用程序或设计就是 RESTful。 Web 应用程序最重要的 REST 原则是，客户端和服务器之...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2023/02/19/Java/Nacos%20%E5%92%8C%20Eureka%20%E7%9A%84%E5%AF%B9%E6%AF%94/" title="Nacos 和 Eureka 的对比"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Nacos%20%E5%92%8C%20Eureka%20%E5%AF%B9%E6%AF%94/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-19</div><div class="info-item-2">Nacos 和 Eureka 的对比</div></div><div class="info-2"><div class="info-item-1">Nacos 和 Eureka 的对比功能对比    Spring Cloud Nacos Spring Cloud Eureka    CAP 模型 支持 CP 和 AP 模型 AP 模型   客户端更新服务信息 使用注册 + DNS-F + 健康检查模式，DNS-F 客户端使用监听模式，pull&#x2F;push 拉取更新信息 客户端定时轮询服务端获取其它服务 IP 信息，相比之下服务端压力较大、延迟较大   伸缩性 使用 Raft 选举算法，性能、可用性、容错性较好，新加入节点无需与所有节点广播同步信息 广播同步信息，集群机器数量较多后压力较大   健康检查方式 支持客户端&#x2F;服务端关闭健康检查，检查方式有 TCP、HTTP、SQL，支持自己构建健康检查器 客户端向服务端发送 HTTP 心跳   负载均衡 支持 支持   手动上下线服务 控制台页面或 API API   跨中心同步 支持 不支持   k8s 集成 支持 不支持   分组 可根据业务或环境进行分组管理 不支持   权重 支持 不支持   对比结果：  相比于 Nacos，Eureka 集成更为简单，只...</div></div></div></a><a class="pagination-related" href="/2023/08/20/Java/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="Java 9 新特性"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%209%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-20</div><div class="info-item-2">Java 9 新特性</div></div><div class="info-2"><div class="info-item-1">Java 9 新特性简介经过 4 次跳票，历经曲折的 Java 9 终于在 2017 年 9 月 21 日发布 从  Java 9 开始，Java 的计划发布周期是 6 个月，下一个 Java 的主版本将于 2018 年 3 月发布，命名为 Java 18.3，紧接着再过 6 个月将发布 Java 18.9。这意味着 Java 的更新从传统的以特性驱动的发布周期，转变为以时间驱动的（6 个月为周期）的发布模式，并逐步的将 Oracle JDK 原商业特性进行开源 针对企业客户的需求，Oracle 将以 3 年为周期发布长期支持版本（Long Term Support，LTS） Java 9 提供了超过 150 项新功能特性，包括备受期待的模块化系统、可交互的 REPL 工具 Jshell，JDK 编译工具，Java 公共 API 和私有代码，以及安全增强、扩展提升、性能管理改善等。可以说 Java 9 是一个庞大的系统工程，完全做了一个整体改变  模块化系统谈到 Java 9 大家第一个想到的往往就是 Jigsaw 项目。众所周知，Java 已经发展超过二十年，Java 和相关生...</div></div></div></a><a class="pagination-related" href="/2023/08/17/Java/Java%208%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="Java 8 新特性"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%208%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-17</div><div class="info-item-2">Java 8 新特性</div></div><div class="info-2"><div class="info-item-1">Java 8 新特性Lambda 表达式简介Lambda 表达式是一个匿名函数，我们可以把 Lambda 表达式理解为是一段可以传递的代码（将代码像数据一样进行传递）。可以写出更简介、更灵活的代码，作为一种更紧凑的代码风格，使 Java 语言的表达能力得到了提升 比如在之前，如果我们像创建一个 TreeSet，并使用匿名内部类重写它的 compare 方法，代码如下： 1234567891011@Testpublic void test() &#123;	Comparator&lt;Integer&gt; com = new Comparator&lt;Integer&gt;() &#123;        @Override        public int compare(Integer o1, Integer o2) &#123;            return Integer.compare(o1, o2);        &#125;    &#125;        TreeSet set = new TreeSet&lt;&gt;(com);&#125;  如...</div></div></div></a><a class="pagination-related" href="/2024/09/16/Java/Spring%20Cloud%20Alibaba%20%E5%AE%9E%E6%88%98/" title="Spring Cloud Alibaba 实战"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Spring%20Cloud%20Alibaba%20%E5%AE%9E%E6%88%98/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-16</div><div class="info-item-2">Spring Cloud Alibaba 实战</div></div><div class="info-2"><div class="info-item-1">Spring Cloud Alibaba 实战微服务介绍微服务常见概念 服务调用 将一个系统拆分成各个微服务后，各个微服务之间协同工作才能对外提供完整的服务，这就涉及到各个 微服务之间的调用问题。目前各个微服务之间一般会采用 Restful 接口或者 RPC 协议的方式进行调用  Restful 接口 Restful 接口一般是基于 HTTP 协议实现的，这种协议使用上比较广泛，几乎所有的编程语言都支持 HTTP 协议  RPC 协议 RPC 是一种远程过程调用，能够做到像调用本地服务一样调用远程服务。RPC 框架在底层屏蔽了数据的传输方式，序列化方式和交互的细节信息，让使用 RPC 框架开发微服务的人员觉得更加简单，实现起来更加容易    服务治理 服务治理，说白了就是如何自动化的管理各个微服务，核心的功能就是服务的注册、发现和剔除  服务注册 各个微服务实例在启动时，能够将自身提供的服务注册到某个注册中心  服务发现 当某个微服务将自身提供的服务注册到注册中心时，其他微服务实例能够通过注册中心感知到这个微服务提供的服务，并且能够获取到这个微服务的实例信息，通过这个微服务的实例...</div></div></div></a><a class="pagination-related" href="/2022/09/18/Java/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BC%98%E9%9B%85%E7%9A%84%20Restful%20Response/" title="如何构建一个优雅的 Restful Response"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BC%98%E9%9B%85%E7%9A%84%20Restful%20Response/F100009910.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-18</div><div class="info-item-2">如何构建一个优雅的 Restful Response</div></div><div class="info-2"><div class="info-item-1">如何构建一个优雅的 Restful ResponseJSON Response现在的代码开发中，大都是使用 JSON 来返回响应数据，要实现这个，只需要添加 @RestController 即可 12345678910111213@RestController@RequestMapping(&quot;/product&quot;)public class ProductInfoController &#123;    @Autowired    ProductInfoService productInfoService;    @GetMapping(&quot;/findById&quot;)    public ProductInfoVo findById(Integer id) &#123;        ...    &#125;&#125;     统一状态码返回格式在添加了 @RestController 注解之后，我们返回的响应数据是这样的 1234567&#123;  &quot;productId&quot;: 1,  &quot;productName&qu...</div></div></div></a><a class="pagination-related" href="/2023/08/29/Java/Java%2010%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="Java 10 新特性"><img class="cover" src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Java%2010%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-08-29</div><div class="info-item-2">Java 10 新特性</div></div><div class="info-2"><div class="info-item-1">Java 10 新特性简介2018 年 3 月 21 日，Oracle 官方宣布 Java 10 正式发布 需要注意的是 Java 9 和 Java 10 都不是 LTS 版本，和过去的 Java 大版本升级不同，这两个只有半年左右的开发期和维护期。而未来的 Java 11，也就是 18.9 LTS，才是 Java 8 之后第一个 LTS 版本 JDK 10 一共定义了 109 个新特性，其中包含 12 个 JEP（对于程序员来讲，真正的新特性其实就 1 个），还有一些新的 API 和 JVM 规范以及 Java 语言规范上的改动 JDK 10 的 12 个 JEP，可参阅官方文档：https://openjdk.org/projects/jdk/10/  局部变量类型推断开发者经常抱怨 Java 中引用代码的程度。局部变量的显示类型声明，常常被认为是非必须的，给一个好听的名字经常可以很清楚的表达应该怎样继续 作为 Java 开发者，在声明一个变量时，我们总是习惯了敲打两次变量类型，第一次用于声明变量类型，第二次用于构造器 1LinkedHashSet&lt;Integer&gt...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Simon</div><div class="author-info-description">攀登亦是风景</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA-Spring-Boot-Starter"><span class="toc-number">1.</span> <span class="toc-text">如何自定义一个 Spring Boot Starter</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%BA%E5%88%B6"><span class="toc-number">1.1.</span> <span class="toc-text">机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%87%AA%E5%AE%9A%E4%B9%89-Starter"><span class="toc-number">1.2.</span> <span class="toc-text">为什么要自定义 Starter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99"><span class="toc-number">1.3.</span> <span class="toc-text">命名规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.4.</span> <span class="toc-text">创建步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B7%A5%E7%A8%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">创建工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0-POM-%E4%BE%9D%E8%B5%96"><span class="toc-number">1.4.2.</span> <span class="toc-text">添加 POM 依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-Properties"><span class="toc-number">1.4.3.</span> <span class="toc-text">定义 Properties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-Service-%E7%B1%BB"><span class="toc-number">1.4.4.</span> <span class="toc-text">定义 Service 类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="toc-number">1.4.5.</span> <span class="toc-text">定义配置类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-spring-factories-%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.6.</span> <span class="toc-text">创建 spring.factories 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA-Starter"><span class="toc-number">1.4.7.</span> <span class="toc-text">构建 Starter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81"><span class="toc-number">1.4.8.</span> <span class="toc-text">验证</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/%E5%89%8D%E7%AB%AF/ES6%20%E6%95%99%E7%A8%8B/" title="ES6 教程"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/ES6%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6 教程"/></a><div class="content"><a class="title" href="/2025/03/13/%E5%89%8D%E7%AB%AF/ES6%20%E6%95%99%E7%A8%8B/" title="ES6 教程">ES6 教程</a><time datetime="2025-03-13T08:17:11.000Z" title="发表于 2025-03-13 16:17:11">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/01/%E5%89%8D%E7%AB%AF/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" title="JQuery 从入门到精通"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JQuery 从入门到精通"/></a><div class="content"><a class="title" href="/2025/01/01/%E5%89%8D%E7%AB%AF/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" title="JQuery 从入门到精通">JQuery 从入门到精通</a><time datetime="2024-12-31T16:00:01.000Z" title="发表于 2025-01-01 00:00:01">2025-01-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/12/09/%E4%BA%91%E5%8E%9F%E7%94%9F/K8S%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/" title="k8s 从入门到实践"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="k8s 从入门到实践"/></a><div class="content"><a class="title" href="/2024/12/09/%E4%BA%91%E5%8E%9F%E7%94%9F/K8S%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/" title="k8s 从入门到实践">k8s 从入门到实践</a><time datetime="2024-12-09T08:53:05.000Z" title="发表于 2024-12-09 16:53:05">2024-12-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/31/Java/Lua%20%E8%84%9A%E6%9C%AC%E5%AE%9E%E6%88%98/" title="Lua 脚本实战"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/JAVA/Lua%20%E8%84%9A%E6%9C%AC%E5%AE%9E%E6%88%98/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lua 脚本实战"/></a><div class="content"><a class="title" href="/2024/10/31/Java/Lua%20%E8%84%9A%E6%9C%AC%E5%AE%9E%E6%88%98/" title="Lua 脚本实战">Lua 脚本实战</a><time datetime="2024-10-31T00:41:19.000Z" title="发表于 2024-10-31 08:41:19">2024-10-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/02/%E5%89%8D%E7%AB%AF/Node.js%20%E6%95%99%E7%A8%8B/" title="Node.js 教程"><img src="https://simon-bookcase.oss-cn-beijing.aliyuncs.com/%E5%89%8D%E7%AB%AF/Node.js%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Node.js 教程"/></a><div class="content"><a class="title" href="/2024/10/02/%E5%89%8D%E7%AB%AF/Node.js%20%E6%95%99%E7%A8%8B/" title="Node.js 教程">Node.js 教程</a><time datetime="2024-10-02T02:06:08.000Z" title="发表于 2024-10-02 10:06:08">2024-10-02</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Simon</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
