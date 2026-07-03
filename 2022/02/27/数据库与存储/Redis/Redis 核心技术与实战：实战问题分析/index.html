@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Redis 核心技术与实战：实战问题分析 | Simon 的书柜</title><meta name="author" content="Simon"><meta name="copyright" content="Simon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="String 类型的问题为什么 String 类型内存开销大比如，在我们想要保存一个 key 和 value 都是 10 位数的字符串时，按道理来说，两个值都用 8 字节的 Long 类型表示，一共 16 字节就够了，但实际上会耗费 64 字节，那么多用的内存空间都哪儿去了呢 当保存 64 位有符号整数时，String 类型会把它保存为一个 8 字节的 Long 类型整数，这种保存方式通常也叫作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 核心技术与实战：实战问题分析">
+<meta property="og:url" content="http://yoursite.com/2022/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Simon 的书柜">
+<meta property="og:description" content="String 类型的问题为什么 String 类型内存开销大比如，在我们想要保存一个 key 和 value 都是 10 位数的字符串时，按道理来说，两个值都用 8 字节的 Long 类型表示，一共 16 字节就够了，但实际上会耗费 64 字节，那么多用的内存空间都哪儿去了呢 当保存 64 位有符号整数时，String 类型会把它保存为一个 8 字节的 Long 类型整数，这种保存方式通常也叫作">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/preview.jpg">
+<meta property="article:published_time" content="2022-02-27T00:51:32.000Z">
+<meta property="article:modified_time" content="2026-06-05T03:59:24.535Z">
+<meta property="article:author" content="Simon">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="数据库与存储">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/preview.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Redis 核心技术与实战：实战问题分析",
+  "url": "http://yoursite.com/2022/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/",
+  "image": "https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/preview.jpg",
+  "datePublished": "2022-02-27T00:51:32.000Z",
+  "dateModified": "2026-06-05T03:59:24.535Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Simon",
+      "url": "http://yoursite.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2022/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Redis 核心技术与实战：实战问题分析',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">53</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">57</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/preview.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Simon 的书柜</span></a><a class="nav-page-title" href="/"><span class="site-name">Redis 核心技术与实战：实战问题分析</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Redis 核心技术与实战：实战问题分析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-02-27T00:51:32.000Z" title="发表于 2022-02-27 08:51:32">2022-02-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-05T03:59:24.535Z" title="更新于 2026-06-05 11:59:24">2026-06-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/">数据库与存储</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="String-类型的问题"><a href="#String-类型的问题" class="headerlink" title="String 类型的问题"></a>String 类型的问题</h1><h2 id="为什么-String-类型内存开销大"><a href="#为什么-String-类型内存开销大" class="headerlink" title="为什么 String 类型内存开销大"></a>为什么 String 类型内存开销大</h2><p>比如，在我们想要保存一个 key 和 value 都是 10 位数的字符串时，按道理来说，两个值都用 8 字节的 Long 类型表示，一共 16 字节就够了，但实际上会耗费 64 字节，那么多用的内存空间都哪儿去了呢</p>
+<p>当保存 64 位有符号整数时，String 类型会把它保存为一个 8 字节的 Long 类型整数，这种保存方式通常也叫作 int 编码方式。但是，当你保存的数据中包含字符时，String 类型就会用简单动态字符串（Simple Dynamic String，SDS）结构体来保存</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/37c6a8d5abd65906368e7c4a6b938657.webp" alt="img"></p>
+<ul>
+<li>buf：字节数组，保存实际数据。为了表示字节数组的结束，Redis 会自动在数组最后加一个“\0”，这就会额外占用 1 个字节的开销</li>
+<li>len：占 4 个字节，表示 buf 的已用长度</li>
+<li>alloc：也占个 4 字节，表示 buf 的实际分配长度，一般大于 len</li>
+</ul>
+<p>Redis 的数据类型有很多，而且，不同数据类型都有些相同的元数据要记录（比如最后一次访问的时间、被引用的次数等），所以，Redis 会用一个 RedisObject 结构体来统一记录这些元数据，同时指向实际数据</p>
+<p>为了节省内存空间，Redis 还对 Long 类型整数和 SDS 的内存布局做了专门的设计</p>
+<p>一方面，当保存的是 Long 类型整数时，RedisObject 中的指针就直接赋值为整数数据了，这样就不用额外的指针再指向整数了，节省了指针的空间开销</p>
+<p>另一方面，当保存的是字符串数据，并且字符串小于等于 44 字节时，RedisObject 中的元数据、指针和 SDS 是一块连续的内存区域，这样就可以避免内存碎片。这种布局方式也被称为 embstr 编码方式</p>
+<p>当然，当字符串大于 44 字节时，SDS 的数据量就开始变多了，Redis 就不再把 SDS 和 RedisObject 布局在一起了，而是会给 SDS 分配独立的空间，并用指针指向 SDS 结构。这种布局方式被称为 raw 编码模式</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/ce83d1346c9642fdbbf5ffbe701bfbe3.webp" alt="img"></p>
+<p>因为我们要保存的 key 和 value 都是 Long 类型整数，所以可以直接用 int 编码的 RedisObject 保存。每个 int 编码的 RedisObject 元数据部分占 8 字节，指针部分被直接赋值为 8 字节的整数了。此时，每个 ID 会使用 16 字节，加起来一共是 32 字节。那么还有 32 字节哪儿去了呢</p>
+<p>Redis 会使用一个全局哈希表保存所有键值对，哈希表的每一项是一个 dictEntry 的结构体，用来指向一个键值对。dictEntry 结构中有三个 8 字节的指针，分别指向 key、value 以及下一个 dictEntry，三个指针共 24 字节</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/b6cbc5161388fdf4c9b49f3802ef53e7.webp" alt="img"></p>
+<p>jemalloc 在分配内存时，会根据我们申请的字节数 N，找一个比 N 大，但是最接近 N 的 2 的幂次数作为分配的空间，这样可以减少频繁分配的次数</p>
+<p>举个例子。如果你申请 6 字节空间，jemalloc 实际会分配 8 字节空间；如果你申请 24 字节空间，jemalloc 则会分配 32 字节。所以，在我们刚刚说的场景里，dictEntry 结构就占用了 32 字节</p>
+<p>可以看到，我们需要保存的数据只有 16 字节，但确耗费了 64 字节，其中大部分都是元数据和无用的内存消耗</p>
+<hr>
+<h2 id="用什么数据结构可以节省内存"><a href="#用什么数据结构可以节省内存" class="headerlink" title="用什么数据结构可以节省内存"></a>用什么数据结构可以节省内存</h2><p>Redis 有一种底层数据结构，叫压缩列表（ziplist），这是一种非常节省内存的结构</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/f6d4df5f7d6e80de29e2c6446b02429f.webp" alt="img"></p>
+<p>压缩列表之所以能节省内存，就在于它是用一系列连续的 entry 保存数据。每个 entry 的元数据包括下面几部分</p>
+<ul>
+<li>prev_len，表示前一个 entry 的长度。prev_len 有两种取值情况：1 字节或 5 字节。取值 1 字节时，表示上一个 entry 的长度小于 254 字节。虽然 1 字节的值能表示的数值范围是 0 到 255，但是压缩列表中 zlend 的取值默认是 255，因此，就默认用 255 表示整个压缩列表的结束，其他表示长度的地方就不能再用 255 这个值了。所以，当上一个 entry 长度小于 254 字节时，prev_len 取值为 1 字节，否则，就取值为 5 字节</li>
+<li>len：表示自身长度，4 字节</li>
+<li>encoding：表示编码方式，1 字节</li>
+<li>content：保存实际数据</li>
+</ul>
+<p>这些 entry 会挨个儿放置在内存中，不需要再用额外的指针进行连接，这样就可以节省指针所占用的空间</p>
+<p>以保存图片存储对象 ID 为例。每个 entry 保存一个图片存储对象 ID（8 字节），此时，每个 entry 的 prev_len 只需要 1 个字节就行，因为每个 entry 的前一个 entry 长度都只有 8 字节，小于 254 字节。这样一来，一个图片的存储对象 ID 所占用的内存大小是 14 字节（1+4+1+8&#x3D;14），实际分配 16 字节</p>
+<p>Redis 基于压缩列表实现了 List、Hash 和 Sorted Set 这样的集合类型，这样做的最大好处就是节省了 dictEntry 的开销。当你用 String 类型时，一个键值对就有一个 dictEntry，要用 32 字节空间。但采用集合类型时，一个 key 就对应一个集合的数据，能保存的数据多了很多，但也只用了一个 dictEntry，这样就节省了内存</p>
+<hr>
+<h1 id="Redis-统计"><a href="#Redis-统计" class="headerlink" title="Redis 统计"></a>Redis 统计</h1><h2 id="聚合统计"><a href="#聚合统计" class="headerlink" title="聚合统计"></a>聚合统计</h2><p>所谓的聚合统计，就是指统计多个集合元素的聚合结果，包括：统计多个集合的共有元素（交集统计）；把两个集合相比，统计其中一个集合独有的元素（差集统计）；统计多个集合的所有元素（并集统计）</p>
+<p>当你需要对多个集合进行聚合计算时，Set 类型会是一个非常不错的选择</p>
+<p>但是，Set 的差集、并集和交集的计算复杂度较高，在数据量较大的情况下，如果直接执行这些计算，会导致 Redis 实例阻塞。所以，我给你分享一个小建议：你可以从主从集群中选择一个从库，让它专门负责聚合计算，或者是把数据读取到客户端，在客户端来完成聚合统计，这样就可以规避阻塞主库实例和其他从库实例的风险了</p>
+<hr>
+<h2 id="排序统计"><a href="#排序统计" class="headerlink" title="排序统计"></a>排序统计</h2><p>在 Redis 常用的 4 个集合类型中（List、Hash、Set、Sorted Set），List 和 Sorted Set 就属于有序集合。List 是按照元素进入 List 的顺序进行排序的，而 Sorted Set 可以根据元素的权重来排序，我们可以自己来决定每个元素的权重值</p>
+<p>List 对比新元素插入前后，List 相同位置上的元素就会发生变化，用 LRANGE 读取时，就会读到旧元素。和 List 相比，Sorted Set 就不存在这个问题，因为它是根据元素的实际权重来排序和获取数据的</p>
+<p>所以，在面对需要展示最新列表、排行榜等场景时，如果数据更新频繁或者需要分页显示，建议你优先考虑使用 Sorted Set</p>
+<hr>
+<h2 id="二值状态统计"><a href="#二值状态统计" class="headerlink" title="二值状态统计"></a>二值状态统计</h2><p>Bitmap 本身是用 String 类型作为底层数据结构实现的一种统计二值状态的数据类型。String 类型是会保存为二进制的字节数组，所以，Redis 就把字节数组的每个 bit 位利用起来，用来表示一个元素的二值状态。你可以把 Bitmap 看作是一个 bit 数组</p>
+<p>Bitmap 提供了 GETBIT&#x2F;SETBIT 操作，使用一个偏移值 offset 对 bit 数组的某一个 bit 位进行读和写。不过，需要注意的是，Bitmap 的偏移量是从 0 开始算的，也就是说 offset 的最小值是 0。当使用 SETBIT 对一个 bit 位进行写操作时，这个 bit 位会被设置为 1</p>
+<p>Bitmap 支持用 BITOP 命令对多个 Bitmap 按位做“与”“或”“异或”的操作，操作的结果会保存到一个新的 Bitmap 中</p>
+<p>如果只需要统计数据的二值状态，例如商品有没有、用户在不在等，就可以使用 Bitmap，因为它只用一个 bit 位就能表示 0 或 1。在记录海量数据时，Bitmap 能够有效地节省内存空间</p>
+<hr>
+<h2 id="基数统计"><a href="#基数统计" class="headerlink" title="基数统计"></a>基数统计</h2><p>基数统计就是指统计一个集合中不重复的元素个数</p>
+<p>如果对基数结果精确统计或基数数量不多的话，可以使用 Set 或者 Hash</p>
+<p>如果基数数量达到千万级别或者对精度要求不高，就可以使用 HyperLogLog。HyperLogLog 是一种用于统计基数的数据集合类型，它的最大优势就在于，当集合元素数量非常多时，它计算基数所需的空间总是固定的，而且还很小</p>
+<p>在 Redis 中，每个 HyperLogLog 只需要花费 12 KB 内存，就可以计算接近 2^64 个元素的基数。你看，和元素越多就越耗费内存的 Set 和 Hash 类型相比，HyperLogLog 就非常节省空间</p>
+<p>HyperLogLog 的统计规则是基于概率完成的，所以它给出的统计结果是有一定误差的，标准误算率是 0.81%。这也就意味着，你使用 HyperLogLog 统计的 UV 是 100 万，但实际的 UV 可能是 101 万。虽然误差率不算大，但是，如果你需要精确统计结果的话，最好还是继续用 Set 或 Hash 类型</p>
+<hr>
+<h1 id="GEO-底层原理"><a href="#GEO-底层原理" class="headerlink" title="GEO 底层原理"></a>GEO 底层原理</h1><p>为了能高效地对经纬度进行比较，Redis 采用了业界广泛使用的 GeoHash 编码方法，这个方法的基本原理就是“二分区间，区间编码”</p>
+<p>对于一个地理位置信息来说，它的经度范围是[-180,180]。GeoHash 编码会把一个经度值编码成一个 N 位的二进制值，我们来对经度范围[-180,180]做 N 次的二分区操作，其中 N 可以自定义</p>
+<p>在进行第一次二分区时，经度范围[-180,180]会被分成两个子区间：[-180,0) 和[0,180]（我称之为左、右分区）。此时，我们可以查看一下要编码的经度值落在了左分区还是右分区。如果是落在左分区，我们就用 0 表示；如果落在右分区，就用 1 表示。这样一来，每做完一次二分区，我们就可以得到 1 位编码值</p>
+<p>然后，我们再对经度值所属的分区再做一次二分区，同时再次查看经度值落在了二分区后的左分区还是右分区，按照刚才的规则再做 1 位编码。当做完 N 次的二分区后，经度值就可以用一个 N bit 的数来表示了</p>
+<p>比如经度 116.37，经过 5 次分区就变成了 11010；然后纬度 39.86，经过 5 次分区就变成了 10111</p>
+<p>当一组经纬度值都编完码后，我们再把它们的各自编码值组合在一起，组合的规则是：最终编码值的偶数位上依次是经度的编码值，奇数位上依次是纬度的编码值，其中，偶数位从 0 开始，奇数位从 1 开始</p>
+<p>刚刚得到的值组合就变成了 1110011101</p>
+<p>用了 GeoHash 编码后，原来无法用一个权重分数表示的一组经纬度（116.37，39.86）就可以用 1110011101 这一个值来表示，就可以保存为 Sorted Set 的权重分数了。使用 GeoHash 编码后，我们相当于把整个地理空间划分成了一个个方格，每个方格对应了 GeoHash 中的一个分区</p>
+<p>每个方格覆盖了一定范围内的经纬度值，分区越多，每个方格能覆盖到的地理空间就越小，也就越精准。我们把所有方格的编码值映射到一维空间时，相邻方格的 GeoHash 编码值基本也是接近的，如下图所示：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/2a2a650086acf9700c0603a4be8ceb74.webp" alt="img"></p>
+<hr>
+<h1 id="异步机制：如何避免单线程模型的阻塞"><a href="#异步机制：如何避免单线程模型的阻塞" class="headerlink" title="异步机制：如何避免单线程模型的阻塞"></a>异步机制：如何避免单线程模型的阻塞</h1><h2 id="Redis-实例有哪些阻塞点"><a href="#Redis-实例有哪些阻塞点" class="headerlink" title="Redis 实例有哪些阻塞点"></a>Redis 实例有哪些阻塞点</h2><p>Redis 实例在运行时，要和许多对象进行交互，以下是 Redis 实例交互的对象，以及交互时会发生的操作：</p>
+<ul>
+<li>客户端：网络 IO，键值对增删改查操作，数据库操作</li>
+<li>磁盘：生成 RDB 快照，记录 AOF 日志，AOF 日志重写</li>
+<li>主从节点：主库生成、传输 RDB 文件，从库接收 RDB 文件、清空数据库、加载 RDB 文件</li>
+<li>切片集群实例：向其他实例传输哈希槽信息，数据迁移</li>
+</ul>
+<p>其中的阻塞点有：</p>
+<ol>
+<li>集合全量查询和聚合操作</li>
+<li>bigkey 删除</li>
+<li>清空数据库</li>
+<li>AOF 日志同步写</li>
+<li>从库加载 RDB 文件</li>
+</ol>
+<p>对于 Redis 的五大阻塞点来说，除了“集合全量查询和聚合操作”和“从库加载 RDB 文件”，其他三个阻塞点涉及的操作都不在关键路径上，所以，我们可以使用 Redis 的异步子线程机制来实现 bigkey 删除，清空数据库，以及 AOF 日志同步写</p>
+<hr>
+<h2 id="异步的子线程机制"><a href="#异步的子线程机制" class="headerlink" title="异步的子线程机制"></a>异步的子线程机制</h2><p>Redis 主线程启动后，会使用操作系统提供的 pthread_create 函数创建 3 个子线程，分别由它们负责 AOF 日志写操作、键值对删除以及文件关闭的异步执行</p>
+<p>主线程通过一个链表形式的任务队列和子线程进行交互。当收到键值对删除和清空数据库的操作时，主线程会把这个操作封装成一个任务，放入到任务队列中，然后给客户端返回一个完成信息，表明删除已经完成</p>
+<p>但实际上，这个时候删除还没有执行，等到后台子线程从任务队列中读取任务后，才开始实际删除键值对，并释放相应的内存空间。因此，我们把这种异步删除也称为惰性删除（lazy free）。此时，删除或清空操作不会阻塞主线程，这就避免了对主线程的性能影响</p>
+<p>和惰性删除类似，当 AOF 日志配置成 everysec 选项后，主线程会把 AOF 写日志操作封装成一个任务，也放到任务队列中。后台子线程读取任务后，开始自行写入 AOF 日志，这样主线程就不用一直等待 AOF 日志写完了</p>
+<hr>
+<h1 id="替换策略：缓存满了怎么办"><a href="#替换策略：缓存满了怎么办" class="headerlink" title="替换策略：缓存满了怎么办"></a>替换策略：缓存满了怎么办</h1><h2 id="Redis-缓存有哪些淘汰策略"><a href="#Redis-缓存有哪些淘汰策略" class="headerlink" title="Redis 缓存有哪些淘汰策略"></a>Redis 缓存有哪些淘汰策略</h2><p>当 Redis 达到最大内存限制时，Redis会确切地使用配置好的最大内存策略指令来执行。相关策略如下：</p>
+<ol>
+<li><code>noeviction</code>（默认策略）： 不会删除任何数据，拒绝所有写入操作并返回客户端错误消息（error）OOM，此时 Redis 只响应删和读操作</li>
+<li><code>allkeys-lru</code>：从所有 key 中使用 LRU 算法进行淘汰（LRU 算法：最近最少使用算法）</li>
+<li><code>allkeys-lfu</code>： 从所有 key 中使用 LFU 算法进行淘汰（LFU 算法：最不常用算法，根据使用频率计算，4.0 版本新增）</li>
+<li><code>volatile-lru</code>： 从设置了过期时间的 key 中使用 LRU 算法进行淘汰</li>
+<li><code>volatile-lfu</code>： 从设置了过期时间的 key 中使用 LFU 算法进行淘汰</li>
+<li><code>allkeys-random</code>： 从所有 key 中随机淘汰数据</li>
+<li><code>volatile-random</code>： 从设置了过期时间的 key 中随机淘汰数据</li>
+<li><code>volatile-ttl</code>： 在设置了过期时间的key中，淘汰过期时间剩余最短的</li>
+</ol>
+<p>当使用 volatile-lru、volatile-lfu、volatile-random、volatile-ttl 这四种淘汰策略时，如果没有 key 可以淘汰，则和 neoviction 一样返回错误</p>
+<hr>
+<h2 id="LRU-算法"><a href="#LRU-算法" class="headerlink" title="LRU 算法"></a>LRU 算法</h2><p>LRU 算法的全称是 Least Recently Used，从名字上就可以看出，这是按照最近最少使用的原则来筛选数据，最不常用的数据会被筛选出来，而最近频繁使用的数据会留在缓存中。LRU 会把所有的数据组织成一个链表，链表的头和尾分别表示 MRU 端和 LRU 端，分别代表最近最常使用的数据和最近最不常用的数据</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/0201f85c84203300ae4085c60e955yy5.webp" alt="img"></p>
+<p>LRU 算法在实际实现时，需要用链表管理所有的缓存数据，这会带来额外的空间开销。而且，当有数据被访问时，需要在链表上把该数据移动到 MRU 端，如果有大量数据被访问，就会带来很多链表移动操作，会很耗时，进而会降低 Redis 缓存性能</p>
+<p>所以，在 Redis 中，LRU 算法被做了简化，以减轻数据淘汰对缓存性能的影响。具体来说，Redis 默认会记录每个数据的最近一次访问的时间戳（由键值对数据结构 RedisObject 中的 lru 字段记录）。然后，Redis 在决定淘汰的数据时，第一次会随机选出 N 个数据，把它们作为一个候选集合。接下来，Redis 会比较这 N 个数据的 lru 字段，把 lru 字段值最小的数据从缓存中淘汰出去</p>
+<hr>
+<h2 id="淘汰策略使用建议"><a href="#淘汰策略使用建议" class="headerlink" title="淘汰策略使用建议"></a>淘汰策略使用建议</h2><p>优先使用 allkeys-lru 策略。这样，可以充分利用 LRU 这一经典缓存算法的优势，把最近最常访问的数据留在缓存中，提升应用的访问性能。如果你的业务数据中有明显的冷热数据区分，建议使用 allkeys-lru 策略</p>
+<p>如果业务应用中的数据访问频率相差不大，没有明显的冷热数据区分，建议使用 allkeys-random 策略，随机选择淘汰的数据就行</p>
+<p>如果你的业务中有置顶的需求，比如置顶新闻、置顶视频，那么，可以使用 volatile-lru 策略，同时不给这些置顶数据设置过期时间。这样一来，这些需要置顶的数据一直不会被删除，而其他数据会在过期时根据 LRU 规则进行筛选</p>
+<hr>
+<h1 id="脑裂：一次奇怪的数据丢失"><a href="#脑裂：一次奇怪的数据丢失" class="headerlink" title="脑裂：一次奇怪的数据丢失"></a>脑裂：一次奇怪的数据丢失</h1><h2 id="脑裂出现的场景"><a href="#脑裂出现的场景" class="headerlink" title="脑裂出现的场景"></a>脑裂出现的场景</h2><p>场景一</p>
+<p>主从哨兵集群中如果当发生主从集群切换时，那么一定是超过预设 quorum 数量的哨兵和主库连接超时了，这时哨兵集群才会将主库判断为客观下线，然后哨兵开始选举新的主节点，进行故障转移，转移完毕后客户端和新的主节点通信恢复正常请求</p>
+<p>如果在哨兵进行选举，故障转移的过程中原主节点恢复和客户端的通信，那么证明原主节点没有真正的故障，这时客户端依旧可以向原主节点正常通信，这就是脑裂产生的第一个场景</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/1339e1bfe6d07da8477342ba5fyy9872.webp" alt="img"></p>
+<p>场景二</p>
+<p>网络分区，主节点和客户端，哨兵和从库分割为了两个网络，主库和客户端处在一个网络中，从库和哨兵在另外一个网络中，此时哨兵也会发起主从切换，出现两个主节点的情况</p>
+<p>主从切换后，从库一旦升级为新主库，哨兵就会让原主库执行 slave of 命令，和新主库重新进行全量同步。而在全量同步执行的最后阶段，原主库需要清空本地的数据，加载新主库发送的 RDB 文件，这样一来，原主库在主从切换期间保存的新写数据就丢失了</p>
+<hr>
+<h2 id="如何应对脑裂问题"><a href="#如何应对脑裂问题" class="headerlink" title="如何应对脑裂问题"></a>如何应对脑裂问题</h2><p>Redis 已经提供了两个配置项来限制主库的请求处理，分别是 min-slaves-to-write 和 min-slaves-max-lag</p>
+<ul>
+<li>min-slaves-to-write：这个配置项设置了主库能进行数据同步的最少从库数量</li>
+<li>min-slaves-max-lag：这个配置项设置了主从库间进行数据复制时，从库给主库发送 ACK 消息的最大延迟（以秒为单位）</li>
+</ul>
+<p>可以把 min-slaves-to-write 和 min-slaves-max-lag 这两个配置项搭配起来使用，分别给它们设置一定的阈值，假设为 N 和 T。这两个配置项组合后的要求是，主库连接的从库中至少有 N 个从库，和主库进行数据复制时的 ACK 消息延迟不能超过 T 秒，否则，主库就不会再接收客户端的请求了</p>
+<p>即使原主库是假故障，它在假故障期间也无法响应哨兵心跳，也不能和从库进行同步，自然也就无法和从库进行 ACK 确认了。这样一来，min-slaves-to-write 和 min-slaves-max-lag 的组合要求就无法得到满足，原主库就会被限制接收客户端请求，客户端也就不能在原主库中写入新数据了</p>
+<p>Redis 脑裂可以采用 min-slaves-to-write 和 min-slaves-max-lag 合理配置尽量规避，但无法彻底解决，Redis 脑裂最本质的问题是主从集群内部没有共识算法来维护多个节点的强一致性，它不像 Zookeeper 那样，每次写入必须大多数节点成功后才算成功，当脑裂发生时，Zookeeper 节点被孤立，此时无法写入大多数节点，写请求会直接失败，因此 Zookeeper 才能保证集群的强一致性</p>
+<hr>
+<h1 id="Redis支撑秒杀场景的关键技术和实践都有哪些"><a href="#Redis支撑秒杀场景的关键技术和实践都有哪些" class="headerlink" title="Redis支撑秒杀场景的关键技术和实践都有哪些"></a>Redis支撑秒杀场景的关键技术和实践都有哪些</h1><h2 id="Redis-可以在秒杀场景的哪些环节发挥作用"><a href="#Redis-可以在秒杀场景的哪些环节发挥作用" class="headerlink" title="Redis 可以在秒杀场景的哪些环节发挥作用"></a>Redis 可以在秒杀场景的哪些环节发挥作用</h2><p>秒杀活动前。在这个阶段，用户会不断刷新商品详情页，这会导致详情页的瞬时请求量剧增。这个阶段的应对方案，一般是尽量把商品详情页的页面元素静态化，然后使用 CDN 或是浏览器把这些静态化的元素缓存起来。这样一来，秒杀前的大量请求可以直接由 CDN 或是浏览器缓存服务，不会到达服务器端了，这就减轻了服务器端的压力</p>
+<p>秒杀活动开始。这个阶段的操作就是三个：库存查验、库存扣减和订单处理。因为每个秒杀请求都会查询库存，而请求只有查到有库存余量后，后续的库存扣减和订单处理才会被执行。所以，这个阶段中最大的并发压力都在库存查验操作上。为了支撑大量高并发的库存查验请求，我们需要在这个环节使用 Redis 保存库存量，这样一来，请求可以直接从 Redis 中读取库存并进行查验</p>
+<p>秒杀活动结束后。在这个阶段，可能还会有部分用户刷新商品详情页，尝试等待有其他用户退单。而已经成功下单的用户会刷新订单详情，跟踪订单的进展。不过，这个阶段中的用户请求量已经下降很多了，服务器端一般都能支撑</p>
+<p>因为库存查验和库存扣减这两个操作要保证一起执行，一个直接的方法就是使用 Redis 的原子操作。原子操作可以是 Redis 自身提供的原子命令，也可以是 Lua 脚本。因为库存查验和库存扣减是两个操作，无法用一条命令来完成，所以，我们就需要使用 Lua 脚本原子性地执行这两个操作</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#获取商品库存信息            </span><br><span class="line"><span class="keyword">local</span> counts = redis.call(<span class="string">&quot;HMGET&quot;</span>, KEYS[<span class="number">1</span>], <span class="string">&quot;total&quot;</span>, <span class="string">&quot;ordered&quot;</span>);</span><br><span class="line">#将总库存转换为数值</span><br><span class="line"><span class="keyword">local</span> total = <span class="built_in">tonumber</span>(counts[<span class="number">1</span>])</span><br><span class="line">#将已被秒杀的库存转换为数值</span><br><span class="line"><span class="keyword">local</span> ordered = <span class="built_in">tonumber</span>(counts[<span class="number">2</span>])  </span><br><span class="line">#如果当前请求的库存量加上已被秒杀的库存量仍然小于总库存量，就可以更新库存         </span><br><span class="line"><span class="keyword">if</span> ordered + k &lt;= total <span class="keyword">then</span></span><br><span class="line">    #更新已秒杀的库存量</span><br><span class="line">    redis.call(<span class="string">&quot;HINCRBY&quot;</span>,KEYS[<span class="number">1</span>],<span class="string">&quot;ordered&quot;</span>,k)                              </span><br><span class="line">    <span class="keyword">return</span> k;  </span><br><span class="line"><span class="keyword">end</span>               </span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>有了 Lua 脚本后，我们就可以在 Redis 客户端，使用 EVAL 命令来执行这个脚本了。最后，客户端会根据脚本的返回值，来确定秒杀是成功还是失败了。如果返回值是 k，就是成功了；如果是 0，就是失败</p>
+<hr>
+<h1 id="数据分布优化：如何应对数据倾斜"><a href="#数据分布优化：如何应对数据倾斜" class="headerlink" title="数据分布优化：如何应对数据倾斜"></a>数据分布优化：如何应对数据倾斜</h1><h2 id="什么是数据倾斜"><a href="#什么是数据倾斜" class="headerlink" title="什么是数据倾斜"></a>什么是数据倾斜</h2><p>数据倾斜有两类</p>
+<ul>
+<li>数据量倾斜：在某些情况下，实例上的数据分布不均衡，某个实例上的数据特别多</li>
+<li>数据访问倾斜：虽然每个集群实例上的数据量相差不大，但是某个实例上的数据是热点数据，被访问得非常频繁</li>
+</ul>
+<p>如果发生了数据倾斜，那么保存了大量数据，或者是保存了热点数据的实例的处理压力就会增大，速度变慢，甚至还可能会引起这个实例的内存资源耗尽，从而崩溃。这是我们在应用切片集群时要避免的</p>
+<p>造成数据量倾斜的原因主要有三个：</p>
+<ol>
+<li>数据中有 bigkey，导致某个实例的数据量增加</li>
+<li>Slot 手工分配不均，导致某个或某些实例上有大量数据</li>
+<li>使用了 Hash Tag，导致数据集中到某些实例上</li>
+</ol>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/092da1ee7425d20b1af4900ec8e9926f.webp" alt="img"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Simon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2022/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/">http://yoursite.com/2022/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://yoursite.com" target="_blank">Simon 的书柜</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Redis/">Redis</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/">数据库与存储</a></div><div class="post-share"><div class="social-share" data-image="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E5%AE%9E%E6%88%98%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/preview.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2022/03/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MySQL/MySQL%20%E4%BB%8E%E8%8F%9C%E9%B8%9F%E5%88%B0%E5%A4%A7%E7%89%9B%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BB%8B%E7%BB%8D/" title="MySQL 从菜鸟到大牛：数据库介绍"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MySQL/MySQL%20%E4%BB%8E%E8%8F%9C%E9%B8%9F%E5%88%B0%E5%A4%A7%E7%89%9B%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BB%8B%E7%BB%8D/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">MySQL 从菜鸟到大牛：数据库介绍</div></div><div class="info-2"><div class="info-item-1">为什么要使用数据库持久化：把数据保存到可掉电式存储设备中以供之后使用。大多数情况下，特别是企业级应用，数据持久化意味着将内存中的数据保存到硬盘中加以“固化”。而持久化的实现过程大多数通过各种关系型数据库来实现 持久化的主要作用是将内存中的数据存储在关系型数据库中，当然也可以存储在磁盘文件、XML 数据文件中   数据库与数据库管理系统数据库的相关概念DB：数据库（Database） 即存储数据的仓库，其本质是一个文件系统，它保存了一系列有组织的数据 DBMS：数据库管理系统（Database Management System） 是一种操作和管理数据的大型软件，用于建立、使用和维护数据库，对数据库进行统一管理和控制。用户通过数据库管理系统访问数据库表中的数据 SQL：结构化查询语言（Structured Query Language） 专门用来与数据库通信的语言  常见的数据库管理系统排名目前互联网上常见的数据库管理系统有 Oracle、MySQL、MS SQL Server、DB2、Sybase 等等，以下是 2023 年最新的数据库受欢迎程度排名（查看最新数据库排名：http...</div></div></div></a><a class="pagination-related" href="/2022/02/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AB%98%E5%8F%AF%E7%94%A8/" title="Redis 核心技术与实战：核心原理与高可用"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AB%98%E5%8F%AF%E7%94%A8/preview.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Redis 核心技术与实战：核心原理与高可用</div></div><div class="info-2"><div class="info-item-1">数据结构键值存储结构众所周知，Redis 是一个 key-value 数据库，为了实现从键到值的快速访问，Redis 使用了一个哈希表来保存所有键值对。这个哈希表的数据结构就类似于 Java 中的 HashMap，但是 value 并不保存实际数据，而是对应数据的指针  当你往哈希表中写入更多数据时，哈希冲突是不可避免的问题。Redis 解决哈希冲突的方式，就是链式哈希。链式哈希也很容易理解，就是指同一个哈希桶中的多个元素用一个链表来保存，它们之间依次用指针连接，即 HashMap 在 JDK 8 之前的存储方式。这样，当链表的元素较多时，查询的时间复杂度就变成 O(n)。因此，Redis 也会对哈希表进行 rehash 操作 为了使 rehash 操作更高效，Redis 默认使用了两个全局哈希表：哈希表 1 和哈希表 2。一开始，当你刚插入数据时，默认使用哈希表 1，此时的哈希表 2 并没有被分配空间。随着数据逐步增多，Redis 开始执行 rehash，这个过程分为三步：  给哈希表 2 分配更大的空间，例如是当前哈希表 1 大小的两倍 把哈希表 1 中的数据重新映射并拷贝到...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2022/02/06/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AB%98%E5%8F%AF%E7%94%A8/" title="Redis 核心技术与实战：核心原理与高可用"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Redis%20%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98%EF%BC%9A%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AB%98%E5%8F%AF%E7%94%A8/preview.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-06</div><div class="info-item-2">Redis 核心技术与实战：核心原理与高可用</div></div><div class="info-2"><div class="info-item-1">数据结构键值存储结构众所周知，Redis 是一个 key-value 数据库，为了实现从键到值的快速访问，Redis 使用了一个哈希表来保存所有键值对。这个哈希表的数据结构就类似于 Java 中的 HashMap，但是 value 并不保存实际数据，而是对应数据的指针  当你往哈希表中写入更多数据时，哈希冲突是不可避免的问题。Redis 解决哈希冲突的方式，就是链式哈希。链式哈希也很容易理解，就是指同一个哈希桶中的多个元素用一个链表来保存，它们之间依次用指针连接，即 HashMap 在 JDK 8 之前的存储方式。这样，当链表的元素较多时，查询的时间复杂度就变成 O(n)。因此，Redis 也会对哈希表进行 rehash 操作 为了使 rehash 操作更高效，Redis 默认使用了两个全局哈希表：哈希表 1 和哈希表 2。一开始，当你刚插入数据时，默认使用哈希表 1，此时的哈希表 2 并没有被分配空间。随着数据逐步增多，Redis 开始执行 rehash，这个过程分为三步：  给哈希表 2 分配更大的空间，例如是当前哈希表 1 大小的两倍 把哈希表 1 中的数据重新映射并拷贝到...</div></div></div></a><a class="pagination-related" href="/2024/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Lua%20%E6%95%99%E7%A8%8B%E5%AE%9E%E6%88%98/" title="Lua 教程实战"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/Redis/Lua%20%E6%95%99%E7%A8%8B%E5%AE%9E%E6%88%98/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-30</div><div class="info-item-2">Lua 教程实战</div></div><div class="info-2"><div class="info-item-1">简介Lua 是一个由 C 语言编写的小巧的脚本语言，其设计目的是为了通过灵活嵌入应用程序中从而为应用程序提供灵活的扩展和控制功能。在所有的脚本引擎中，Lua 的速度是最快的，Lua 是作为嵌入式脚本的最佳选择   应用场景有：  游戏开发 独立应用脚本 Web 应用脚本 扩展和数据库插件如 MySQL Proxy 和 MySQL WorkBench 安全系统，如入侵检测系统 Nginx + Lua 开发高性能 Web 应用，限流、防 SQL 注入、请求过滤、黑白名单限制等    它的特性有：  轻量级: 它用标准 C 语言编写并以源代码形式开放，编译后仅仅一百余 K，可以很方便的嵌入别的程序里 可扩展: Lua 提供了非常易于使用的扩展接口和机制：由宿主语言 (通常是 C 或 C++) 提供这些功能，Lua 可以使用它们，就像是本来就内置的功能一样 支持面向过程编程和函数式编程 自动内存管理；只提供了一种通用类型的表（table），用它可以实现数组，哈希表，集合，对象 语言内置模式匹配；闭包；函数也可以看做一个值；提供多线程（协同进程，并非操作系统所支持的线程）支持 通过闭包和 ...</div></div></div></a><a class="pagination-related" href="/2022/04/15/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MySQL/MySQL%20%E4%BB%8E%E8%8F%9C%E9%B8%9F%E5%88%B0%E5%A4%A7%E7%89%9B%EF%BC%9A%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95/" title="MySQL 从菜鸟到大牛：核心语法"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MySQL/MySQL%20%E4%BB%8E%E8%8F%9C%E9%B8%9F%E5%88%B0%E5%A4%A7%E7%89%9B%EF%BC%9A%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-15</div><div class="info-item-2">MySQL 从菜鸟到大牛：核心语法</div></div><div class="info-2"><div class="info-item-1">排序与分页排序数据 语法 使用 ORDER BY 进行排序，ASC 为升序，DESC 为降序，ORDER BY 子句在 SELECT 子句的结尾  单列排序 123456789# 默认按年龄升序SELECT * FROM employeesORDER BY age;# 倒序为SELECT * FROM employeesORDER BY age DESC;  ORDER BY 可以使用列的别名 123SELECT id, salary * 12 AS annual_salFROM employeesORDER BY annual_sal;  多列排序 123SELECT * FROM employeesORDER BY age DESC, id ASC;   分页 语法 123SELECT 字段名FROM 表名LIMIT [位置偏移量], 条目数  查询前 10 条数据 1234567SELECT *FROM employeesLIMIT 0, 10;或者SELECT *FROM employeesLIMIT 10;  查询前 11 到 20 条数据 123SELECT *FRO...</div></div></div></a><a class="pagination-related" href="/2021/10/24/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" title="MongoDB实战：基础入门"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-24</div><div class="info-item-2">MongoDB实战：基础入门</div></div><div class="info-2"><div class="info-item-1">简介什么是 MongoDBMongoDB 是一个文档数据库（以 JSON 为数据模型），由 C++ 编写，旨在为 WEB 应用提供可扩展的高性能数据存储解决方案。文档指的是 “JSON Document”，并非一般我们理解的 Word、PDF 等文档 MongoDB 是一个介于关系型数据库和非关系型数据库之间的产品，是非关系型数据库中功能最丰富、最像关系型数据库的。它支持的数据结构非常松散，数据格式是 BSON，一种类似于 JSON 的二进制存储格式，简称 Binary JSON，和 JSON 一样支持内嵌的文档对象和数组对象，因此可以存储比较复杂的数据结构 MongoDB 最大的特点是它支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系型数据库单表查询的绝大部分功能，而且还支持对数据建立索引。原则上 MySQL 和 Oracle 能做的事，MongoDB 都能做，包括 ACID 事务 MongoDB 在数据库最排名中排第 5，仅次于 Oracle、MySQL 等 RDBMS，在 NoSQL 数据库中排在首位，自诞生依赖，其项目应用广度、社区活跃度指...</div></div></div></a><a class="pagination-related" href="/2022/03/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MySQL/MySQL%20%E4%BB%8E%E8%8F%9C%E9%B8%9F%E5%88%B0%E5%A4%A7%E7%89%9B%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BB%8B%E7%BB%8D/" title="MySQL 从菜鸟到大牛：数据库介绍"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MySQL/MySQL%20%E4%BB%8E%E8%8F%9C%E9%B8%9F%E5%88%B0%E5%A4%A7%E7%89%9B%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BB%8B%E7%BB%8D/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-29</div><div class="info-item-2">MySQL 从菜鸟到大牛：数据库介绍</div></div><div class="info-2"><div class="info-item-1">为什么要使用数据库持久化：把数据保存到可掉电式存储设备中以供之后使用。大多数情况下，特别是企业级应用，数据持久化意味着将内存中的数据保存到硬盘中加以“固化”。而持久化的实现过程大多数通过各种关系型数据库来实现 持久化的主要作用是将内存中的数据存储在关系型数据库中，当然也可以存储在磁盘文件、XML 数据文件中   数据库与数据库管理系统数据库的相关概念DB：数据库（Database） 即存储数据的仓库，其本质是一个文件系统，它保存了一系列有组织的数据 DBMS：数据库管理系统（Database Management System） 是一种操作和管理数据的大型软件，用于建立、使用和维护数据库，对数据库进行统一管理和控制。用户通过数据库管理系统访问数据库表中的数据 SQL：结构化查询语言（Structured Query Language） 专门用来与数据库通信的语言  常见的数据库管理系统排名目前互联网上常见的数据库管理系统有 Oracle、MySQL、MS SQL Server、DB2、Sybase 等等，以下是 2023 年最新的数据库受欢迎程度排名（查看最新数据库排名：http...</div></div></div></a><a class="pagination-related" href="/2021/11/16/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9ASpringBoot%E6%95%B4%E5%90%88/" title="MongoDB实战：SpringBoot整合"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E%E5%AD%98%E5%82%A8/MongoDB/MongoDB%E5%AE%9E%E6%88%98%EF%BC%9ASpringBoot%E6%95%B4%E5%90%88/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-16</div><div class="info-item-2">MongoDB实战：SpringBoot整合</div></div><div class="info-2"><div class="info-item-1">准备工作 引入依赖 1234&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-data-mongodb&lt;/artifactId&gt;&lt;/dependency&gt;  添加配置文件 1234spring:  data:    mongodb:      uri: mongodb://username:password@ip:port/database?authSource=admin  注入操作对象 12@Resoureprivate MongoTemplate mongoTemplate;  创建实体类 123456789101112131415161718@Data// 表示 user 集合中的一个文档@Document(&quot;user&quot;)public class User &#123;	// 指定文档 id	@Id	private Integer id;		/...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Simon</div><div class="author-info-description">攀登亦是风景</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">53</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">57</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#String-%E7%B1%BB%E5%9E%8B%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">String 类型的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-String-%E7%B1%BB%E5%9E%8B%E5%86%85%E5%AD%98%E5%BC%80%E9%94%80%E5%A4%A7"><span class="toc-number">1.1.</span> <span class="toc-text">为什么 String 类型内存开销大</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E4%BB%80%E4%B9%88%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%AF%E4%BB%A5%E8%8A%82%E7%9C%81%E5%86%85%E5%AD%98"><span class="toc-number">1.2.</span> <span class="toc-text">用什么数据结构可以节省内存</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis-%E7%BB%9F%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">Redis 统计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E7%BB%9F%E8%AE%A1"><span class="toc-number">2.1.</span> <span class="toc-text">聚合统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E7%BB%9F%E8%AE%A1"><span class="toc-number">2.2.</span> <span class="toc-text">排序统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%80%BC%E7%8A%B6%E6%80%81%E7%BB%9F%E8%AE%A1"><span class="toc-number">2.3.</span> <span class="toc-text">二值状态统计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%95%B0%E7%BB%9F%E8%AE%A1"><span class="toc-number">2.4.</span> <span class="toc-text">基数统计</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GEO-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">GEO 底层原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E6%9C%BA%E5%88%B6%EF%BC%9A%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%98%BB%E5%A1%9E"><span class="toc-number">4.</span> <span class="toc-text">异步机制：如何避免单线程模型的阻塞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-%E5%AE%9E%E4%BE%8B%E6%9C%89%E5%93%AA%E4%BA%9B%E9%98%BB%E5%A1%9E%E7%82%B9"><span class="toc-number">4.1.</span> <span class="toc-text">Redis 实例有哪些阻塞点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E7%9A%84%E5%AD%90%E7%BA%BF%E7%A8%8B%E6%9C%BA%E5%88%B6"><span class="toc-number">4.2.</span> <span class="toc-text">异步的子线程机制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BF%E6%8D%A2%E7%AD%96%E7%95%A5%EF%BC%9A%E7%BC%93%E5%AD%98%E6%BB%A1%E4%BA%86%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="toc-number">5.</span> <span class="toc-text">替换策略：缓存满了怎么办</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-%E7%BC%93%E5%AD%98%E6%9C%89%E5%93%AA%E4%BA%9B%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5"><span class="toc-number">5.1.</span> <span class="toc-text">Redis 缓存有哪些淘汰策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LRU-%E7%AE%97%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">LRU 算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE"><span class="toc-number">5.3.</span> <span class="toc-text">淘汰策略使用建议</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%84%91%E8%A3%82%EF%BC%9A%E4%B8%80%E6%AC%A1%E5%A5%87%E6%80%AA%E7%9A%84%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1"><span class="toc-number">6.</span> <span class="toc-text">脑裂：一次奇怪的数据丢失</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%91%E8%A3%82%E5%87%BA%E7%8E%B0%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="toc-number">6.1.</span> <span class="toc-text">脑裂出现的场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%BA%94%E5%AF%B9%E8%84%91%E8%A3%82%E9%97%AE%E9%A2%98"><span class="toc-number">6.2.</span> <span class="toc-text">如何应对脑裂问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis%E6%94%AF%E6%92%91%E7%A7%92%E6%9D%80%E5%9C%BA%E6%99%AF%E7%9A%84%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF%E5%92%8C%E5%AE%9E%E8%B7%B5%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-number">7.</span> <span class="toc-text">Redis支撑秒杀场景的关键技术和实践都有哪些</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-%E5%8F%AF%E4%BB%A5%E5%9C%A8%E7%A7%92%E6%9D%80%E5%9C%BA%E6%99%AF%E7%9A%84%E5%93%AA%E4%BA%9B%E7%8E%AF%E8%8A%82%E5%8F%91%E6%8C%A5%E4%BD%9C%E7%94%A8"><span class="toc-number">7.1.</span> <span class="toc-text">Redis 可以在秒杀场景的哪些环节发挥作用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83%E4%BC%98%E5%8C%96%EF%BC%9A%E5%A6%82%E4%BD%95%E5%BA%94%E5%AF%B9%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C"><span class="toc-number">8.</span> <span class="toc-text">数据分布优化：如何应对数据倾斜</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E5%80%BE%E6%96%9C"><span class="toc-number">8.1.</span> <span class="toc-text">什么是数据倾斜</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/02/27/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20Canal/" title="数据同步工具 Canal"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20Canal/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据同步工具 Canal"/></a><div class="content"><a class="title" href="/2025/02/27/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20Canal/" title="数据同步工具 Canal">数据同步工具 Canal</a><time datetime="2025-02-26T16:01:53.000Z" title="发表于 2025-02-27 00:01:53">2025-02-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/09/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20DataX/" title="数据同步工具 DataX"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20DataX/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据同步工具 DataX"/></a><div class="content"><a class="title" href="/2025/02/09/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20DataX/" title="数据同步工具 DataX">数据同步工具 DataX</a><time datetime="2025-02-09T05:56:36.000Z" title="发表于 2025-02-09 13:56:36">2025-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/21/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/ES6%20%E6%95%99%E7%A8%8B/" title="ES6 教程"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/ES6%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6 教程"/></a><div class="content"><a class="title" href="/2025/01/21/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/ES6%20%E6%95%99%E7%A8%8B/" title="ES6 教程">ES6 教程</a><time datetime="2025-01-21T10:29:42.000Z" title="发表于 2025-01-21 18:29:42">2025-01-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/08/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%BA%93/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" title="JQuery 从入门到精通"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%BA%93/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JQuery 从入门到精通"/></a><div class="content"><a class="title" href="/2025/01/08/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%BA%93/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" title="JQuery 从入门到精通">JQuery 从入门到精通</a><time datetime="2025-01-08T06:31:53.000Z" title="发表于 2025-01-08 14:31:53">2025-01-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/12/24/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/K8S/K8S%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/" title="K8S 从入门到实践"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/K8S/K8S%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="K8S 从入门到实践"/></a><div class="content"><a class="title" href="/2024/12/24/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/K8S/K8S%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/" title="K8S 从入门到实践">K8S 从入门到实践</a><time datetime="2024-12-24T14:51:03.000Z" title="发表于 2024-12-24 22:51:03">2024-12-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Simon</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

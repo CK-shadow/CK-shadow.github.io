@@ -1,0 +1,349 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据结构与算法之图 | Simon 的书柜</title><meta name="author" content="Simon"><meta name="copyright" content="Simon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="什么是图什么是图数据之间的关系有 3 种，分别是 “一对一”、”一对多” 和 “多对多”，前两种关系的数据可分别用线性表和树结构存储，而 “多对多” 的关系就需要用图来表示了，以下就是图的结构示意图：   图的术语邻接：如果两个顶点被同一条边连接，就称这两个顶点是邻接的 路径：两个顶点之间边的序列叫做路径,可能会有多种路径 连通图：如果至少有一条路径可以连接所有的顶点，那么这个图被称作连通的 有向">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法之图">
+<meta property="og:url" content="http://yoursite.com/2020/07/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/index.html">
+<meta property="og:site_name" content="Simon 的书柜">
+<meta property="og:description" content="什么是图什么是图数据之间的关系有 3 种，分别是 “一对一”、”一对多” 和 “多对多”，前两种关系的数据可分别用线性表和树结构存储，而 “多对多” 的关系就需要用图来表示了，以下就是图的结构示意图：   图的术语邻接：如果两个顶点被同一条边连接，就称这两个顶点是邻接的 路径：两个顶点之间边的序列叫做路径,可能会有多种路径 连通图：如果至少有一条路径可以连接所有的顶点，那么这个图被称作连通的 有向">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/preview.jpg">
+<meta property="article:published_time" content="2020-07-08T06:07:06.000Z">
+<meta property="article:modified_time" content="2026-05-16T07:44:27.244Z">
+<meta property="article:author" content="Simon">
+<meta property="article:tag" content="计算机基础">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="图">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/preview.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "数据结构与算法之图",
+  "url": "http://yoursite.com/2020/07/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/",
+  "image": "https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/preview.jpg",
+  "datePublished": "2020-07-08T06:07:06.000Z",
+  "dateModified": "2026-05-16T07:44:27.244Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Simon",
+      "url": "http://yoursite.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2020/07/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据结构与算法之图',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">53</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">57</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/preview.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Simon 的书柜</span></a><a class="nav-page-title" href="/"><span class="site-name">数据结构与算法之图</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">数据结构与算法之图</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-07-08T06:07:06.000Z" title="发表于 2020-07-08 14:07:06">2020-07-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-16T07:44:27.244Z" title="更新于 2026-05-16 15:44:27">2026-05-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="什么是图"><a href="#什么是图" class="headerlink" title="什么是图"></a>什么是图</h1><h2 id="什么是图-1"><a href="#什么是图-1" class="headerlink" title="什么是图"></a>什么是图</h2><p>数据之间的关系有 3 种，分别是 “一对一”、”一对多” 和 “多对多”，前两种关系的数据可分别用线性表和树结构存储，而 “多对多” 的关系就需要用图来表示了，以下就是图的结构示意图：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210621001000736.png" alt="image-20210621001000736"></p>
+<hr>
+<h2 id="图的术语"><a href="#图的术语" class="headerlink" title="图的术语"></a>图的术语</h2><p>邻接：如果两个顶点被同一条边连接，就称这两个顶点是邻接的</p>
+<p>路径：两个顶点之间边的序列叫做路径,可能会有多种路径</p>
+<p>连通图：如果至少有一条路径可以连接所有的顶点，那么这个图被称作连通的</p>
+<p>有向图：如果图的边只能向一个方向移动，那么这个图被称作有向图</p>
+<p>带权图：如果图的边被赋予了权值，那么这个图被称作有向图</p>
+<p>入度：有向图的某个顶点作为终点的次数和</p>
+<p>出度：有向图的某个顶点作为起点的次数和</p>
+<hr>
+<h2 id="生成树和生成森林"><a href="#生成树和生成森林" class="headerlink" title="生成树和生成森林"></a>生成树和生成森林</h2><p>对连通图进行遍历，过程中所经过的边和顶点的组合可以看做是一棵普通树，通常称为生成树</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210626191303608.png" alt="image-20210626191303608"></p>
+<p>连通图中，由于任意两顶点之间可能含有多条通路，遍历连通图的方式有多种，往往一张连通图可能有多种不同的生成树与之对应</p>
+<p>连通图的生成树必须满足以下两个条件：</p>
+<ol>
+<li>包含连通图中所有的顶点</li>
+<li>任意两顶点之间有且仅有一条通路</li>
+</ol>
+<p>因此，连通图的生成树具有这样的特征，即生成树中<code>边的数量 = 顶点数 - 1</code></p>
+<p>生成树是对应连通图来说，而生成森林是对应非连通图来说的</p>
+<p>非连通图可分解为多个连通分量，而每个连通分量又各自对应多个生成树（至少是 1 棵），因此与整个非连通图相对应的，是由多棵生成树组成的生成森林</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210626220954153.png" alt="image-20210626220954153"></p>
+<p>这是一张非连通图，可分解为 3 个连通分量，其中各个连通分量对应的生成树如图 3所示：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210626221017981.png" alt="image-20210626221017981"></p>
+<p>多个连通分量对应的多棵生成树就构成了整个非连通图的生成森林</p>
+<hr>
+<h1 id="图的存储结构"><a href="#图的存储结构" class="headerlink" title="图的存储结构"></a>图的存储结构</h1><h2 id="图的存储结构之邻接表"><a href="#图的存储结构之邻接表" class="headerlink" title="图的存储结构之邻接表"></a>图的存储结构之邻接表</h2><p>通常，图更多的是采用链表存储，具体的存储方法有 3 种，分别是邻接表、邻接矩阵和十字链表，首先看一下图的邻接表存储法。邻接表既适用于存储无向图，也适用于存储有向图</p>
+<p> 在具体讲解邻接表存储图的实现方法之前，先普及一个”邻接点”的概念。在图中，如果两个点相互连通，即通过其中一个顶点，可直接找到另一个顶点，则称它们互为邻接点</p>
+<p>邻接指的是图中顶点之间有边或者弧的存在</p>
+<p>邻接表存储图的实现方式是，给图中的各个顶点独自建立一个链表，用节点存储该顶点，用链表中其他节点存储各自的临界点</p>
+<p>与此同时，为了便于管理这些链表，通常会将所有链表的头节点存储到数组中（也可以用链表存储）。也正因为各个链表的头节点存储的是各个顶点，因此各链表在存储临界点数据时，仅需存储该邻接顶点位于数组中的位置下标即可</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210627174519073.png" alt="image-20210627174519073"></p>
+<p>邻接表存储方式和 HashMap 类似，都是数组加链表的结构。拿顶点 V1 来说，与其相关的邻接点分别为 V2 和 V3，因此存储 V1 的链表中存储的是 V2 和 V3 在数组中的位置下标 1 和 2</p>
+<p>因此，存储各顶点的节点结构分为两部分，数据域和指针域，如果是带权图的话，则还需要添加一个域来存储权值</p>
+<hr>
+<h2 id="图的存储结构之邻接矩阵"><a href="#图的存储结构之邻接矩阵" class="headerlink" title="图的存储结构之邻接矩阵"></a>图的存储结构之邻接矩阵</h2><p>图的邻接矩阵存储方式是用两个数组来表示图。一个一维数组存储图中顶点信息，一个二维数组（邻接矩阵）存储图中的边或弧的信息</p>
+<p>设图 G 有 n 个顶点，则邻接矩阵是一个 n*n 的方阵，定义为：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210719223523430.png" alt="image-20210719223523430"></p>
+<p> 看一个实例，下图左就是一个无向图</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210719223544095.png" alt="image-20210719223544095"></p>
+<p>从上面可以看出，无向图的边数组是一个对称矩阵。所谓对称矩阵就是n阶矩阵的元满足 aij &#x3D; aji。即从矩阵的左上角到右下角的主对角线为轴，右上角的元和左下角相对应的元全都是相等的</p>
+<p>从这个矩阵中，很容易知道图中的信息</p>
+<ol>
+<li>要判断任意两顶点是否有边无边就很容易了</li>
+<li>要知道某个顶点的度，其实就是这个顶点 vi 在邻接矩阵中第i行或（第i列）的元素之和</li>
+<li>求顶点vi的所有邻接点就是将矩阵中第i行元素扫描一遍，<code>arc[i][j]</code>为1就是邻接点</li>
+</ol>
+<p>而有向图讲究入度和出度，顶点vi的入度为1，正好是第i列各数之和。顶点vi的出度为2，即第i行的各数之和</p>
+<p>若图 G 是网图，有 n 个顶点，则邻接矩阵是一个n*n的方阵，定义为：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210719223830280.png" alt="image-20210719223830280"></p>
+<p>这里的 wij 表示 (vi,vj) 上的权值。无穷大表示一个计算机允许的、大于所有边上权值的值，也就是一个不可能的极限值。下面左图就是一个有向网图，右图就是它的邻接矩阵</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210719223957763.png" alt="image-20210719223957763"></p>
+<hr>
+<h2 id="图的存储结构之十字链表"><a href="#图的存储结构之十字链表" class="headerlink" title="图的存储结构之十字链表"></a>图的存储结构之十字链表</h2><p>对于有向图来说，邻接表是有缺陷的。关心了出度问题，想了解入度就必须要遍历整个图才知道，反之，逆邻接表解决了入度却不了解出度情况。下面介绍的这种有向图的存储方法：十字链表，就是把邻接表和逆邻接表结合起来的</p>
+<p>十字链表存储有向图（网）的方式与邻接表有一些相同，都以图（网）中各顶点为首元节点建立多条链表，同时为了便于管理，还将所有链表的首元节点存储到同一数组（或链表）中</p>
+<p>其中，建立个各个链表中用于存储顶点的首元节点结构如图 1 所示：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210719234505866.png" alt="image-20210719234505866"></p>
+<p>从图可以看出，首元节点中有一个数据域和两个指针域（分别用 firstin 和 firstout 表示）：</p>
+<ul>
+<li>firstin 指针用于连接以当前顶点为弧头的其他顶点构成的链表</li>
+<li>firstin 指针用于连接以当前顶点为弧头的其他顶点构成的链表</li>
+<li>data 用于存储该顶点中的数据</li>
+</ul>
+<p>由此可以看出，十字链表实质上就是为每个顶点建立两个链表，分别存储以该顶点为弧头的所有顶点和以该顶点为弧尾的所有顶点</p>
+<p>注意，存储图的十字链表中，各链表中首元节点与其他节点的结构并不相同，图 1 所示仅是十字链表中首元节点的结构，链表中其他普通节点的结构如图所示：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210719234705295.png" alt="image-20210719234705295"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210719234715239.png" alt="image-20210719234715239"></p>
+<ul>
+<li>tailvex 用于存储以首元节点为弧尾的顶点位于数组中的位置下标</li>
+<li>headvex 用于存储以首元节点为弧头的顶点位于数组中的位置下标</li>
+<li>hlink 指针：用于链接下一个存储以首元节点为弧头的顶点的节点</li>
+<li>tlink 指针：用于链接下一个存储以首元节点为弧尾的顶点的节点</li>
+<li>tlink 指针：用于链接下一个存储以首元节点为弧尾的顶点的节点</li>
+</ul>
+<p>比如说，用十字链表存储图 3a) 中的有向图，存储状态如图所示：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210719235138640.png" alt="image-20210719235138640"></p>
+<p>拿图 3 中的顶点 V1 来说，通过构建好的十字链表得知，以该顶点为弧头的顶点只有存储在数组中第 3 位置的 V4（因此该顶点的入度为 1），而以该顶点为弧尾的顶点有两个，分别为存储数组第 1 位置的 V2 和第 2 位置的 V3（因此该顶点的出度为 2）</p>
+<p>对于图各个链表中节点来说，由于表示的都是该顶点的出度或者入度，因此没有先后次序之分</p>
+<hr>
+<h1 id="图的遍历"><a href="#图的遍历" class="headerlink" title="图的遍历"></a>图的遍历</h1><h2 id="图的遍历之深度优先搜索"><a href="#图的遍历之深度优先搜索" class="headerlink" title="图的遍历之深度优先搜索"></a>图的遍历之深度优先搜索</h2><p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210720230148185.png" alt="image-20210720230148185"></p>
+<p>深度优先搜索的过程类似于树的先序遍历，首先从例子中体会深度优先搜索。例如上图是一个无向图，采用深度优先算法遍历这个图的过程为：</p>
+<ol>
+<li>首先任意找一个未被遍历过的顶点，例如从 V1 开始，由于 V1 率先访问过了，所以，需要标记 V1 的状态为访问过</li>
+<li>然后遍历 V1 的邻接点，例如访问 V2 ，并做标记，然后访问 V2 的邻接点，例如 V4 （做标记），然后 V8 ，然后 V5</li>
+<li>当继续遍历 V5 的邻接点时，根据之前做的标记显示，所有邻接点都被访问过了。此时，从 V5 回退到 V8 ，看 V8 是否有未被访问过的邻接点，如果没有，继续回退到 V4 ， V2 ， V1 </li>
+<li>通过查看 V1 ，找到一个未被访问过的顶点 V3 ，继续遍历，然后访问 V3 邻接点 V6 ，然后 V7</li>
+<li>由于 V7 没有未被访问的邻接点，所有回退到 V6 ，继续回退至 V3 ，最后到达 V1 ，发现没有未被访问的</li>
+<li>最后一步需要判断是否所有顶点都被访问，如果还有没被访问的，以未被访问的顶点为第一个顶点，继续依照上边的方式进行遍历</li>
+</ol>
+<p>最后一步需要判断是否所有顶点都被访问，如果还有没被访问的，以未被访问的顶点为第一个顶点，继续依照上边的方式进行遍历：</p>
+<p>V1 -&gt; V2 -&gt; V4 -&gt; V8 -&gt; V5 -&gt; V3 -&gt; V6 -&gt; V7</p>
+<p>所谓深度优先搜索，是从图中的一个顶点出发，每次遍历当前访问顶点的临界点，一直到访问的顶点没有未被访问过的临界点为止。然后采用依次回退的方式，查看来的路上每一个顶点是否有其它未被访问的临界点。访问完成后，判断图中的顶点是否已经全部遍历完成，如果没有，以未访问的顶点为起始点，重复上述过程</p>
+<p>深度优先搜索是一个不断回溯的过程</p>
+<hr>
+<h2 id="图的遍历之广度优先搜索"><a href="#图的遍历之广度优先搜索" class="headerlink" title="图的遍历之广度优先搜索"></a>图的遍历之广度优先搜索</h2><p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210720230910853.png" alt="image-20210720230910853"></p>
+<p>广度优先搜索类似于树的层次遍历。从图中的某一顶点出发，遍历每一个顶点时，依次遍历其所有的邻接点，然后再从这些邻接点出发，同样依次访问它们的邻接点。按照此过程，直到图中所有被访问过的顶点的邻接点都被访问到</p>
+<p>最后还需要做的操作就是查看图中是否存在尚未被访问的顶点，若有，则以该顶点为起始点，重复上述遍历的过程</p>
+<p>以上无向图为例，假设 V1 作为起始点，遍历其所有的邻接点 V2 和 V3 ，以 V2 为起始点，访问邻接点 V4 和 V5 ，以  V3 为起始点，访问邻接点 V6 、 V7 ，以 V4 为起始点访问 V8 ，以 V5 为起始点，由于 V5  所有的起始点已经全部被访问，所有直接略过， V6 和 V7 也是如此</p>
+<p>以 V1 为起始点的遍历过程结束后，判断图中是否还有未被访问的点，由于图 1 中没有了，所以整个图遍历结束。遍历顶点的顺序为：</p>
+<p>V1 -&gt; V2 -&gt; v3 -&gt; V4 -&gt; V5 -&gt; V6 -&gt; V7 -&gt; V8</p>
+<hr>
+<h1 id="最小生成树算法"><a href="#最小生成树算法" class="headerlink" title="最小生成树算法"></a>最小生成树算法</h1><h2 id="最小生成树算法之普利姆算法"><a href="#最小生成树算法之普利姆算法" class="headerlink" title="最小生成树算法之普利姆算法"></a>最小生成树算法之普利姆算法</h2><p>对于一个带权的无向连通图，其每个生成树所有边上的权值之和可能不同，我们把所有边上权值之和最小的生成树称为图的最小生成树<br>普里姆算法是以其中某一顶点为起点，逐步寻找各个顶点上最小权值的边来构建最小生成树<br>其中运用到了回溯，贪心的思想。</p>
+<p><strong>算法思路</strong></p>
+<p>设图G&#x3D;(V,E),U是顶点集V的一个非空子集。假设(u,v)是一条具有最小权值的边。当中u∈U,v∈V-U,则必存在一棵包括边(u,v)的最小生成树</p>
+<p>上述的性质能够通过反证法证明。假设(u,v)不包括在G的最小生成树T中。那么，T的路径中必定存在一条连通U和V-U的边，假设将这条边以(u,v)来替换，我们将获得一个权重更低的生成树，这与T是最小生成树矛盾.既然MST满足贪婪选择属性。那么。求解最小生成树的问题就简化了非常多</p>
+<p>总结一下，详细的步骤大概例如以下：</p>
+<ol>
+<li>构建一棵空的最小生成树 U 和一个集合 V，集合 V 中包含着图中所有的点</li>
+<li>在 V 中随机选取一个点放入生成树 U 中，并将该点从集合 V 中删除，此时的集合为 V - T</li>
+<li>遍历集合 V，获得 V 中与生成树 U 中的点相连且权值最小的点，加入生成树 U 中，同时从 V 中删除该点</li>
+<li>重复 3 的操作，直至集合 V 为空</li>
+</ol>
+<p>以上图为例，来对普利姆算法进行演示</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210722002624890.png" alt="image-20210722002624890"></p>
+<p>第一步操作，随机选取一个点（此例从顶点A开始）</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210722002805797.png" alt="image-20210722002805797"></p>
+<p>第二步，剩余集合中，只有B、G与集合 U 中的点相连，且 AB 间的权值最小，因此将 B 移入生成树 U 中</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210722002938787.png" alt="image-20210722002938787"></p>
+<p>第三步，剩余集合中，有 C、F、G 与集合 U 中的点相连，且 BF 间权值最小，因此再将 F 点移入生成树 U 中</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210722003104564.png" alt="image-20210722003104564"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210722003114914.png" alt="image-20210722003114914"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210722003128962.png" alt="image-20210722003128962"></p>
+<p>不断重复上述操作，直至剩余集合为空，此时的 U 即为该图的最小生成树</p>
+<hr>
+<h2 id="最小生成树算法之迪杰斯特拉算法"><a href="#最小生成树算法之迪杰斯特拉算法" class="headerlink" title="最小生成树算法之迪杰斯特拉算法"></a>最小生成树算法之迪杰斯特拉算法</h2><p><strong>算法思路</strong></p>
+<p>设G&#x3D;(V,E)是一个带权有向图，把图中顶点集合V分成两组，第一组为已求出最短路径的顶点集合（用S表示，初始时S中只有一个源点，以后每求得一条最短路径 , 就将加入到集合S中，直到全部顶点都加入到S中，算法就结束了），第二组为其余未确定最短路径的顶点集合（用U表示），按最短路径长度的递增次序依次把第二组的顶点加入S中。在加入的过程中，总保持从源点v到S中各顶点的最短路径长度不大于从源点v到U中任何顶点的最短路径长度。此外，每个顶点对应一个距离，S中的顶点的距离就是从v到此顶点的最短路径长度，U中的顶点的距离，是从v到此顶点只包括S中的顶点为中间顶点的当前最短路径长度</p>
+<p>总结一下，详细的步骤大概例如以下：</p>
+<ol>
+<li>初始时，S只包含起点s；U包含除s外的其他顶点，且U中顶点的距离为”起点s到该顶点的距离</li>
+<li>从U中选出”距离最短的顶点k”，并将顶点k加入到S中；同时，从U中移除顶点k</li>
+<li>更新U中各个顶点到起点s的距离。之所以更新U中顶点的距离，是由于上一步中确定了k是求出最短路径的顶点，从而可以利用k来更新其它顶点的距离</li>
+<li>重复步骤(2)和(3)，直到遍历完所有顶点</li>
+</ol>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724165755534.png" alt="image-20210724165755534"></p>
+<p>以上图为例，来对迪杰斯特拉算法进行演示</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724171055451.png" alt="image-20210724171055451"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724171306770.png" alt="image-20210724171306770"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724171604106.png" alt="image-20210724171604106"></p>
+<p>第一步，以点 1 为起始点，此时点 1 可以到达两个点，分别是点 2 和点 8，路径 1 - 2 长度为 4，路径 1 - 8 长度为 8 ，最短路径为 4，因此将点 1 - 2 连通</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724171848981.png" alt="image-20210724171848981"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172132803.png" alt="image-20210724172132803"></p>
+<p>第二步，连通了点 1 和点 2 之后，点 1 就又新增了两条可达路径，分别是 1 - 2 - 8，长度为 7，1 - 2 - 3，长度为 12；再未连通的点中， 1 - 2 - 8 的路径长度是最小的，因此将 1 - 2 - 8 相连</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172217538.png" alt="image-20210724172217538"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172357182.png" alt="image-20210724172357182"></p>
+<p>第三步，连通点 8 后，再次新增了两条路径，分别是 1 - 2 - 8 - 9，长度为 8；1 - 2 - 8 - 7，长度为 13，此时未连通的点中长度最短的为 1 -2 - 8 - 9，因此将 1 - 2 - 8 - 9 相连</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172432871.png" alt="image-20210724172432871"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172442401.png" alt="image-20210724172442401"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172622655.png" alt="image-20210724172622655"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172631930.png" alt="image-20210724172631930"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172647733.png" alt="image-20210724172647733"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172659724.png" alt="image-20210724172659724"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172712219.png" alt="image-20210724172712219"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172719635.png" alt="image-20210724172719635"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172732265.png" alt="image-20210724172732265"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210724172740814.png" alt="image-20210724172740814"></p>
+<p>最后，重复执行上述过程，直至将所有的点连通</p>
+<hr>
+<h2 id="最小生成树算法之克鲁斯卡尔算法"><a href="#最小生成树算法之克鲁斯卡尔算法" class="headerlink" title="最小生成树算法之克鲁斯卡尔算法"></a>最小生成树算法之克鲁斯卡尔算法</h2><p><strong>算法思路</strong></p>
+<p>Prim算法是找点，Kruscal算法则是从边出发</p>
+<ol>
+<li>把所有的边和这条边代表的权值用一个数组存储起来，并按权值大小给数组排序（升序）</li>
+<li>按顺序从数组中拿出一条边，检查这条边是否与到目前为止形成的树构成环，如果形成了环，就丢弃它；如果没有，就把这条边加入树中</li>
+<li>重复步骤 2，直到树中有 <em>n-1</em> 条边为止</li>
+</ol>
+<p>以下是步骤示意图</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210725010226435.png" alt="image-20210725010226435"></p>
+<p>第一步，在该图中，权值最小的边是 EF，因此连接 EF</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210725010343373.png" alt="image-20210725010343373"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210725010355117.png" alt="image-20210725010355117"></p>
+<p>第三步之后，权值最小的边是 CE，但是连接 CE 之后，CDE 之间就形成了一个闭环，因此跳过 CE 和 CF，连接 BF</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210725010404816.png" alt="image-20210725010404816"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210725010557387.png" alt="image-20210725010557387"></p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210725010606982.png" alt="image-20210725010606982"></p>
+<p>此时一共有 6 条边，正好等于 点的数量 - 1</p>
+<p>在克鲁斯卡尔算法中，最复杂的地方在于如何判断加入一条边之后是否形成闭环</p>
+<p>判断方式如下：</p>
+<p>初次添加边之后，将其边两端的两个结点加入到一个集合中。此时再新加入一条边，如果该边的顶点与原有集合中的任一点可通，则加入的原有集合，否则的话创建一个新的集合。如果再次新加入一条边，边两端的顶点分别在两个集合中，则将这两个集合合并。如果一条边的两个顶点均在同一个集合中，则认为新加入的这条边形成了闭环</p>
+<p>以下图为例：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210725011449311.png" alt="image-20210725011449311"></p>
+<p>在上图中，存在这两个点的集合，分别是[1, 4] 和 [0, 2, 3, 5]，接下来权值最小的边是 5，假设连通点 0 - 3，点 0、3 均在同一个集合中，因此认为它形成了闭环</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210725012225169.png" alt="image-20210725012225169"></p>
+<p>点 2 - 3 也是如此，因此我们连通 1 - 2，点 1、2 分别在两个集合中，说明未形成闭环，所以连接点 1 - 2，而这两个点分别在两个集合中，所以将原有的点的集合合并成一个，集合为 [0, 1, 2, 3, 4, 5]，即为最终的结果</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/image-20210725012446892.png" alt="image-20210725012446892"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Simon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/07/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/">http://yoursite.com/2020/07/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://yoursite.com" target="_blank">Simon 的书柜</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a><a class="post-meta__tags" href="/tags/%E5%9B%BE/">图</a></div><div class="post-share"><div class="social-share" data-image="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%9B%BE/preview.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2020/07/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/" title="数据结构与算法之查找算法"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">数据结构与算法之查找算法</div></div><div class="info-2"><div class="info-item-1">查找算法简介什么是查找算法查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的查找。本文简单概括性的介绍了常见的七种查找算法，说是七种，其实二分查找、插值查找以及斐波那契查找都可以归为一类——插值查找。插值查找和斐波那契查找是在二分查找的基础上的优化查找算法 查找算法的定义：根据给定的某个值，在查找表中确定一个其关键字等于给定值的数据元素（或记录）  查找算法分类 静态查找和动态查找 静态或者动态都是针对查找表而言的。动态查找指查找表中有删除和插入操作的表  无序查找和有序查找 无序查找：被查找数列有序无序均可 有序查找：被查找数列必须为有序数列    平均查找长度平均查找长度（Average Search Length，ASL）：需和指定 key 进行比较的关键字的个数的期望值，称为查找算法在查找成功时的平均查找长度 对于含有 n 个数据元素的查找表，查找成功的平均查找长度为：ASL &#x3D; Pi*Ci 的和。Pi：查找表中第 i 个数据元素的概率。Ci：找到第 i 个数据元素时已经比较过的次数  查找算法顺序查找顺序查...</div></div></div></a><a class="pagination-related" href="/2020/05/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E4%BA%8C%E5%8F%89%E6%A0%91/" title="数据结构与算法之二叉树"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E4%BA%8C%E5%8F%89%E6%A0%91/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">数据结构与算法之二叉树</div></div><div class="info-2"><div class="info-item-1">什么是树树的简介 树是一种抽象数据类型或是实现这种抽象数据类型的数据结构，用来模拟具有树状结构性质的数据集合。它是由n（n&gt;0）个有限节点组成一个具有层次关系的集合。把它叫做“树”是因为它看起来像一棵倒挂的树，也就是说它是根朝上，而叶朝下的。它具有以下的特点：  每个节点有零个或多个子节点 没有父节点的节点称为根节点 每一个非根节点有且只有一个父节点 除了根节点外，每个子节点可以分为多个不相交的子树   树的术语  结点：使用树存储结构存储的每一个数据元素都被称为结点 路径：顺着连接结点的边从一个结点走到另一个节点，所经过的结点顺序排列就称为路径 根结点：树顶端的结点称为根结点，如果一个结点没有父结点，那么它就是整棵树的根节点，上图的根结点就是 A 父结点：每个结点（除根结点）都恰好有一条边向上连接到另一个结点，上面这个结点就称为下面这个结点的父结点 子结点：与父结点相反，比如 B 是 E 的父结点，那么 E 就是 B 的子结点 叶结点：如果结点没有任何子结点，那么此结点称为叶结点 空树：如果集合本身为空，那么构成的树就为空树，空树没有结点 子树：全部由子结点构成的树称为子...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2020/05/21/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E4%BA%8C%E5%8F%89%E6%A0%91/" title="数据结构与算法之二叉树"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E4%BA%8C%E5%8F%89%E6%A0%91/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-21</div><div class="info-item-2">数据结构与算法之二叉树</div></div><div class="info-2"><div class="info-item-1">什么是树树的简介 树是一种抽象数据类型或是实现这种抽象数据类型的数据结构，用来模拟具有树状结构性质的数据集合。它是由n（n&gt;0）个有限节点组成一个具有层次关系的集合。把它叫做“树”是因为它看起来像一棵倒挂的树，也就是说它是根朝上，而叶朝下的。它具有以下的特点：  每个节点有零个或多个子节点 没有父节点的节点称为根节点 每一个非根节点有且只有一个父节点 除了根节点外，每个子节点可以分为多个不相交的子树   树的术语  结点：使用树存储结构存储的每一个数据元素都被称为结点 路径：顺着连接结点的边从一个结点走到另一个节点，所经过的结点顺序排列就称为路径 根结点：树顶端的结点称为根结点，如果一个结点没有父结点，那么它就是整棵树的根节点，上图的根结点就是 A 父结点：每个结点（除根结点）都恰好有一条边向上连接到另一个结点，上面这个结点就称为下面这个结点的父结点 子结点：与父结点相反，比如 B 是 E 的父结点，那么 E 就是 B 的子结点 叶结点：如果结点没有任何子结点，那么此结点称为叶结点 空树：如果集合本身为空，那么构成的树就为空树，空树没有结点 子树：全部由子结点构成的树称为子...</div></div></div></a><a class="pagination-related" href="/2020/08/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" title="数据结构与算法之排序算法"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-29</div><div class="info-item-2">数据结构与算法之排序算法</div></div><div class="info-2"><div class="info-item-1">排序算法分类十种常见排序算法可以分为两大类：  比较类排序：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此也称为非线性时间比较类排序 非比较类排序：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此也称为线性时间非比较类排序    算法复杂度  相关概念 稳定：如果 a 原本在 b 前面，而 a&#x3D;b，排序之后 a 仍然在 b 的前面 不稳定：如果 a 原本在 b 的前面，而 a&#x3D;b，排序之后 a 可能会出现在 b 的后面   十大经典排序算法冒泡排序冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端 算法步骤：  比较相邻的元素。如果第一个比第二个大，就交换它们两个 对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对，这样在最后的元素应该会是最大的数 针对所有的元素重复以上的步骤，除了...</div></div></div></a><a class="pagination-related" href="/2020/07/29/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/" title="数据结构与算法之查找算法"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-29</div><div class="info-item-2">数据结构与算法之查找算法</div></div><div class="info-2"><div class="info-item-1">查找算法简介什么是查找算法查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的查找。本文简单概括性的介绍了常见的七种查找算法，说是七种，其实二分查找、插值查找以及斐波那契查找都可以归为一类——插值查找。插值查找和斐波那契查找是在二分查找的基础上的优化查找算法 查找算法的定义：根据给定的某个值，在查找表中确定一个其关键字等于给定值的数据元素（或记录）  查找算法分类 静态查找和动态查找 静态或者动态都是针对查找表而言的。动态查找指查找表中有删除和插入操作的表  无序查找和有序查找 无序查找：被查找数列有序无序均可 有序查找：被查找数列必须为有序数列    平均查找长度平均查找长度（Average Search Length，ASL）：需和指定 key 进行比较的关键字的个数的期望值，称为查找算法在查找成功时的平均查找长度 对于含有 n 个数据元素的查找表，查找成功的平均查找长度为：ASL &#x3D; Pi*Ci 的和。Pi：查找表中第 i 个数据元素的概率。Ci：找到第 i 个数据元素时已经比较过的次数  查找算法顺序查找顺序查...</div></div></div></a><a class="pagination-related" href="/2020/04/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="数据结构与算法之常用数据结构"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-14</div><div class="info-item-2">数据结构与算法之常用数据结构</div></div><div class="info-2"><div class="info-item-1">如何区分算法的好坏算法的效率虽然计算机能快速的完成运算处理，但实际上，它也需要根据输入数据的大小和算法效率来消耗一定的处理器资源。要想编写出能高效运行的程序，就需要考虑到算法的效率 算法的效率主要由以下两个复杂度来评估：  时间复杂度：评估执行程序所需的时间。可以估算出程序对处理器的使用程度 空间复杂度：评估执行程序所需的存储空间。可以估算出程序对计算机内存的使用程度  设计算法时，一般是要先考虑系统环境，然后权衡时间复杂度和空间复杂度，选取一个平衡点。不过，时间复杂度要比空间复杂度更容易产生问题，因此算法研究的主要也是时间复杂度，不特别说明的情况下，复杂度就是指时间复杂度  时间复杂度大 O 表示法算法的时间复杂度通常用大 O 符号表述，定义为 T[n] &#x3D; O(f(n))。称函数 T(n) 以 f(n) 为界或者称 T(n) 受限于 f(n)。  如果一个问题的规模是 n，解这一问题的某一算法所需要的时间为 T(n)。T(n) 称为这一算法的时间复杂度。当输入量 n 逐渐加大时，时间复杂度的极限情形称为算法的渐近时间复杂度 推导大O阶  用常数 1 来取代运行时间中...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Simon</div><div class="author-info-description">攀登亦是风景</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">53</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">57</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%9B%BE"><span class="toc-number">1.</span> <span class="toc-text">什么是图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%9B%BE-1"><span class="toc-number">1.1.</span> <span class="toc-text">什么是图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E6%9C%AF%E8%AF%AD"><span class="toc-number">1.2.</span> <span class="toc-text">图的术语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%A0%91%E5%92%8C%E7%94%9F%E6%88%90%E6%A3%AE%E6%9E%97"><span class="toc-number">1.3.</span> <span class="toc-text">生成树和生成森林</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">图的存储结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E4%B9%8B%E9%82%BB%E6%8E%A5%E8%A1%A8"><span class="toc-number">2.1.</span> <span class="toc-text">图的存储结构之邻接表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E4%B9%8B%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5"><span class="toc-number">2.2.</span> <span class="toc-text">图的存储结构之邻接矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E4%B9%8B%E5%8D%81%E5%AD%97%E9%93%BE%E8%A1%A8"><span class="toc-number">2.3.</span> <span class="toc-text">图的存储结构之十字链表</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86"><span class="toc-number">3.</span> <span class="toc-text">图的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86%E4%B9%8B%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="toc-number">3.1.</span> <span class="toc-text">图的遍历之深度优先搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86%E4%B9%8B%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="toc-number">3.2.</span> <span class="toc-text">图的遍历之广度优先搜索</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">最小生成树算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95%E4%B9%8B%E6%99%AE%E5%88%A9%E5%A7%86%E7%AE%97%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">最小生成树算法之普利姆算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95%E4%B9%8B%E8%BF%AA%E6%9D%B0%E6%96%AF%E7%89%B9%E6%8B%89%E7%AE%97%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">最小生成树算法之迪杰斯特拉算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95%E4%B9%8B%E5%85%8B%E9%B2%81%E6%96%AF%E5%8D%A1%E5%B0%94%E7%AE%97%E6%B3%95"><span class="toc-number">4.3.</span> <span class="toc-text">最小生成树算法之克鲁斯卡尔算法</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/02/27/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20Canal/" title="数据同步工具 Canal"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20Canal/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据同步工具 Canal"/></a><div class="content"><a class="title" href="/2025/02/27/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20Canal/" title="数据同步工具 Canal">数据同步工具 Canal</a><time datetime="2025-02-26T16:01:53.000Z" title="发表于 2025-02-27 00:01:53">2025-02-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/09/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20DataX/" title="数据同步工具 DataX"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20DataX/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据同步工具 DataX"/></a><div class="content"><a class="title" href="/2025/02/09/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E5%90%8C%E6%AD%A5/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%20DataX/" title="数据同步工具 DataX">数据同步工具 DataX</a><time datetime="2025-02-09T05:56:36.000Z" title="发表于 2025-02-09 13:56:36">2025-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/21/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/ES6%20%E6%95%99%E7%A8%8B/" title="ES6 教程"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/ES6%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ES6 教程"/></a><div class="content"><a class="title" href="/2025/01/21/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF/ES6%20%E6%95%99%E7%A8%8B/" title="ES6 教程">ES6 教程</a><time datetime="2025-01-21T10:29:42.000Z" title="发表于 2025-01-21 18:29:42">2025-01-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/08/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%BA%93/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" title="JQuery 从入门到精通"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%BA%93/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JQuery 从入门到精通"/></a><div class="content"><a class="title" href="/2025/01/08/%E5%89%8D%E7%AB%AF/%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%BA%93/JQuery%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/" title="JQuery 从入门到精通">JQuery 从入门到精通</a><time datetime="2025-01-08T06:31:53.000Z" title="发表于 2025-01-08 14:31:53">2025-01-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/12/24/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/K8S/K8S%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/" title="K8S 从入门到实践"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/K8S/K8S%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="K8S 从入门到实践"/></a><div class="content"><a class="title" href="/2024/12/24/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/K8S/K8S%20%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/" title="K8S 从入门到实践">K8S 从入门到实践</a><time datetime="2024-12-24T14:51:03.000Z" title="发表于 2024-12-24 22:51:03">2024-12-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Simon</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
