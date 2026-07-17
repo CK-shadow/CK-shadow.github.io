@@ -1,0 +1,738 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Vibe Coding 概念大全 | Simon 的书柜</title><meta name="author" content="Simon"><meta name="copyright" content="Simon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="AI 基础概念LLM大语言模型（Large Language Model）是一种能够理解和生成人类语言的 AI 系统。ChatGPT、Claude、Gemini、DeepSeek 都是大语言模型 为什么叫 “大” 模型呢？因为这些模型的参数量非常庞大，动辄几十亿甚至上万亿个参数。参数越多，模型通常越聪明，但也越消耗计算资源 可以把大语言模型理解成一个读过海量书籍和代码的超级学霸，它见过无数的编程案">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vibe Coding 概念大全">
+<meta property="og:url" content="http://yoursite.com/2026/03/07/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/index.html">
+<meta property="og:site_name" content="Simon 的书柜">
+<meta property="og:description" content="AI 基础概念LLM大语言模型（Large Language Model）是一种能够理解和生成人类语言的 AI 系统。ChatGPT、Claude、Gemini、DeepSeek 都是大语言模型 为什么叫 “大” 模型呢？因为这些模型的参数量非常庞大，动辄几十亿甚至上万亿个参数。参数越多，模型通常越聪明，但也越消耗计算资源 可以把大语言模型理解成一个读过海量书籍和代码的超级学霸，它见过无数的编程案">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg">
+<meta property="article:published_time" content="2026-03-06T18:42:08.000Z">
+<meta property="article:modified_time" content="2026-07-17T12:25:28.387Z">
+<meta property="article:author" content="Simon">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="VibeCoding">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Vibe Coding 概念大全",
+  "url": "http://yoursite.com/2026/03/07/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/",
+  "image": "https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg",
+  "datePublished": "2026-03-06T18:42:08.000Z",
+  "dateModified": "2026-07-17T12:25:28.387Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Simon",
+      "url": "http://yoursite.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2026/03/07/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Vibe Coding 概念大全',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">63</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">66</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Simon 的书柜</span></a><a class="nav-page-title" href="/"><span class="site-name">Vibe Coding 概念大全</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Vibe Coding 概念大全</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-06T18:42:08.000Z" title="发表于 2026-03-07 02:42:08">2026-03-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-07-17T12:25:28.387Z" title="更新于 2026-07-17 20:25:28">2026-07-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI/">AI</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="AI-基础概念"><a href="#AI-基础概念" class="headerlink" title="AI 基础概念"></a>AI 基础概念</h1><h2 id="LLM"><a href="#LLM" class="headerlink" title="LLM"></a>LLM</h2><p>大语言模型（Large Language Model）是一种能够理解和生成人类语言的 AI 系统。ChatGPT、Claude、Gemini、DeepSeek 都是大语言模型</p>
+<p>为什么叫 “大” 模型呢？因为这些模型的<strong>参数量</strong>非常庞大，动辄几十亿甚至上万亿个参数。参数越多，模型通常越聪明，但也越消耗计算资源</p>
+<p>可以把大语言模型理解成一个读过海量书籍和代码的超级学霸，它见过无数的编程案例，所以能帮你写代码、解释代码、修复 Bug</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260605172331811.png" alt="image-20260605172331811"></p>
+<p>除了文本大语言模型之外，AI 领域还有专门处理图片的视觉模型（比如 Stable Diffusion）、处理语音的音频模型（比如 Whisper）、以及能同时处理文字、图片、音频的多模态模型（如 GPT-4o、Gemini）。在 AI 编程时，我们主要和文本大语言模型打交道</p>
+<hr>
+<h2 id="Token（词元）"><a href="#Token（词元）" class="headerlink" title="Token（词元）"></a>Token（词元）</h2><p>Token 是 AI 模型处理文本的基本单位，中文叫做 “词元”，是大模型把文字拆分后的最小单元</p>
+<p> AI 服务通常按照 Token 收费。输入的文字和 AI 输出的文字都会消耗 Token。Token 用得越多，花的钱就越多</p>
+<p>在英文中，一个 Token 大约是一个单词或单词的一部分。在中文中，一个汉字通常是 1～2 个 Token。不同模型使用的分词器（Tokenizer）不同，所以同一段文字在不同模型中可能对应不同数量的 Token</p>
+<p>值得一提的是，国产大模型（比如通义千问、DeepSeek）针对中文做了专门优化，1 个 Token 大约可以表示 1.5～1.8 个汉字，比早期的英文模型效率高不少</p>
+<p>AI 服务在计费时，一般会分别计算输入和输出的 Token</p>
+<ul>
+<li>输入 Token：你发给 AI 的内容，比如提示词、代码、文件等</li>
+<li>输出 Token：AI 返回给你的内容，比如回答、生成的代码、工具调用指令等</li>
+</ul>
+<p>一般来说，输出 Token 比输入 Token 更贵。以 Claude Sonnet 4 为例，输入价格是 3 美元 &#x2F; 百万 Token，输出价格是 15 美元 &#x2F; 百万 Token，贵了 5 倍。这是因为生成内容比理解内容更消耗算力</p>
+<p>最简单的一个省 Token 小技巧是：用心编写简洁清晰的提示词，让 AI 一次就能理解你的需求，减少反复对话</p>
+<hr>
+<h2 id="Token-缓存"><a href="#Token-缓存" class="headerlink" title="Token 缓存"></a>Token 缓存</h2><p>Token 缓存是一个能省大钱的机制。简单来说，大模型在处理提示词时，需要做大量的计算。如果连续多次对话，很多内容（比如系统提示词、引用的代码文件）是重复的，每次都重新计算就太浪费了。缓存机制会把这些中间计算结果保存下来，下次遇到相同的前缀内容就直接复用，不仅更快，还更便宜</p>
+<p>缓存相关的 Token 分为两种：</p>
+<ul>
+<li><strong>缓存写入 Token</strong>：AI 第一次处理你的上下文时，会把计算结果存起来，比普通输入略贵一点</li>
+<li><strong>缓存读取 Token</strong>：后续再用相同的上下文时，直接复用缓存，价格甚至可以低到普通输入的 1&#x2F;10，非常便宜</li>
+</ul>
+<p>所以在对话时，尽量保持上下文稳定，比如引用的文件、规则文件不要频繁改动，这样能持续享受缓存优惠</p>
+<p>有时候会发现连续对话比新开对话更省钱，就是因为缓存在起作用</p>
+<hr>
+<h2 id="模型参数"><a href="#模型参数" class="headerlink" title="模型参数"></a>模型参数</h2><p>参数是模型在训练过程中学到的 “知识点”，用数字的形式存储在模型中</p>
+<p>举个好理解的例子，模型在训练时读到了大量 “天空是蓝色的” 这类内容，它就会在参数中记住 “天空” 和 “蓝色” 之间的关联关系。参数越多，模型能记住的知识和关联就越丰富</p>
+<p>参数量直接影响模型的能力和使用成本。参数越多，模型越聪明，但运行时消耗的算力（GPU 计算资源）也越多，所以价格也越贵</p>
+<p>目前主流大模型中，明确公开参数量的有：</p>
+<ul>
+<li>DeepSeek-V4-Pro：1.6 万亿参数（采用 MoE 混合专家架构，实际激活 490 亿）</li>
+<li>DeepSeek-V4-Flash：2840 亿参数（激活 130 亿）</li>
+<li>Qwen3.7-Max：通义千问系列最新旗舰模型（专为智能体设计，编程和推理能力极强）</li>
+<li>Llama 4 Scout：1090 亿参数（Meta 开源模型，激活 170 亿）</li>
+</ul>
+<p>值得一提的是，即使是同一系列的大模型，厂商也会提供不同参数量的版本可供选择</p>
+<hr>
+<h2 id="模型训练和推理"><a href="#模型训练和推理" class="headerlink" title="模型训练和推理"></a>模型训练和推理</h2><p>训练（Training）是让 AI 模型从大量数据中学习知识的过程。这个过程需要海量的计算资源和时间，一般由 AI 公司完成。绝大多数情况下，不需要自己训练模型，直接用训练好的成品就行</p>
+<p>推理（Inference）是模型训练完成、具备了知识之后，用学到的知识来回答问题、生成内容的过程。日常使用 AI 工具，比如和 ChatGPT 对话、让 Cursor 写代码，本质上都是 AI 模型在进行推理</p>
+<hr>
+<h2 id="模型微调"><a href="#模型微调" class="headerlink" title="模型微调"></a>模型微调</h2><p>微调是在已有模型的基础上，用特定领域的数据继续训练，让模型在某个领域表现更好</p>
+<p>比如，可以用大量的医学资料微调一个模型，让它成为医学专家。或者用公司的代码库微调，让它更了解你的项目风格</p>
+<p>对于普通用户来说，微调成本较高，一般不需要自己做，直接使用现成的模型就够了。不过，很多大模型应用开发平台（比如阿里云百炼、火山引擎等）都提供了模型微调的能力，降低了微调的门槛</p>
+<hr>
+<h2 id="模型蒸馏"><a href="#模型蒸馏" class="headerlink" title="模型蒸馏"></a>模型蒸馏</h2><p>模型蒸馏，也叫知识蒸馏（Knowledge Distillation），是一种把大模型的知识 “压缩” 到小模型里的技术</p>
+<p>就像一个经验丰富的高级开发带新人，高级开发（教师模型）不只是告诉新人最终答案，还会分享自己的推理过程和思考逻辑。新人（学生模型）通过学习这些思维方式，能做出接近的决策，但成本低得多</p>
+<p>蒸馏的核心在于 “软标签”。举个例子，让大模型识别一张动物图片，它不会只说 “这是狗”，而是会给出一组概率：狗 92%、猫 5%、狼 3%。那个 5% 的 “猫” 其实包含了珍贵的信息，说明这张图里的动物和猫有某些相似特征。小模型通过学习这些概率分布，能学到类别之间的微妙关系，效果比只看 “对或错” 的硬标签好得多</p>
+<p>蒸馏的好处非常多，比如成本降低 5～30 倍、推理速度提升 4 倍、性能保留 95% 以上。典型案例就是 DeepSeek-R1 的蒸馏版本，用 671 亿参数的教师模型训练出 32 亿参数的学生模型，性能依然出色。最新的 DeepSeek-V4 系列也延续了这一思路，通过 MoE 架构让 1.6 万亿参数的模型仅激活 490 亿参数就能达到强大的推理能力</p>
+<p>蒸馏和微调有什么区别呢</p>
+<p>微调是在已有模型基础上用特定数据继续训练，让它在某个领域更专业；蒸馏是把大模型的知识转移到小模型里，让小模型更轻量、更便宜</p>
+<hr>
+<h2 id="上下文窗口"><a href="#上下文窗口" class="headerlink" title="上下文窗口"></a>上下文窗口</h2><p>上下文窗口（Context Window）是指 AI 模型一次能 “记住” 的最大内容容量，用 Token 来衡量</p>
+<p>不同模型的上下文窗口大小不同：</p>
+<ul>
+<li>GPT-4o：128K Token（约 10 万中文字）</li>
+<li>GPT-5.5：1M Token（约 75 万中文字）</li>
+<li>Claude Opus 4.8：标准 200K Token，支持扩展到 1M Token（约 75 万中文字）</li>
+<li>Gemini 3.1 Pro：1M Token（约 75 万中文字），且支持同时处理文字、图片、音频、视频</li>
+<li>DeepSeek-V4-Pro：1M Token（约 75 万中文字）</li>
+</ul>
+<p>上下文窗口越大，AI 能处理的代码量就越多，能记住的对话历史就越长。如果你的项目代码很多，或者你不确定 AI 能否在一次对话中完成任务，选择上下文窗口大的模型会更合适</p>
+<p>但要注意，上下文窗口越大，每次请求消耗的 Token 也越多，成本也会更高。比如在 Cursor 中使用 Claude Sonnet 模型时，单次请求超过 20 万 Token，输入价格就会翻倍</p>
+<hr>
+<h1 id="提示词相关"><a href="#提示词相关" class="headerlink" title="提示词相关"></a>提示词相关</h1><h2 id="提示词（Prompt）"><a href="#提示词（Prompt）" class="headerlink" title="提示词（Prompt）"></a>提示词（Prompt）</h2><p>提示词是给 AI 的指令或问题。在 AI 编程中，提示词就是用自然语言描述的需求</p>
+<p>提示词的质量直接决定了 AI 输出的质量。一个好的提示词应该：</p>
+<ul>
+<li>具体明确</li>
+<li>包含必要的背景信息</li>
+<li>说明期望的输出格式</li>
+</ul>
+<p>比如，“做一个网站” 是一个模糊的提示词，而 “用 React 做一个记账网站，包含添加支出、查看列表、统计总额三个功能，界面用蓝色调” 就是一个更好的提示词</p>
+<p>在 AI 对话中，消息一般分为 3 种角色：</p>
+<ul>
+<li>系统提示词（System）：设置 AI 的角色和行为规则，对用户不可见</li>
+<li>用户提示词（User）：发送给 AI 的消息</li>
+<li>助手提示词（Assistant）：AI 回复的消息</li>
+</ul>
+<hr>
+<h2 id="系统提示词"><a href="#系统提示词" class="headerlink" title="系统提示词"></a>系统提示词</h2><p>系统提示词（System Prompt）是在对话开始前给 AI 设置的指令，用来定义 AI 的角色、行为和限制</p>
+<p>比如，可以设置系统提示词：“你是一位资深的 Java 后端开发专家，请用简洁清晰的代码风格回答问题。”</p>
+<p>系统提示词在整个对话过程中都会生效，是定制 AI 行为的重要方式</p>
+<p>还记得前几年 AI 刚流行的时候，市面上冒出了一大堆 AI 助手网站么？其实很多就是 “套壳”，底层调用的是同一个大模型，只不过给不同的 AI 助手设定了不同的系统提示词，比如 “你是一个翻译专家”、“你是一个法律顾问” 等</p>
+<hr>
+<h2 id="提示词工程"><a href="#提示词工程" class="headerlink" title="提示词工程"></a>提示词工程</h2><p>提示词工程（Prompt Engineering）是设计和优化提示词的技术，目的是让 AI 更好地理解你的意图，生成更符合预期的结果</p>
+<p>这是 Vibe Coding 的核心技能之一。好的提示词工程师能用更少的对话轮次、更低的 Token 成本，让 AI 生成更高质量的代码</p>
+<hr>
+<h2 id="零样本提示（Zero-Shot）"><a href="#零样本提示（Zero-Shot）" class="headerlink" title="零样本提示（Zero-Shot）"></a>零样本提示（Zero-Shot）</h2><p>零样本提示是指在给 AI 下达任务时，不提供任何示例，直接描述你的需求让 AI 去完成</p>
+<p>比如：“请把这段英文翻译成中文。”</p>
+<p>AI 会根据自己的训练知识来完成任务</p>
+<p>对于简单任务，零样本提示一般就够用了，不需要提供额外的示例内容，还能节约一些 Token 成本</p>
+<hr>
+<h2 id="少样本提示（Few-shot）"><a href="#少样本提示（Few-shot）" class="headerlink" title="少样本提示（Few-shot）"></a>少样本提示（Few-shot）</h2><p>少样本提示是指在给 AI 下达任务时，额外提供几个输入输出的示例，让 AI 通过这些示例学习你想要的格式或风格，从而更准确地完成任务</p>
+<p>比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">请按以下格式翻译：</span><br><span class="line">英文：Hello → 中文：你好</span><br><span class="line">英文：Thank you → 中文：谢谢</span><br><span class="line">英文：Good morning → 中文：</span><br></pre></td></tr></table></figure>
+
+<p>通过提供示例，AI 能更准确地理解你的需求，输出更一致的结果</p>
+<hr>
+<h2 id="思维链提示（Chain-of-Thought）"><a href="#思维链提示（Chain-of-Thought）" class="headerlink" title="思维链提示（Chain-of-Thought）"></a>思维链提示（Chain-of-Thought）</h2><p>思维链提示（Chain-of-Thought，简称 CoT）是一种引导 AI 展示推理过程、一步一步思考问题的提示技术，而不是让 AI 直接给出答案。这对于复杂的推理任务特别有效，比如多步骤的数学计算、代码逻辑分析、系统架构设计等</p>
+<p>触发思维链提示的方法很简单。很多推理模型（比如 DeepSeek-R1）和 AI 编程工具天然内置了思维链能力，会自动展示推理过程。你也可以在提示词中手动加上 “请一步一步思考”，AI 就会展示它的推理过程，一般能得到更准确的答案</p>
+<p>在 AI 编程中，涉及复杂业务逻辑、多模块交互、或者需要权衡多种技术方案的项目，特别适合利用推理模型和思维链提示能力，让 AI 想清楚再动手</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260711133537519.png" alt="image-20260711133537519"></p>
+<hr>
+<h2 id="Markdown-语言"><a href="#Markdown-语言" class="headerlink" title="Markdown 语言"></a>Markdown 语言</h2><p>Markdown 是一种轻量级的文本标记语言，用简单的符号来表示格式。比如用 <code>#</code> 表示标题，用 <code>**文字**</code> 表示加粗，用 <code>-</code> 表示列表</p>
+<p>在 AI 编程中，Markdown 非常重要，因为：</p>
+<ul>
+<li>AI 生成的回答大多数都是 Markdown 格式</li>
+<li>项目文档（如 README）采用 Markdown 编写</li>
+<li>定义 AI 智能体的规则文件也是 Markdown 格式</li>
+</ul>
+<p>学会 Markdown 能让你更好地跟 AI 交流，也能写出更规范的项目文档。更重要的是，结构化的内容（标题层级、列表、代码块等）有助于 AI 更准确地理解你的意图，同时也能培养你自己的结构化思维能力，这对写好提示词非常有帮助</p>
+<hr>
+<h1 id="AI-编程模式"><a href="#AI-编程模式" class="headerlink" title="AI 编程模式"></a>AI 编程模式</h1><h2 id="Vibe-Coding-氛围编程"><a href="#Vibe-Coding-氛围编程" class="headerlink" title="Vibe Coding 氛围编程"></a>Vibe Coding 氛围编程</h2><p>Vibe Coding 是由计算机科学家 Andrej Karpathy 在 2025 年 2 月提出的概念。它描述了一种全新的编程方式：通过自然语言和 AI 对话，让 AI 帮你写代码，你只需要描述需求、测试结果、指导方向</p>
+<p>你不需要精通编程语法，只需要能清楚表达你的想法，AI 负责把你的想法变成可运行的代码</p>
+<p>所以说，Vibe Coding 的重点不是写代码，而是明确需求并清晰表达。你描述得越清楚，AI 给你的结果就越靠谱</p>
+<p>这就像点外卖一样，你告诉外卖平台你想吃什么，餐厅帮你做好送到手上。你不需要会做饭，但要知道自己想吃什么</p>
+<hr>
+<h2 id="Agentic-Engineering-智能体工程"><a href="#Agentic-Engineering-智能体工程" class="headerlink" title="Agentic Engineering 智能体工程"></a>Agentic Engineering 智能体工程</h2><p>Agentic Engineering（智能体工程）是 2026 年 2 月由 Andrej Karpathy（也就是提出 Vibe Coding 的那位大佬）提出的新概念，可以理解为 Vibe Coding 的规范版</p>
+<p>Vibe Coding 就是跟着感觉写代码：你给 AI 一句话，AI 吐出代码，能跑就行，跑不了就把报错粘回去让 AI 再改。做个小工具贼拉快，但项目一大就容易翻车</p>
+<p>而 Agentic Engineering 的思路是：你先想清楚要干嘛、写好方案、拆好任务，再把活交给 AI 去执行，它干完了你还得验收，质量不行再打回去重做</p>
+<p>打个比方，Vibe Coding 的时候你是个 DJ，放什么歌全凭感觉；Agentic Engineering 里你是包工头，流程、质量、验收都得你说了算。一个跟着感觉走，一个按流程来</p>
+<p>当然，不是说 Vibe Coding 已经过时了。Vibe Coding 负责让你看到可能性，Agentic Engineering 负责把可能性变成真正能用的东西。二者适用于不同的场景，做小工具时可以用 Vibe Coding，做企业级项目就需要 Agentic Engineering 的思维</p>
+<hr>
+<h2 id="Agentic-Coding-智能体编程"><a href="#Agentic-Coding-智能体编程" class="headerlink" title="Agentic Coding 智能体编程"></a>Agentic Coding 智能体编程</h2><p>Agentic Coding 智能体编程是指让 AI 像一个自主的 “智能体”(Agent) 一样工作，能够自己规划任务、执行操作、验证结果，而不只是被动地回答问题</p>
+<p>它和前面提到的 Agentic Engineering 的区别在于，Agentic Coding 强调的是 AI 的自主执行能力（AI 能干什么），而 Agentic Engineering 强调的是人对 AI 的管理方法论（人该怎么管）</p>
+<p>如今，几乎所有主流 AI 编程工具都提供了智能体编程的能力。比如在 Cursor 的 Agent 模式中，AI 可以：</p>
+<ul>
+<li>自动读取和分析多个文件</li>
+<li>规划实现方案</li>
+<li>执行代码修改</li>
+<li>运行测试验证</li>
+<li>自动修复问题</li>
+</ul>
+<p>这比传统的问答式 AI 更强大，因为它能自主完成复杂的多步骤任务。可以说，AI 不再只是辅助编程的配角，而是正在成为项目开发的核心驱动力</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260711194832434.png" alt="image-20260711194832434"></p>
+<hr>
+<h2 id="Harness-Engineering-驾驭工程"><a href="#Harness-Engineering-驾驭工程" class="headerlink" title="Harness Engineering 驾驭工程"></a>Harness Engineering 驾驭工程</h2><p>Harness Engineering（驾驭工程）是 2026 年兴起的 AI 工程新范式，核心理念是人类掌舵 + 智能体执行。它不是去优化 AI 模型本身，而是围绕 AI 智能体搭建一整套约束机制、反馈循环和工作流管理系统，让原本不可预测的 AI 在高可靠性环境下跑得稳、跑得快</p>
+<p>Harness 这个词本意是 “马具”，就像缰绳和马鞍用来引导强大但难以预测的马匹一样，Harness Engineering 就是围绕 AI 编程智能体搭建的整套 “运行环境”，确保 AI 能按照你的预期工作</p>
+<p>在 AI 编程时代，模型本身已经是通用商品，真正的竞争力在于你围绕模型搭建的工程体系。同一个大模型，在不同的 Harness 环境下，代码质量可能天差地别。程序员的角色正在从 “自己写代码” 转变为 “设计让 AI 可靠写代码的系统”</p>
+<br>
+
+<p>从发展路径来看，Harness Engineering 是在提示词工程和上下文工程基础上的进一步演进。提示词工程关注「怎么给 AI 下指令」，上下文工程关注「怎么给 AI 提供信息」，而 Harness Engineering 关注的是「怎么让 AI 持续靠谱地干完一整件事」，三者是层层包含的关系</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260711221547053.png" alt="image-20260711221547053"></p>
+<p>Harness 的核心模块包括：</p>
+<ul>
+<li>上下文架构（让 AI 了解项目背景和规矩）</li>
+<li>执行能力（给 AI 装上工具和 MCP）</li>
+<li>任务编排（Plan Mode、SubAgents 并行执行等）</li>
+<li>反馈机制（Linter、自动化测试、Browser Use）</li>
+<li>架构护栏（防止代码越改越乱）</li>
+</ul>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260711221615086.png" alt="image-20260711221615086"></p>
+<hr>
+<h2 id="Loop-Engineering-循环工程"><a href="#Loop-Engineering-循环工程" class="headerlink" title="Loop Engineering 循环工程"></a>Loop Engineering 循环工程</h2><p>Loop Engineering（循环工程）是 2026 年中期兴起的 AI 编程新范式，核心理念是设计自动循环系统，让 AI 自主执行、自主验证、自主修复，直到达成目标</p>
+<p>以前的 AI 编程模式就像开手动挡的车，每一步都靠你自己操作。Loop Engineering 更像自动驾驶，你提前设定好目的地和安全规则，AI 自己执行、自己检查、自己修复，直到任务完成</p>
+<p>一个靠谱的 Loop 需要 3 样核心的东西：</p>
+<ul>
+<li>明确的目标和停止条件：比如「所有测试通过」就是好的停止条件</li>
+<li>反馈闭环：每轮循环结束后自动检查结果，判断是继续还是停止</li>
+<li>状态记忆：用外部文件（如 PROGRESS.md）记录进度，断了重启不会从零开始</li>
+</ul>
+<p>从发展路径来看，Loop Engineering 是在提示词工程、上下文工程和 Harness Engineering 基础上的进一步演进</p>
+<p>前面几步让 AI 能在靠谱的环境里干活，Loop 则在这些基础上多加了一层「自动循环 + 反馈闭环」的机制，让你从「一句一句手动提示 AI」的操作者变成「设计循环规则」的管理者</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260711222958495.png" alt="image-20260711222958495"></p>
+<hr>
+<h2 id="多智能体协作"><a href="#多智能体协作" class="headerlink" title="多智能体协作"></a>多智能体协作</h2><p>多智能体协作（Multi-Agent）是指多个 AI 智能体分工合作，共同完成复杂任务</p>
+<p>比如，一个智能体负责设计架构，一个负责写前端代码，一个负责写后端代码，一个负责代码审查。它们像一个软件开发团队一样协作</p>
+<p>这两年，多智能体系统正在成为 AI 编程的重要趋势。它的优势不仅仅是能处理更复杂的项目，还能通过并行工作大幅提升效率，让原本需要几小时的任务在几分钟内完成</p>
+<hr>
+<h2 id="智能体编排"><a href="#智能体编排" class="headerlink" title="智能体编排"></a>智能体编排</h2><p>编排（Orchestration）是指协调和管理多个 AI 智能体或 AI 任务的过程，确保它们按正确的顺序和方式工作</p>
+<p>如果说多智能体协作关注的是 “有哪些角色参与”，那编排关注的是 “谁先干、谁后干、结果怎么汇总”，它是多智能体系统的指挥中枢</p>
+<p>就像乐队指挥一样，编排器决定哪个智能体在什么时候做什么事情、如何传递信息、如何汇总结果</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260711224111394.png" alt="image-20260711224111394"></p>
+<hr>
+<h2 id="Subagents-子代理"><a href="#Subagents-子代理" class="headerlink" title="Subagents 子代理"></a>Subagents 子代理</h2><p>Subagents（子代理）是指主 AI 智能体将部分任务分派给独立的子智能体来并行处理的机制</p>
+<p>你可以把它理解成 AI 的下属，就像一个经理把活分给手下的几个员工同时干一样。当主 AI 遇到一个大任务时，它可以把独立的小任务分给几个子代理同时干，自己继续处理其他工作</p>
+<p>Subagents 的好处是：</p>
+<ul>
+<li>并行处理多个独立任务，效率翻倍</li>
+</ul>
+<ul>
+<li>主代理的上下文保持干净，不会被子任务的细节污染</li>
+<li>每个子代理可以专注于自己的任务，结果更准确</li>
+</ul>
+<p>比如你可以让几个子代理同时审查代码库的不同模块，速度会快很多</p>
+<br>
+
+<p>在 Claude Code 中，AI 会通过内置的 Task 工具自动生成子代理来处理子任务，你不需要做额外配置。你也可以在 <code>.claude/agents/</code> 目录下创建自定义的子代理（用 Markdown 文件定义），给它指定专属的角色描述、工具权限和行为规则</p>
+<p>不过子代理也有局限，每个子代理的上下文是独立的，它们之间无法直接共享信息，所以不适合有强依赖关系的任务。另外，多个子代理同时运行会消耗更多 Token，成本会相应增加。就像公司招人一样，多招几个人确实能干得更快，但工资支出也得跟着涨，而且人多了沟通协调的成本也会上来</p>
+<hr>
+<h2 id="Agent-Teams-智能体团队"><a href="#Agent-Teams-智能体团队" class="headerlink" title="Agent Teams 智能体团队"></a>Agent Teams 智能体团队</h2><p>Agent Teams（智能体团队）是 2026 年兴起的多智能体编程新模式，由 Claude Code 率先推出。它让 3～5 个独立的 AI 智能体组成团队，在同一个项目上并行工作</p>
+<p>和传统的单 AI 对话不同，Agent Teams 中有一个 Team Lead（队长）负责拆解任务和协调工作，其他 Teammates（队员）各自领取任务独立执行，还能通过消息系统互相沟通</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260711224756275.png" alt="image-20260711224756275"></p>
+<p>打个比方，以前用 AI 编程就像你一个人带一个实习生干活，现在 Agent Teams 相当于你直接管了一个小团队，前端、后端、测试同时干，效率翻了好几倍。Anthropic 的工程团队曾用 16 个 Agent 同时工作，产出了 10 万行 Rust 代码！把原本需要数天的工作压缩到了几小时</p>
+<p>当然，代价就是花费的 Tokens 可能会更多，不是什么时候都建议使用 Agent Teams</p>
+<p>在实际操作中，Agent Teams 的多个智能体通常需要物理隔离来避免代码冲突。目前最主流的做法是利用 Git WorkTree 给每个智能体分配独立的工作目录，各自在独立的分支上开发</p>
+<p>Cursor 已经内置了这种能力，通过 Parallel Agents 模式自动创建和管理 WorkTree，让多个 AI 并行工作同步写代码</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260711225017615.png" alt="image-20260711225017615"></p>
+<hr>
+<h2 id="Hermes-Agent"><a href="#Hermes-Agent" class="headerlink" title="Hermes Agent"></a>Hermes Agent</h2><p>Hermes Agent 是 Nous Research 在 2026 年 2 月开源的自改进 AI 智能体，最大的特点是它能从自己完成的任务中学习，越用越聪明</p>
+<p>一般的 AI 智能体每次对话都是从零开始，不会从过去的经验中学习。而 Hermes Agent 内置了一套闭环学习机制：</p>
+<ol>
+<li>完成任务后，自动把解决方案提炼成可复用的 Skill Document（技能文档）</li>
+<li>下次遇到类似任务时，先检索已有的技能文档</li>
+<li>根据新的实践不断优化已有技能</li>
+</ol>
+<p>官方数据显示，使用已积累技能的 Hermes Agent 完成类似任务的速度比全新实例快 40%</p>
+<p>Hermes Agent 采用三层记忆系统：会话记忆（当前对话上下文）、技能文档（从任务中提炼的可复用知识）、以及用户画像（持久化的用户偏好和习惯）。它支持 Telegram、Slack、Discord、微信等多个平台接入，兼容 200 多种 AI 模型，完全免费开源</p>
+<hr>
+<h2 id="Background-Agent"><a href="#Background-Agent" class="headerlink" title="Background Agent"></a>Background Agent</h2><p>后台 Agent（Background Agent）是让 AI 在后台自主运行、完成任务后再通知你结果的能力</p>
+<p>传统的 AI 编程需要你盯着屏幕等 AI 一步步做完，电脑还不能关。而后台 Agent 允许你把任务交给 AI 后，就去做别的事情，AI 会在云端独立完成工作，你甚至可以关掉电脑</p>
+<p>比如让 AI 在后台修复一批 Bug、跑一轮代码审查、或者完成一个完整的功能模块，做完了会通知你来验收</p>
+<p>目前 Claude Code、Cursor 等工具都已经支持后台 Agent 能力。以后 AI 编程可能就像发微信一样，你在手机上把需求发过去，该干嘛干嘛，等 AI 做完了来找你验收就行</p>
+<hr>
+<h2 id="Agent-Loop-智能体循环"><a href="#Agent-Loop-智能体循环" class="headerlink" title="Agent Loop 智能体循环"></a>Agent Loop 智能体循环</h2><p>Agent Loop（智能体循环）是 AI 智能体的核心工作机制，简单来说就是 AI 通过不断重复 “感知 - 思考 - 行动 - 观察” 的循环来一步步完成任务</p>
+<p>一个典型的 Agent Loop 包括：</p>
+<ol>
+<li>感知：获取当前环境信息（读取文件、查看错误等）</li>
+<li>思考：分析情况，决定下一步行动</li>
+<li>行动：执行具体操作（写代码、运行命令等）</li>
+<li>观察：检查行动的结果</li>
+<li>循环：根据结果决定是否继续</li>
+</ol>
+<p>这个循环会一直进行，直到任务完成或达到终止条件</p>
+<p>理解 Agent Loop 能帮你更好地规划任务和管理 AI 的工作过程。需要特别注意的是，AI 编程时 Agent Loop 的循环次数不要太多，很多工具都有最大循环次数限制，循环太多不仅效果不好，还会疯狂烧 Token！有朋友一觉醒来发现额度用光了，就是因为让 AI 陷入了无限循环……</p>
+<p>Claude Code 的源码就是 Agent Loop 最好的工程实现案例。它的核心对话循环其实就是一个朴素的 while (true) 无限循环：每一轮迭代里，先做上下文压缩、再调用大模型拿到响应，如果模型说 “我要用某个工具” 就去执行，把结果追加到对话历史里，然后进入下一轮</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260711234733407.png" alt="image-20260711234733407"></p>
+<hr>
+<h2 id="Ralph-Wiggum-Loop"><a href="#Ralph-Wiggum-Loop" class="headerlink" title="Ralph Wiggum Loop"></a>Ralph Wiggum Loop</h2><p>Ralph Wiggum Loop 是 2026 年比较流行的一种 AI 编程模式，名字来源于《辛普森一家》中那个执着不放弃的角色 Ralph Wiggum</p>
+<p>这个模式目前已有多个开源实现，比如 wiggumdev&#x2F;ralph。它的核心思路很简单：把 AI 放在循环中反复执行，直到需求文档中的所有检查项全部完成</p>
+<p>工作流程大概是这样的：</p>
+<ol>
+<li>先写一份 PRD（产品需求文档），把要做的功能拆解成一个个清晰的检查项</li>
+<li>让 AI 智能体开始执行，每次从检查清单中取出未完成的任务</li>
+<li>AI 完成一个任务后，通过 Git 提交代码并记录进度</li>
+<li>以全新的上下文开始新一轮迭代，继续处理剩余任务</li>
+<li>不断循环，直到所有检查项完成</li>
+</ol>
+<p>这种模式的巧妙之处在于，每轮循环都以干净的上下文开始（通过 Git 和文件来持久化进度），避免了长对话中 AI 容易 “断片儿” 的问题。而且可以无人值守地运行，你写好 PRD 就可以去睡觉了，第二天起来检查成果就行</p>
+<p>不过要注意设置好循环次数限制和 Token 预算，防止 AI 陷入无限循环疯狂烧钱</p>
+<hr>
+<h2 id="ReAct-推理与行动"><a href="#ReAct-推理与行动" class="headerlink" title="ReAct 推理与行动"></a>ReAct 推理与行动</h2><p>ReAct（Reasoning and Acting）是一种让 AI 智能体交替进行推理和行动的技术范式。它的核心思想很简单：让 AI 先想清楚再动手，动完手再看看效果，然后继续想下一步怎么做</p>
+<p>传统的 AI 要么只思考不行动，要么只行动不思考。而 ReAct 让 AI 能够：</p>
+<ol>
+<li>先推理：思考当前情况，制定计划</li>
+<li>再行动：执行具体操作</li>
+<li>观察结果：看看行动效果如何</li>
+<li>继续推理：根据结果调整策略</li>
+</ol>
+<p>这种 “思考 - 行动 - 观察” 的循环让 AI 能更可靠地完成复杂任务，是现代 AI 编程工具的核心技术之一</p>
+<hr>
+<h2 id="深度思考"><a href="#深度思考" class="headerlink" title="深度思考"></a>深度思考</h2><p>深度思考（Deep Thinking）是让 AI 在回答之前先进行一段内部推理的能力，也叫 “扩展思考” 或 “思考模式”</p>
+<p>思维链提示是一种提示词技巧，通过提示词引导 AI 展示推理过程；而深度思考是模型内置的能力，AI 会在内部自动进行深度推理，不需要你在提示词中特别要求</p>
+<p>普通模式下，AI 收到问题后会直接生成回答。而开启深度思考后，AI 会先在内部进行一系列推理步骤，比如分析问题、考虑多种方案、评估利弊，然后才输出最终答案。你有时能在 AI 的回复中看到一个 “思考中…” 的过程，那就是深度思考在工作</p>
+<p>深度思考特别适合复杂的编程任务，比如设计系统架构、排查难以定位的 Bug、优化算法等。代价是速度更慢、Token 消耗更多</p>
+<hr>
+<h2 id="自适应思考"><a href="#自适应思考" class="headerlink" title="自适应思考"></a>自适应思考</h2><p>自适应思考（Adaptive Thinking）是深度思考的智能化版本，让 AI 自动判断当前问题需要多深的思考程度</p>
+<p>以前深度推理模式只能手动开关，开了的话简单问题也慢吞吞地想半天、还浪费钱，关了的话复杂问题又容易出错</p>
+<p>AI 有了自适应思考能力后，可以做到简单问题秒回，复杂问题会自动进入深度思考模式。这样既保证了质量，又节省了时间和成本</p>
+<p>Anthropic 在 Claude Opus 4.6 中率先引入了自适应思考能力，并在 Opus 4.8 中进一步优化。开发者可以设置不同的思考力度级别来平衡质量和成本</p>
+<hr>
+<h2 id="工具调用"><a href="#工具调用" class="headerlink" title="工具调用"></a>工具调用</h2><p>工具调用（Tool Use &#x2F; Function Calling）是让 AI 能够使用外部工具和功能的技术</p>
+<p>AI 本身只能生成文字，但通过工具调用，它可以读写文件、搜索网页、执行命令和脚本、调用 API、操作数据库等等</p>
+<p>工具调用的工作流程分为 4 步：</p>
+<ol>
+<li>识别需求：AI 判断当前任务需要使用工具</li>
+<li>选择工具：从可用工具中选择合适的</li>
+<li>执行调用：用正确的参数调用工具</li>
+<li>整合结果：将工具返回的结果融入回答，继续完成任务</li>
+</ol>
+<p>需要注意的是，AI 模型本身并不直接执行工具，而是生成 “我想调用这个工具，参数是这些” 的指令，由外部系统执行后把结果返回给 AI</p>
+<p>有了工具调用，AI 就从 “只会说” 变成了 “能动手”。如果没有工具调用，AI 只能告诉你该怎么改代码，你还得自己去复制粘贴；而有了工具调用，AI 可以直接帮你读取文件、修改代码、运行命令，一条龙搞定。比如 Cursor 的 Agent 模式就是通过工具调用来实现自主编程的</p>
+<hr>
+<h2 id="MCP-模型上下文协议"><a href="#MCP-模型上下文协议" class="headerlink" title="MCP 模型上下文协议"></a>MCP 模型上下文协议</h2><p>MCP（Model Context Protocol）是 Anthropic 在 2024 年底推出的开放标准，用于让 AI 模型安全地连接外部数据源和工具</p>
+<p>可以把 MCP 理解成 AI 世界的 “USB 接口”。就像 USB 接口让各种设备（键盘、鼠标、U 盘）都能用同一种方式连接电脑一样，MCP 让各种外部工具（文件管理、数据库、搜索引擎等）都能用同一种方式连接 AI，不用为每个工具单独写一套对接代码</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260712221023163.png" alt="image-20260712221023163"></p>
+<p>在 Vibe Coding 中，MCP 让 AI 能够连接更多外部工具和数据源，大大扩展了 AI 的能力边界。比如通过 Figma MCP，AI 可以直接读取设计稿并生成对应的网页代码；通过 GitHub MCP，AI 可以直接操作代码仓库、创建 PR；通过数据库 MCP，AI 可以查询和分析业务数据</p>
+<hr>
+<h2 id="Agent-Skills-智能体技能"><a href="#Agent-Skills-智能体技能" class="headerlink" title="Agent Skills 智能体技能"></a>Agent Skills 智能体技能</h2><p>Agent Skills（智能体技能）是 Anthropic 在 2025 年 10 月推出的一套开放标准，目的是让 AI 能够学习使用各种专业技能，快速扩展特定领域的专业能力</p>
+<p>简单来说，Agent Skills 就是给 AI 准备的技能包。技能包里有精心设计的提示词、代码脚本、还有各种资源文件</p>
+<p>把 AI 想象成一个职场小白，给他装上文档处理技能，它就立刻知道怎么生成 PPT、处理 Excel 表格；装上代码规范技能，它就知道怎么按照公司标准写代码</p>
+<p>Skill 的本质是一个包含 skill.md 文件的文件夹，里面可以放置指令说明、脚本代码、参考资料等，当 AI 遇到相关任务时，会自动加载对应的 Skill 来增强自己的能力</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260712223819362.png" alt="image-20260712223819362"></p>
+<p>Skills 的核心设计是渐进式披露，AI 只在需要时才加载相关内容，不会一次性把所有信息都塞进上下文，既节省 Token 又保持灵活性</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260712224034389.png" alt="image-20260712224034389"></p>
+<hr>
+<h2 id="Hooks-钩子"><a href="#Hooks-钩子" class="headerlink" title="Hooks 钩子"></a>Hooks 钩子</h2><p>Hooks（钩子）是 AI 编程工具中的一种自动化触发器。当 AI 完成某个动作（比如生成代码、提交代码、运行命令）时，Hook 会自动执行你预设的脚本或检查流程</p>
+<p>各种主流 AI 编程工具都支持 Hooks，比如在 Claude Code 中，Hooks 可以用来：</p>
+<ul>
+<li>代码生成后自动运行格式化工具</li>
+<li>文件修改后自动执行测试</li>
+<li>权限请求时自动判断是否安全并批准</li>
+<li>提交代码前自动检查代码规范</li>
+</ul>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260712224157106.png" alt="image-20260712224157106"></p>
+<p>Hooks 让你的 AI 工作流更加自动化，减少手动操作。但是要注意，Hooks 配置不当可能会阻塞 AI 的正常工作流程，建议先在小范围测试，确认没问题再推广到整个项目</p>
+<hr>
+<h2 id="斜杠命令"><a href="#斜杠命令" class="headerlink" title="斜杠命令"></a>斜杠命令</h2><p>斜杠命令（Slash Commands）是在 AI 编程工具的对话框中输入 <code>/</code> 触发的快捷指令，可以快速执行常用操作</p>
+<p>你可以把斜杠命令理解成操作 AI 的快捷键。Cursor、Claude Code 等主流 AI 编程工具都支持斜杠命令，比如 Claude Code 内置了这些常用的斜杠命令：</p>
+<ul>
+<li><code>/help</code>：查看可用命令</li>
+<li><code>/compact</code>：压缩当前对话的上下文</li>
+<li><code>/config</code>：修改配置</li>
+<li><code>/skills</code>：查看已安装的技能</li>
+</ul>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260712224330122.png" alt="image-20260712224330122"></p>
+<p>你可以自定义斜杠命令，把常用的工作流封装起来复用。比如创建一个 <code>/commit-push-pr</code> 命令，一次性完成代码提交、推送和创建 PR；或者搞个 <code>/techdebt</code> 命令，每次会话结束跑一下清理重复代码</p>
+<p>自定义命令的本质其实就是一个 Markdown 文件，在 Cursor 中，只需要在项目的 <code>.cursor/commands/</code> 目录下创建 <code>.md</code> 文件，里面写上你想要 AI 执行的指令，这个文件名就会变成一个斜杠命令。还可以用 Git 版本控制工具来管理自定义命令的文件，跨项目复用</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260712224438252.png" alt="image-20260712224438252"></p>
+<hr>
+<h2 id="A2A（Agent-to-Agent）"><a href="#A2A（Agent-to-Agent）" class="headerlink" title="A2A（Agent-to-Agent）"></a>A2A（Agent-to-Agent）</h2><p>A2A（Agent-to-Agent）是指 AI 智能体之间相互通信和协作的协议或方式，是多智能体系统的基础技术</p>
+<p>就像人和人之间需要语言来沟通，AI 智能体之间也需要标准化的方式来交换信息、分配任务、汇报结果</p>
+<p>A2A 协议让不同的 AI 智能体能够组成团队，分工合作完成复杂任务。这个协议由 Google 在 2025 年推出，目前已有超过 150 家企业加入支持</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260712224656018.png" alt="image-20260712224656018"></p>
+<p>不要把 A2A 和 MCP 搞混！二者是互补关系，MCP 解决的是 AI 连接工具的问题，A2A 解决的是 AI 之间沟通协作的问题</p>
+<hr>
+<h2 id="ACP-协议"><a href="#ACP-协议" class="headerlink" title="ACP 协议"></a>ACP 协议</h2><p>ACP 这个缩写在 AI 领域其实有两个含义，容易搞混，这里一起说清楚</p>
+<p>第一个是 Agent Communication Protocol 智能体通信协议，由 IBM 研究院推出。它让不同框架、不同公司开发的 AI 智能体能够无缝协作，就像不同品牌的手机都能互相打电话一样</p>
+<p>它基于轻量级的 HTTP REST 接口设计，支持文本、代码、文件、图片等多种内容格式，不挑编程语言，上手很简单</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260712230918898.png" alt="image-20260712230918898"></p>
+<p>需要注意的是，ACP 和前面提到的 A2A 是两个独立的协议。它们都在解决智能体跨框架交流的问题，但具体的通信格式和能力发现机制还是两套不同的体系。这些协议主要面向做 AI 应用开发的程序员，帮助他们构建多个智能体协作的系统</p>
+<p>第二个是 Agent Client Protocol 智能体客户端协议，由 JetBrains 和 Zed 联合推出，解决的是完全不同的问题 —— 让任何 AI 编程智能体都能在任何 IDE 中运行</p>
+<p>你可以把它理解成 AI 编程工具的 “万能适配器”。以前每个 AI 编程智能体插件都要为 IDEA 写一套代码、为 VS Code 写一套代码。现在有了 ACP 协议，Claude Code 只需要实现 ACP 接口，IDEA 就能直接把它接入进来，你在 IDEA 里也能爽用 Claude Code、在 Zed 编辑器里也能用 Gemini CLI，不再被某个 IDE 绑死</p>
+<p>此外，JetBrains 还上线了 ACP Agent Registry，一键就能安装各种 AI 编程智能体，越来越方便了～</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260713001558796.png" alt="image-20260713001558796"></p>
+<hr>
+<h2 id="BMAD-敏捷-AI-开发方法"><a href="#BMAD-敏捷-AI-开发方法" class="headerlink" title="BMAD 敏捷 AI 开发方法"></a>BMAD 敏捷 AI 开发方法</h2><p>BMAD-METHOD（Breakthrough Method of Agile AI-Driven Development，突破性敏捷 AI 驱动开发方法）是一套系统化的 AI 智能体开发框架，目标是将原本混乱的 AI 编程过程变得结构化、可复用</p>
+<p>BMAD 使用角色化智能体的方式组织开发流程，每个智能体扮演特定角色：</p>
+<ul>
+<li>Analyst Agent 分析师：创建项目简报，包含市场分析和用户画像</li>
+<li>PM Agent 产品经理：将简报转化为详细的产品需求文档（PRD）</li>
+<li>Architect Agent 架构师：设计技术实现方案和系统架构</li>
+</ul>
+<p>BMAD 中的智能体分为两种类型：</p>
+<ul>
+<li>Simple Agents 简单智能体：单文件、自包含，适合代码审查、文档生成等聚焦任务</li>
+<li>Expert Agents 专家智能体：具有跨会话持久记忆，配有专属文件夹存放资源，适合复杂的多步骤工作流</li>
+</ul>
+<p>每个智能体都有标准化的组成部分，包括人设（角色、身份、沟通风格、原则）、能力列表、交互菜单，以及可选的关键行动</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260713190327424.png" alt="image-20260713190327424"></p>
+<hr>
+<h2 id="Browser-Use-浏览器使用"><a href="#Browser-Use-浏览器使用" class="headerlink" title="Browser Use 浏览器使用"></a>Browser Use 浏览器使用</h2><p>Browser Use（浏览器使用）是让 AI 智能体能够自主操控网页浏览器的技术能力。通过 Browser Use，AI 可以像人类一样浏览网页、点击按钮、填写表单、提取数据。</p>
+<p>Browser Use 的典型应用场景：</p>
+<ul>
+<li>自动化研究：让 AI 在多个网站上搜索、整理信息</li>
+<li>数据采集：从网页中提取结构化数据</li>
+<li>表单填写：自动完成繁琐的在线表单</li>
+<li>跨平台操作：在不同网站间完成多步骤任务</li>
+</ul>
+<p>比较知名的开源项目是 Browser-Use，支持通过 Python 调用多种大模型来控制浏览器。此外，Cursor、Claude Code 等主流 AI 编程工具也内置了 Browser Use 能力，可以在开发过程中自动打开浏览器预览效果、执行测试等操作</p>
+<p>Browser Use 的一个关键优势是，AI 可以利用你现有的浏览器会话和登录状态，无需为每个网站单独开发 API 集成。也就是说，AI 能够访问那些没有公开 API 的网站，大大扩展了自动化的应用范围</p>
+<hr>
+<h2 id="Computer-Use-计算机使用"><a href="#Computer-Use-计算机使用" class="headerlink" title="Computer Use 计算机使用"></a>Computer Use 计算机使用</h2><p>Computer Use（计算机使用）是 Anthropic 公司在 2024 年推出的 AI 能力，让 Claude 大模型能够像人类一样操作整个计算机桌面</p>
+<p>和 Browser Use 只能操作浏览器不同，Computer Use 可以操作任何桌面应用程序，比如：</p>
+<ul>
+<li>查看屏幕截图，理解界面元素</li>
+<li>移动鼠标光标，点击按钮</li>
+<li>使用键盘输入文字</li>
+<li>执行命令行操作</li>
+</ul>
+<p>Computer Use 的工作原理是一个持续的反馈循环：</p>
+<ol>
+<li>截图分析：AI 捕获并分析当前屏幕</li>
+<li>决策规划：根据任务目标确定下一步操作</li>
+<li>执行操作：发送鼠标 &#x2F; 键盘输入</li>
+<li>观察结果：检查操作效果，调整策略</li>
+</ol>
+<p>为了安全起见，Computer Use 一般需要在虚拟机或容器中运行，不会直接控制你的真实电脑</p>
+<p>Computer Use 代表了 AI 从 “只能生成文字” 到 “能够操作软件” 的重大跨越，彻底改变人机交互方式</p>
+<p>基于 Computer Use 技术，Anthropic 在 2026 年推出了 Claude Cowork，这是一个桌面端 AI 助手，可以直接访问你电脑上的文件和文件夹，帮你整理下载目录、从截图中提取数据到表格、准备品牌报告等日常办公任务</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260713190825423.png" alt="image-20260713190825423"></p>
+<hr>
+<h1 id="上下文管理"><a href="#上下文管理" class="headerlink" title="上下文管理"></a>上下文管理</h1><h2 id="上下文（Context）"><a href="#上下文（Context）" class="headerlink" title="上下文（Context）"></a>上下文（Context）</h2><p>上下文是 AI 在回答问题时能够参考的所有信息，包括：</p>
+<ul>
+<li>当前对话的历史</li>
+<li>你打开的代码文件</li>
+<li>项目的结构和配置</li>
+<li>你提供的参考资料</li>
+</ul>
+<p>上下文越丰富、越和当前任务相关，AI 生成的代码就越符合你的需求。这就像给一个新同事交接工作，你给的背景信息越多，他上手就越快。</p>
+<p>在 Cursor 中，你可以通过对话框附近的 Token 用量指示器来大致了解当前上下文的大小；在 Claude Code 中，可以使用 <code>/context</code> 命令查看上下文占用情况</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260713191152627.png" alt="image-20260713191152627"></p>
+<hr>
+<h2 id="上下文工程"><a href="#上下文工程" class="headerlink" title="上下文工程"></a>上下文工程</h2><p>上下文工程（Context Engineering）是有策略地管理和优化提供给 AI 的上下文信息的技术</p>
+<p>核心目标是让 AI 拥有恰到好处的信息。既不能太少（导致 AI 不了解情况），也不能太多（导致信息过载、成本上升）。</p>
+<p>好的上下文工程包括：</p>
+<ul>
+<li>选择最相关的文件</li>
+<li>提供必要的背景说明</li>
+<li>使用规则文件定义项目规范</li>
+<li>适时清理无关的对话历史</li>
+</ul>
+<p>上下文工程是目前 AI 领域非常热门的研究方向。2026 年的趋势正在从简单的上下文管理，演进到更复杂的记忆架构—— 让 AI 拥有短期记忆（当前对话上下文）、长期记忆（跨会话的知识积累）和外部记忆（向量数据库、知识图谱等）。</p>
+<p>比如 Claude Opus 4.5 就引入了 Memory Tool，能让 AI 在超出上下文窗口的情况下，通过文件系统式的持久化存储来记住重要信息。根据 Anthropic 官方数据，这项技术在长时间工作流中减少了 84% 的 Token 消耗</p>
+<p>可以说，谁能更好地解决上下文和记忆的问题，谁就能在 AI 编程领域占据优势</p>
+<p>Claude Code 的三层记忆架构是上下文工程的典型实践：</p>
+<ul>
+<li>第一层是 MEMORY.md（热数据），就像一本书的目录，每次对话都会加载，但严格限制在 200 行、25KB 以内</li>
+<li>第二层是话题文件（温数据），存着你的编码偏好、项目约定等，新对话开始时 AI 只挑选最相关的 5 个文件加载</li>
+<li>第三层是历史对话（冷数据），存成文件，需要时用 Grep 搜索。不同温度的数据用不同方式管理 —— 热的常驻、温的按需、冷的搜索</li>
+</ul>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260713225035817.png" alt="image-20260713225035817"></p>
+<p>一个有意思的设计是，Claude Code 的记忆不记代码，只记人的偏好和判断。因为代码会变化但记忆不会自动更新，如果记忆里说 “函数 X 在第 30 行”，你重构后这条记忆就变成了误导。代码的事实永远去源码里实时读取，这种设计从根源上消灭了缓存和数据不一致的可能性</p>
+<hr>
+<h2 id="上下文压缩"><a href="#上下文压缩" class="headerlink" title="上下文压缩"></a>上下文压缩</h2><p>上下文压缩（Context Compaction）是 AI 自动压缩和总结之前对话内容的技术，解决的是长时间运行任务中上下文溢出的问题</p>
+<p>以前跑长任务的时候，AI 经常会撞到上下文长度的天花板，前面聊过的内容被挤掉后 AI 就失忆了，导致生成的代码和之前的约定对不上。有了上下文压缩，AI 会在上下文快要满的时候，自动把前面的对话总结成更精简的形式，保留关键信息的同时释放空间，这样就能持续工作更久而不会失忆</p>
+<p>你可以把它想象成项目经理写会议纪要。已经开了 3 小时的会，不可能把每句话都记下来，但关键决策、待办事项、重要结论都会被记录。AI 的上下文压缩也是类似的思路，把冗长的对话历史浓缩成关键信息</p>
+<p>Claude Opus 4.8 已经内置了上下文压缩能力，搭配它的 100 万 token 上下文窗口，可以让长时间运行的编程任务更加稳定</p>
+<p>Claude Code 在源码中实现了一套精妙的五级压缩策略，像漏斗一样层层过滤：</p>
+<ol>
+<li>Snip 剪裁：最轻的一刀，把旧的工具调用结果只保留结构，不保留内容</li>
+<li>Microcompact 微压缩：把体积大的工具执行结果卸载到缓存里。注意是卸载到缓存而不是直接丢掉，因为子智能体后续可能还需要这些结果</li>
+<li>Context Collapse 折叠：对中间的对话做折叠摘要，只保留关键信息</li>
+<li>Autocompact 自动压缩：当上下文占用超过阈值时，触发全量摘要压缩</li>
+<li>Reactive Compact 应急压缩：最后的兜底，当 API 返回 413 “提示词太长” 错误时紧急触发</li>
+</ol>
+<p>这五级从轻到重依次触发，能裁的先裁，实在不够了再上更重的方案</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260714000314576.png" alt="image-20260714000314576"></p>
+<hr>
+<h2 id="规则文件"><a href="#规则文件" class="headerlink" title="规则文件"></a>规则文件</h2><p>规则文件（Rules File）是放在项目中的配置文件，用来告诉 AI 你的项目规范、技术栈、代码风格等信息。有了规则文件，AI 每次生成代码时都可以参考这些规则，生成的代码更符合你的项目风格，省去了反复强调的麻烦</p>
+<p>不同 AI 编程工具使用不同的规则文件格式：</p>
+<ul>
+<li>Cursor：早期使用 <code>.cursorrules</code> 单文件格式，现在推荐使用 <code>.cursor/rules/*.mdc</code> 多文件格式</li>
+<li>Claude Code：使用 <code>CLAUDE.md</code> 文件</li>
+<li>GitHub Copilot：使用 <code>.github/shturl.cc/1gOEBRQFdYlvY</code> 文件</li>
+</ul>
+<p>以 Cursor 为例，<code>.mdc</code> 规则文件支持 YAML 元数据（frontmatter），可以指定规则的适用范围。根据 Cursor 官方文档，其格式如下：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260714000440473.png" alt="image-20260714000440473"></p>
+<p>规则文件的激活方式有多种，比如：</p>
+<ul>
+<li>始终生效：设置 <code>alwaysApply: true</code></li>
+<li>模式匹配：当引用匹配 <code>globs</code> 的文件时自动激活</li>
+<li>手动调用：在对话中用 <code>@规则名</code> 引用</li>
+<li>AI 自主决定：AI 根据任务相关性自动加载</li>
+</ul>
+<p>注意，随着工具版本的更新，这些文件的名称和标准可能会发生改变，一切以工具官方文档为主</p>
+<hr>
+<h2 id="AGENTS-md"><a href="#AGENTS-md" class="headerlink" title="AGENTS.md"></a>AGENTS.md</h2><p>AGENTS.md 是一种开放的文件格式，专门用于给 AI 编程智能体提供项目指令。它本质上也是一种规则文件，只不过是跨工具通用的开放标准</p>
+<p>传统的 README.md 是写给人看的，主要介绍项目是什么、怎么用。而 AGENTS.md 是写给 AI 看的，包含 AI 工作时需要的技术细节：</p>
+<ul>
+<li>项目的构建和启动命令</li>
+<li>测试运行方式</li>
+<li>代码风格和规范</li>
+<li>项目结构说明</li>
+</ul>
+<p>一个典型的 AGENTS.md 文件大概长这样：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260714000624684.png" alt="image-20260714000624684"></p>
+<p>AGENTS.md 的优势在于它是一个开放标准，被数万个开源项目采用。当你使用支持该标准的 AI 编程工具（比如 Claude Code、Codex、Cursor、GitHub Copilot 等）时，AI 会自动识别项目根目录下的 AGENTS.md 文件，并将其中的指令发送给 AI，不需要你手动引用</p>
+<hr>
+<h2 id="SDD-规范驱动开发"><a href="#SDD-规范驱动开发" class="headerlink" title="SDD 规范驱动开发"></a>SDD 规范驱动开发</h2><p>SDD（Spec-Driven Development，规范驱动开发）是 AI 时代的一种新型开发方法论，强调在编码之前先创建明确的、AI 能直接理解和执行的规范文档</p>
+<p>传统开发流程是：想到什么写什么，边写边改，最后再补文档。这样容易导致需求不清晰、代码和文档对不上</p>
+<p>而 SDD 的思路正好相反：先把需求写成规范文档，并且把规范文档当作代码的唯一真相来源</p>
+<p>你可以把规范文档理解为 “项目宪法”，它包含了详细的需求描述、系统设计和接口定义。AI 必须严格遵守这些条文来生成代码，确保产出完全符合预期</p>
+<br>
+
+<p>为什么 SDD 越来越受重视</p>
+<p>因为 AI 生成代码的质量直接取决于上下文的清晰度，而不仅仅是依靠提示词技巧。一个清晰的规范文档能比任何 Prompt 黑魔法更有效地减少错误</p>
+<p>SDD 的典型工作流程如下：</p>
+<ol>
+<li>Constitution 制定准则：定义项目的基本原则、代码规范、性能标准</li>
+<li>Specify 编写规范：描述要做什么功能、为什么做、用户需求是什么</li>
+<li>Clarify 澄清疑问：让 AI 提出结构化问题，明确边界情况和错误处理</li>
+<li>Plan 制定方案：确定技术栈、系统架构、数据模型、API 接口</li>
+<li>Tasks 拆解任务：把计划拆解成可执行的任务列表，标注依赖关系和优先级</li>
+<li>Implement 执行实现：AI 按照任务列表生成代码，人类验证</li>
+</ol>
+<p>其实这和程序员在企业中开发项目的标准流程非常相似，只不过执行者从人变成了 AI</p>
+<br>
+
+<p>2025 年 9 月，GitHub 发布了开源的 Spec Kit 工具包，帮助开发者在 AI 编程中实践 SDD 方法论。它支持 Claude Code、GitHub Copilot 等主流编程工具，通过一套斜杠命令引导你完成上述流程。即使你不是软件开发专家，也能在 AI 的引导下轻松地走完规范的项目开发流程</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260715233804898.png" alt="image-20260715233804898"></p>
+<hr>
+<h2 id="RAG-检索增强生成"><a href="#RAG-检索增强生成" class="headerlink" title="RAG 检索增强生成"></a>RAG 检索增强生成</h2><p>RAG（Retrieval-Augmented Generation 检索增强生成）是一种让 AI 能够先检索外部知识库、再基于检索结果生成回答的技术，目标是让 AI 的回答更准确、更有依据</p>
+<p>普通的 AI 只能依赖训练时学到的知识，而这些知识可能已经过时了。RAG 能让 AI 在回答问题时，先从你的文档、代码库、知识库中检索相关信息，然后基于这些信息生成回答</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260715235047838.png" alt="image-20260715235047838"></p>
+<p>这对于企业中的 Vibe Coding 特别有用，因为 AI 可以参考你项目中的已有代码，生成风格一致的新代码</p>
+<p>RAG 检索增强生成的工作流程如下图所示，做 AI 应用开发的程序员朋友们可以深入了解一下：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260715235123411.png" alt="image-20260715235123411"></p>
+<p>在实际工程中，RAG 已经演化出了很多进阶方案</p>
+<p>比如：</p>
+<ul>
+<li>Multi-Query RAG，用多种问法分别检索再合并结果</li>
+<li>HyDE，让 AI 先生成一段假答案再用假答案的向量去检索</li>
+<li>Hybrid Search，混合向量搜索和关键词搜索再融合排序</li>
+<li>Reranking，在检索后用精排模型重新打分过滤噪声</li>
+<li>GraphRAG，把文档变成知识图谱来支持跨文档多跳推理</li>
+<li>Agentic RAG，给 Agent 配备一组检索工具，让它来自动调度，根据问题自主决定每一步该怎么做</li>
+</ul>
+<p>还有很多，不同的方案适用于不同场景，可以根据实际需求组合使用</p>
+<hr>
+<h2 id="Agentic-RAG-智能体检索增强生成"><a href="#Agentic-RAG-智能体检索增强生成" class="headerlink" title="Agentic RAG 智能体检索增强生成"></a>Agentic RAG 智能体检索增强生成</h2><p>Agentic RAG（智能体检索增强生成）是传统 RAG 的进化版，它把固定的 “检索 → 生成” 流水线升级成了一个由 AI 智能体控制的闭环系统</p>
+<p>传统 RAG 就像一个只会按流程办事的图书管理员：你问一个问题，它去书架上找一次资料，拿回来就给你答案，不管找的对不对</p>
+<p>而 Agentic RAG 更像一个资深的研究员：它会先思考应该从哪里找信息，找到后会判断信息是否相关，如果不够好就换个角度重新搜索，甚至同时查多个数据源，反复验证直到满意为止</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260715235356468.png" alt="image-20260715235356468"></p>
+<p>Agentic RAG 的核心能力包括：</p>
+<ul>
+<li>多轮检索：根据需要进行多次有针对性的检索，而不是只查一次</li>
+<li>动态查询改写：如果第一次没找到好结果，AI 会自动换个提法重新搜索</li>
+<li>多数据源协作：同时从向量数据库、API、网页、SQL 数据库等多个来源获取信息</li>
+<li>自我纠错：评估检索结果的质量，不满意就重来</li>
+</ul>
+<p>典型模式包括 CRAG（纠正式 RAG，添加检索评估器）、Self-RAG（自反思 RAG，在生成过程中嵌入反思步骤）和 Adaptive RAG（自适应 RAG，根据问题类型选择不同检索策略）</p>
+<p>代价是更高的延迟和数倍的 Token 成本，所以更适合复杂的、高准确率要求的场景，比如法律、医疗、合规类的问题。简单的单源查询用传统 RAG 就够了</p>
+<hr>
+<h2 id="向量数据库"><a href="#向量数据库" class="headerlink" title="向量数据库"></a>向量数据库</h2><p>向量数据库是专门用来存储和查询 “向量”(一种数字表示形式) 的数据库。在 AI 领域，它常用来存储文本的语义表示</p>
+<p>简单来说，向量就是一串数字组成的数组，比如 <code>[0.1, 0.5, 0.3, 0.8]</code>。每个数字代表一个特征维度。AI 可以把一段文字、一张图片、一段代码转换成这样的向量，语义相似的内容转出来的向量也会很接近</p>
+<p>当你把代码或文档存入向量数据库后，AI 就能快速找到语义相似的内容，即使搜索词和原文不完全一样</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260717173744455.png" alt="image-20260717173744455"></p>
+<p>比如，你搜 “用户登录”，它能找到叫 “handleAuth” 的函数，因为它们在语义上是相关的</p>
+<p>随着 AI 的爆发，市面上涌现了非常多支持向量存储的数据库：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260717173754624.png" alt="image-20260717173754624"></p>
+<hr>
+<h2 id="嵌入-Embedding"><a href="#嵌入-Embedding" class="headerlink" title="嵌入 Embedding"></a>嵌入 Embedding</h2><p>嵌入是把文本、代码等内容转换成数字向量的过程。这些向量能够捕捉内容的语义信息</p>
+<p>在向量空间中，语义相似的内容会靠得更近。这就是为什么向量数据库能进行语义搜索的原理</p>
+<p>不需要深入理解嵌入的技术细节，只需要知道它是 RAG 和代码语义搜索的基础技术就够了</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260717174249546.png" alt="image-20260717174249546"></p>
+<hr>
+<h1 id="AI-输出相关"><a href="#AI-输出相关" class="headerlink" title="AI 输出相关"></a>AI 输出相关</h1><h2 id="AI-幻觉"><a href="#AI-幻觉" class="headerlink" title="AI 幻觉"></a>AI 幻觉</h2><p>AI 幻觉（Hallucination）是指 AI 输出了不符合事实的内容，可能是编造了不存在的 API、给出了错误的函数用法、推荐了根本不存在的库，甚至胡编乱造一些看起来很合理但完全错误的信息</p>
+<p>这是大语言模型的固有问题，因为它们是基于概率生成内容的，有时会 “脑补” 不存在的东西</p>
+<p>在 AI 编程时，我们可以通过以下方法尽量减少幻觉带来的影响：</p>
+<ul>
+<li>要求 AI 提供文档链接验证</li>
+<li>自己查官方文档确认</li>
+<li>换个模型试试</li>
+<li>开新对话重新描述问题</li>
+<li>利用 Context7 等获取到最新技术文档的 MCP 扩展</li>
+</ul>
+<p>对于做 AI 应用开发的程序员来说，如何消除幻觉是一个需要重点攻克的挑战。前面提到的 RAG（检索增强生成）技术就是目前最主流的解决方案之一，通过让 AI 先检索真实数据再回答，大幅降低幻觉的概率</p>
+<hr>
+<h2 id="温度"><a href="#温度" class="headerlink" title="温度"></a>温度</h2><p>温度（Temperature）是控制 AI 输出随机性的参数，取值一般在 0 ~ 2 之间（不同大模型和 AI 编程工具的设置范围可能会有区别）。</p>
+<ul>
+<li>温度低（如 0.1）：输出更确定、更保守，适合写代码</li>
+<li>温度高（如 1.0）：输出更随机、更有创意，适合头脑风暴</li>
+</ul>
+<p>在编程场景中，一般使用较低的温度，让 AI 生成更稳定、更可预测的代码。而在需要 AI 发挥创意的场景（比如起名字、写文案、头脑风暴产品方案），可以适当调高温度，让 AI 给出更多样化的建议。</p>
+<p>比如下图，把温度调高，输出的结构可能完全不同：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260717181052713.png" alt="image-20260717181052713"></p>
+<hr>
+<h2 id="流式输出"><a href="#流式输出" class="headerlink" title="流式输出"></a>流式输出</h2><p>流式输出（Streaming）是指 AI 一边生成内容，一边实时显示给用户，而不是等全部生成完再显示</p>
+<p>这就像看直播而不是看录播，你能实时看到 AI 的输出过程和生成的内容，如果发现方向不对，可以及时中断，避免浪费 Token</p>
+<p>大多数 AI 编程工具都支持流式输出，让交互体验更流畅</p>
+<p>在技术实现上，流式输出一般基于 SSE（Server-Sent Events，服务器推送事件）技术，服务端通过持续推送数据片段给客户端，做到实时展示</p>
+<hr>
+<h1 id="项目管理概念"><a href="#项目管理概念" class="headerlink" title="项目管理概念"></a>项目管理概念</h1><h2 id="MVP-最小可行产品"><a href="#MVP-最小可行产品" class="headerlink" title="MVP 最小可行产品"></a>MVP 最小可行产品</h2><p>MVP（Minimum Viable 最小可行产品）是指用最少的功能满足核心需求的产品版本，简单来说就是一个 “能跑起来、核心功能能用” 的最简版本</p>
+<p>很多同学刚开始做产品的时候会有各种奇思妙想，恨不得一口气把所有功能都做出来，结果花了大量时间在不必要的功能上，越做越复杂，最后觉得太难就直接放弃了，属于是自己把自己吓跑了。而做 MVP 的思路正好相反，先用最少的功能把核心价值跑通，快速验证想法是否可行，拿到用户反馈后再逐步迭代</p>
+<p>比如做一个记账 APP，MVP 版本可能只有记录支出、查看列表两个功能，其他高级功能以后再加</p>
+<hr>
+<h2 id="迭代开发"><a href="#迭代开发" class="headerlink" title="迭代开发"></a>迭代开发</h2><p>迭代开发是把大项目分成多个小周期，每个周期完成一部分功能的开发方法</p>
+<p>每个迭代周期包括：计划 &#x3D;&gt; 开发 &#x3D;&gt; 测试 &#x3D;&gt; 发布 &#x3D;&gt; 反馈 &#x3D;&gt; 改进</p>
+<p>这种方法特别适合 Vibe Coding，因为你可以让 AI 先实现核心功能，测试没问题后再逐步添加新功能</p>
+<p>顺便提一下，迭代开发是敏捷开发（Agile Development）方法论的核心实践之一。敏捷开发强调小步快跑、快速反馈、拥抱变化，非常适合 AI 编程的工作节奏</p>
+<hr>
+<h2 id="Git-WorkTree-工作树"><a href="#Git-WorkTree-工作树" class="headerlink" title="Git WorkTree 工作树"></a>Git WorkTree 工作树</h2><p>Git WorkTree（工作树）是 Git 的一个隐藏技能，它可以让一个仓库同时拥有多个独立的工作目录，每个目录对应不同的分支</p>
+<p>正常情况下，一个 Git 仓库只有一个工作目录，你同一时间只能在一个分支上干活。想切换分支，就得先保存手头的代码，来回折腾。但用了 WorkTree，你可以开启分身术，同时在不同的分支上干活，互不干扰</p>
+<p>和手动复制项目文件夹的区别在于：手动复制会复制完整的 .git 目录和历史记录，占用空间大而且合并代码很麻烦。而 WorkTree 创建的工作目录只是链接到同一个 .git 目录，共享同一套提交历史，省空间、合并也方便</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260717194453364.png" alt="image-20260717194453364"></p>
+<p>在 AI 编程时代，WorkTree 最香的用法就是让多个 AI 并行开发。比如你有首页、搜索、个人中心三个功能要做，就创建三个工作树，每个分配给一个 AI，各干各的互不打扰，开发完再用 Git 合并代码</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/image-20260717194510959.png" alt="image-20260717194510959"></p>
+<p>像 Cursor 这样的 AI 编程工具已经内置了 WorkTree 支持，可以直接开启 Parallel Agents 模式，自动创建和管理工作树</p>
+<p>不过要注意，分配任务时要尽量让不同的 AI 改不同的文件，如果两个 AI 改了同一个文件，合并时就会产生冲突，需要手动解决</p>
+<hr>
+<h2 id="GEO-生成式引擎优化"><a href="#GEO-生成式引擎优化" class="headerlink" title="GEO 生成式引擎优化"></a>GEO 生成式引擎优化</h2><p>GEO 全称为 Generative Engine Optimization 生成式引擎优化，你可以把它理解为 AI 时代的 SEO</p>
+<p>传统的 SEO 关注的是 “怎么让网页在百度、Google 搜索结果中排名靠前”，而 GEO 关注的是 “怎么让你的内容被 ChatGPT、DeepSeek、豆包这些 AI 大模型引用和推荐”</p>
+<p>打个比方，SEO 像是在超市货架上抢黄金位置，GEO 像是让导购员在顾客咨询时主动把你的产品推荐给客户</p>
+<p>随着越来越多人用 AI 搜索代替传统搜索引擎，GEO 正在变得越来越重要。有数据显示，AI 搜索带来的流量转化率可以达到传统搜索的 5 倍以上</p>
+<p>GEO 的核心策略包括：</p>
+<ul>
+<li>先给结论：文章开头直接回答核心问题，AI 更喜欢提取开头就给答案的内容</li>
+<li>结构化写作：使用清晰的标题层级、问答格式、对比表格，方便 AI 解析和引用</li>
+<li>打造权威内容：用具体数据、权威引用代替模糊描述，AI 更信任有据可查的内容</li>
+<li>在权威平台多发内容：知乎、公众号、GitHub 等高权重平台发布的内容更容易被 AI 抓取</li>
+<li>技术优化：确保 robots.txt 允许 AI 爬虫访问，使用 SSR &#x2F; SSG 确保页面可爬取</li>
+</ul>
+<p>需要注意，GEO 技术本身是中立的，和 SEO 一样只是内容优化手段。而且做好 SEO 也有利于 GEO，两者并不冲突</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Simon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2026/03/07/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/">http://yoursite.com/2026/03/07/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://yoursite.com" target="_blank">Simon 的书柜</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/VibeCoding/">VibeCoding</a></div><div class="post-share"><div class="social-share" data-image="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/01/26/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="JDK 18 ~ JDK 21 新特性"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">JDK 18 ~ JDK 21 新特性</div></div><div class="info-2"><div class="info-item-1">JDK 18简介JDK 18 是 Java 开启半年发布周期后的第九个正式版本，属于非长期支持（Non-LTS）版本，也是 JDK 17 LTS 落地后的首个迭代版本。它没有推出颠覆性的全新语法，更多聚焦于现有特性打磨、开发体验补全、底层基建升级，是一个务实性极强的优化版本。其中最具普惠价值的特性是默认字符集统一为 UTF-8，彻底解决了困扰 Java 开发者数十年的跨平台字符集乱码问题；内置简单 Web 服务器、JavaDoc 代码片段增强等特性，则从工具链层面进一步降低了开发测试成本 与此同时，Switch 模式匹配迎来第二次预览优化，语法细节与穷尽性校验更趋完善；外部函数与内存 API、Vector API 持续迭代孵化，高性能与原生交互能力稳步推进；服役二十余年的终结器（Finalizer）正式标记为待移除，标志着 Java 资源管理机制彻底向现代化方向转型。整体来看，JDK 18 承上启下，既修复了长期存在的历史痛点，又为 JDK 21 LTS 的特性定型做好了充分铺垫  默认 UTF-8 字符集默认字符集统一为 UTF-8 是 JDK 18 最具普惠性的特性，彻底解决...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Simon</div><div class="author-info-description">攀登亦是风景</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">63</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">66</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AI-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">AI 基础概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LLM"><span class="toc-number">1.1.</span> <span class="toc-text">LLM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Token%EF%BC%88%E8%AF%8D%E5%85%83%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">Token（词元）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Token-%E7%BC%93%E5%AD%98"><span class="toc-number">1.3.</span> <span class="toc-text">Token 缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E5%8F%82%E6%95%B0"><span class="toc-number">1.4.</span> <span class="toc-text">模型参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E5%92%8C%E6%8E%A8%E7%90%86"><span class="toc-number">1.5.</span> <span class="toc-text">模型训练和推理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83"><span class="toc-number">1.6.</span> <span class="toc-text">模型微调</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%92%B8%E9%A6%8F"><span class="toc-number">1.7.</span> <span class="toc-text">模型蒸馏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AA%97%E5%8F%A3"><span class="toc-number">1.8.</span> <span class="toc-text">上下文窗口</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%90%E7%A4%BA%E8%AF%8D%E7%9B%B8%E5%85%B3"><span class="toc-number">2.</span> <span class="toc-text">提示词相关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E7%A4%BA%E8%AF%8D%EF%BC%88Prompt%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">提示词（Prompt）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%8F%90%E7%A4%BA%E8%AF%8D"><span class="toc-number">2.2.</span> <span class="toc-text">系统提示词</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B"><span class="toc-number">2.3.</span> <span class="toc-text">提示词工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%B6%E6%A0%B7%E6%9C%AC%E6%8F%90%E7%A4%BA%EF%BC%88Zero-Shot%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">零样本提示（Zero-Shot）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%91%E6%A0%B7%E6%9C%AC%E6%8F%90%E7%A4%BA%EF%BC%88Few-shot%EF%BC%89"><span class="toc-number">2.5.</span> <span class="toc-text">少样本提示（Few-shot）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E7%BB%B4%E9%93%BE%E6%8F%90%E7%A4%BA%EF%BC%88Chain-of-Thought%EF%BC%89"><span class="toc-number">2.6.</span> <span class="toc-text">思维链提示（Chain-of-Thought）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Markdown-%E8%AF%AD%E8%A8%80"><span class="toc-number">2.7.</span> <span class="toc-text">Markdown 语言</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AI-%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">AI 编程模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vibe-Coding-%E6%B0%9B%E5%9B%B4%E7%BC%96%E7%A8%8B"><span class="toc-number">3.1.</span> <span class="toc-text">Vibe Coding 氛围编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agentic-Engineering-%E6%99%BA%E8%83%BD%E4%BD%93%E5%B7%A5%E7%A8%8B"><span class="toc-number">3.2.</span> <span class="toc-text">Agentic Engineering 智能体工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agentic-Coding-%E6%99%BA%E8%83%BD%E4%BD%93%E7%BC%96%E7%A8%8B"><span class="toc-number">3.3.</span> <span class="toc-text">Agentic Coding 智能体编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Harness-Engineering-%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text">Harness Engineering 驾驭工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Loop-Engineering-%E5%BE%AA%E7%8E%AF%E5%B7%A5%E7%A8%8B"><span class="toc-number">3.5.</span> <span class="toc-text">Loop Engineering 循环工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93%E5%8D%8F%E4%BD%9C"><span class="toc-number">3.6.</span> <span class="toc-text">多智能体协作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E4%BD%93%E7%BC%96%E6%8E%92"><span class="toc-number">3.7.</span> <span class="toc-text">智能体编排</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Subagents-%E5%AD%90%E4%BB%A3%E7%90%86"><span class="toc-number">3.8.</span> <span class="toc-text">Subagents 子代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent-Teams-%E6%99%BA%E8%83%BD%E4%BD%93%E5%9B%A2%E9%98%9F"><span class="toc-number">3.9.</span> <span class="toc-text">Agent Teams 智能体团队</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hermes-Agent"><span class="toc-number">3.10.</span> <span class="toc-text">Hermes Agent</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Background-Agent"><span class="toc-number">3.11.</span> <span class="toc-text">Background Agent</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent-Loop-%E6%99%BA%E8%83%BD%E4%BD%93%E5%BE%AA%E7%8E%AF"><span class="toc-number">3.12.</span> <span class="toc-text">Agent Loop 智能体循环</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ralph-Wiggum-Loop"><span class="toc-number">3.13.</span> <span class="toc-text">Ralph Wiggum Loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReAct-%E6%8E%A8%E7%90%86%E4%B8%8E%E8%A1%8C%E5%8A%A8"><span class="toc-number">3.14.</span> <span class="toc-text">ReAct 推理与行动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83"><span class="toc-number">3.15.</span> <span class="toc-text">深度思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E6%80%9D%E8%80%83"><span class="toc-number">3.16.</span> <span class="toc-text">自适应思考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8"><span class="toc-number">3.17.</span> <span class="toc-text">工具调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MCP-%E6%A8%A1%E5%9E%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.18.</span> <span class="toc-text">MCP 模型上下文协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent-Skills-%E6%99%BA%E8%83%BD%E4%BD%93%E6%8A%80%E8%83%BD"><span class="toc-number">3.19.</span> <span class="toc-text">Agent Skills 智能体技能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hooks-%E9%92%A9%E5%AD%90"><span class="toc-number">3.20.</span> <span class="toc-text">Hooks 钩子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%9C%E6%9D%A0%E5%91%BD%E4%BB%A4"><span class="toc-number">3.21.</span> <span class="toc-text">斜杠命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A2A%EF%BC%88Agent-to-Agent%EF%BC%89"><span class="toc-number">3.22.</span> <span class="toc-text">A2A（Agent-to-Agent）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ACP-%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.23.</span> <span class="toc-text">ACP 协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BMAD-%E6%95%8F%E6%8D%B7-AI-%E5%BC%80%E5%8F%91%E6%96%B9%E6%B3%95"><span class="toc-number">3.24.</span> <span class="toc-text">BMAD 敏捷 AI 开发方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Browser-Use-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BD%BF%E7%94%A8"><span class="toc-number">3.25.</span> <span class="toc-text">Browser Use 浏览器使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Computer-Use-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%BF%E7%94%A8"><span class="toc-number">3.26.</span> <span class="toc-text">Computer Use 计算机使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">上下文管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%88Context%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">上下文（Context）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B"><span class="toc-number">4.2.</span> <span class="toc-text">上下文工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8E%8B%E7%BC%A9"><span class="toc-number">4.3.</span> <span class="toc-text">上下文压缩</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%84%E5%88%99%E6%96%87%E4%BB%B6"><span class="toc-number">4.4.</span> <span class="toc-text">规则文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AGENTS-md"><span class="toc-number">4.5.</span> <span class="toc-text">AGENTS.md</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SDD-%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91"><span class="toc-number">4.6.</span> <span class="toc-text">SDD 规范驱动开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAG-%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90"><span class="toc-number">4.7.</span> <span class="toc-text">RAG 检索增强生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agentic-RAG-%E6%99%BA%E8%83%BD%E4%BD%93%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90"><span class="toc-number">4.8.</span> <span class="toc-text">Agentic RAG 智能体检索增强生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">4.9.</span> <span class="toc-text">向量数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B5%8C%E5%85%A5-Embedding"><span class="toc-number">4.10.</span> <span class="toc-text">嵌入 Embedding</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AI-%E8%BE%93%E5%87%BA%E7%9B%B8%E5%85%B3"><span class="toc-number">5.</span> <span class="toc-text">AI 输出相关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-%E5%B9%BB%E8%A7%89"><span class="toc-number">5.1.</span> <span class="toc-text">AI 幻觉</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%A9%E5%BA%A6"><span class="toc-number">5.2.</span> <span class="toc-text">温度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E5%BC%8F%E8%BE%93%E5%87%BA"><span class="toc-number">5.3.</span> <span class="toc-text">流式输出</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E6%A6%82%E5%BF%B5"><span class="toc-number">6.</span> <span class="toc-text">项目管理概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MVP-%E6%9C%80%E5%B0%8F%E5%8F%AF%E8%A1%8C%E4%BA%A7%E5%93%81"><span class="toc-number">6.1.</span> <span class="toc-text">MVP 最小可行产品</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%BC%80%E5%8F%91"><span class="toc-number">6.2.</span> <span class="toc-text">迭代开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git-WorkTree-%E5%B7%A5%E4%BD%9C%E6%A0%91"><span class="toc-number">6.3.</span> <span class="toc-text">Git WorkTree 工作树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GEO-%E7%94%9F%E6%88%90%E5%BC%8F%E5%BC%95%E6%93%8E%E4%BC%98%E5%8C%96"><span class="toc-number">6.4.</span> <span class="toc-text">GEO 生成式引擎优化</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/07/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/" title="Vibe Coding 概念大全"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Vibe Coding 概念大全"/></a><div class="content"><a class="title" href="/2026/03/07/AI/Vibe%20Coding/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/" title="Vibe Coding 概念大全">Vibe Coding 概念大全</a><time datetime="2026-03-06T18:42:08.000Z" title="发表于 2026-03-07 02:42:08">2026-03-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/26/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="JDK 18 ~ JDK 21 新特性"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JDK 18 ~ JDK 21 新特性"/></a><div class="content"><a class="title" href="/2026/01/26/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="JDK 18 ~ JDK 21 新特性">JDK 18 ~ JDK 21 新特性</a><time datetime="2026-01-26T13:45:49.000Z" title="发表于 2026-01-26 21:45:49">2026-01-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/09/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/DevOps/DevOps%20%E6%95%99%E7%A8%8B/" title="DevOps 教程"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/DevOps/DevOps%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps 教程"/></a><div class="content"><a class="title" href="/2026/01/09/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/DevOps/DevOps%20%E6%95%99%E7%A8%8B/" title="DevOps 教程">DevOps 教程</a><time datetime="2026-01-09T06:09:17.000Z" title="发表于 2026-01-09 14:09:17">2026-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/12/07/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/RocketMQ%20%E6%95%99%E7%A8%8B/" title="RocketMQ 教程"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/RocketMQ%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RocketMQ 教程"/></a><div class="content"><a class="title" href="/2025/12/07/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/RocketMQ%20%E6%95%99%E7%A8%8B/" title="RocketMQ 教程">RocketMQ 教程</a><time datetime="2025-12-07T11:45:45.000Z" title="发表于 2025-12-07 19:45:45">2025-12-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/10/25/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83/Zookeeper%20%E6%95%99%E7%A8%8B/" title="Zookeeper 教程"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83/Zookeeper%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Zookeeper 教程"/></a><div class="content"><a class="title" href="/2025/10/25/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E8%B0%83/Zookeeper%20%E6%95%99%E7%A8%8B/" title="Zookeeper 教程">Zookeeper 教程</a><time datetime="2025-10-24T23:25:41.000Z" title="发表于 2025-10-25 07:25:41">2025-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Simon</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
