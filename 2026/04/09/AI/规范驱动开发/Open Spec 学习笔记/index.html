@@ -1,0 +1,474 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Open Spec 学习笔记 | Simon 的书柜</title><meta name="author" content="Simon"><meta name="copyright" content="Simon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="SDD 与 Open Spec 基础SDD 规范驱动开发SDD（Spec-Driven Development，规范驱动开发）是 AI 时代的一种新型开发方法论，强调在编码之前先创建明确的、AI 能直接理解和执行的规范文档 传统开发流程是：想到什么写什么，边写边改，最后再补文档。这样容易导致需求不清晰、代码和文档对不上 而 SDD 的思路正好相反：先把需求写成规范文档，并且把规范文档当作代码的唯">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Open Spec 学习笔记">
+<meta property="og:url" content="http://yoursite.com/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Simon 的书柜">
+<meta property="og:description" content="SDD 与 Open Spec 基础SDD 规范驱动开发SDD（Spec-Driven Development，规范驱动开发）是 AI 时代的一种新型开发方法论，强调在编码之前先创建明确的、AI 能直接理解和执行的规范文档 传统开发流程是：想到什么写什么，边写边改，最后再补文档。这样容易导致需求不清晰、代码和文档对不上 而 SDD 的思路正好相反：先把需求写成规范文档，并且把规范文档当作代码的唯">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg">
+<meta property="article:published_time" content="2026-04-09T00:47:15.000Z">
+<meta property="article:modified_time" content="2026-07-21T15:14:15.850Z">
+<meta property="article:author" content="Simon">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="VibeCoding">
+<meta property="article:tag" content="SDD">
+<meta property="article:tag" content="OpenSpec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Open Spec 学习笔记",
+  "url": "http://yoursite.com/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/",
+  "image": "https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg",
+  "datePublished": "2026-04-09T00:47:15.000Z",
+  "dateModified": "2026-07-21T15:14:15.850Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Simon",
+      "url": "http://yoursite.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Open Spec 学习笔记',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">64</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">68</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Simon 的书柜</span></a><a class="nav-page-title" href="/"><span class="site-name">Open Spec 学习笔记</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Open Spec 学习笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-09T00:47:15.000Z" title="发表于 2026-04-09 08:47:15">2026-04-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-07-21T15:14:15.850Z" title="更新于 2026-07-21 23:14:15">2026-07-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI/">AI</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20260721231253680.png" alt="image-20260721231253680"></p>
+<h1 id="SDD-与-Open-Spec-基础"><a href="#SDD-与-Open-Spec-基础" class="headerlink" title="SDD 与 Open Spec 基础"></a>SDD 与 Open Spec 基础</h1><h2 id="SDD-规范驱动开发"><a href="#SDD-规范驱动开发" class="headerlink" title="SDD 规范驱动开发"></a>SDD 规范驱动开发</h2><p>SDD（Spec-Driven Development，规范驱动开发）是 AI 时代的一种新型开发方法论，强调在编码之前先创建明确的、AI 能直接理解和执行的规范文档</p>
+<p>传统开发流程是：想到什么写什么，边写边改，最后再补文档。这样容易导致需求不清晰、代码和文档对不上</p>
+<p>而 SDD 的思路正好相反：先把需求写成规范文档，并且把规范文档当作代码的唯一真相来源</p>
+<p>你可以把规范文档理解成 “项目宪法”，它包含了详细的需求描述、系统设计和接口定义。AI 必须严格遵守这些条文来生成代码，确保产出完全符合预期</p>
+<br>
+
+<p>为什么 SDD 越来越受重视</p>
+<p>因为 AI 生成代码的质量直接取决于上下文的清晰度，而不仅仅是依靠提示词技巧。一个清晰的规范文档能比任何 Prompt 黑魔法更有效地减少错误</p>
+<p>SDD 的典型工作流程如下：</p>
+<ol>
+<li>Constitution 制定准则：定义项目的基本原则、代码规范、性能标准</li>
+<li>Specify 编写规范：描述要做什么功能、为什么做、用户需求是什么</li>
+<li>Clarify 澄清疑问：让 AI 提出结构化问题，明确边界情况和错误处理</li>
+<li>Plan 制定方案：确定技术栈、系统架构、数据模型、API 接口</li>
+<li>Tasks 拆解任务：把计划拆解成可执行的任务列表，标注依赖关系和优先级</li>
+<li>Implement 执行实现：AI 按照任务列表生成代码，人类验证</li>
+</ol>
+<p>其实这和程序员在企业中开发项目的标准流程非常相似，只不过执行者从人变成了 AI</p>
+<hr>
+<h2 id="Open-Spec-简介"><a href="#Open-Spec-简介" class="headerlink" title="Open Spec 简介"></a>Open Spec 简介</h2><p>Open Spec 是一个开源的、轻量级的 SDD 框架，专门为 AI 编程助手设计，用来让你和 AI 在写代码之前先就 “要做什么” 达成一致</p>
+<p>它由 Fission AI 团队在 2025 年 8 月开源，托管在 GitHub 上，采用 MIT 协议，目前已经积累了 6 万多 Star，是当前 Vibe Coding 领域最受欢迎的规范框架之一</p>
+<p>Open Spec 的核心思路很简单：在项目里加一层轻量的规范文件，让人类和 AI 都能读到同一份 “要做什么” 的说明，避免需求只活在聊天记录里</p>
+<p>打个比方，以前你和 AI 对话就像两个人口头交代任务，说完就忘了；有了 Open Spec，相当于把任务写成了一份正式的工单贴在墙上，谁都看得见，谁都不能赖账</p>
+<hr>
+<h2 id="为什么需要-Open-Spec"><a href="#为什么需要-Open-Spec" class="headerlink" title="为什么需要 Open Spec"></a>为什么需要 Open Spec</h2><p>AI 编程助手虽然强大，但有一个致命问题：当需求只存在于聊天记录里时，AI 的表现是不可预测的</p>
+<p>AI 是一个非常自信的 “实习生”。你给它一句话需求，它会立刻动手，但中间有任何没说清楚的地方，它就会自己脑补，而且补得特别自信。等你发现做偏了，代码已经写了一大堆，回炉重来的成本很高</p>
+<p>Open Spec 把 “达成一致” 这个动作提前到了写代码之前。在这个阶段，改一行规范文档的成本几乎为零；而等代码写完再改，成本可能是几十倍</p>
+<p>所以 Open Spec 解决的不是 “AI 不会写代码” 的问题，而是 “AI 写的不是你想要的” 的问题。它把分歧消灭在萌芽阶段，而不是等成果出来再返工</p>
+<hr>
+<h2 id="Open-Spec-的设计哲学"><a href="#Open-Spec-的设计哲学" class="headerlink" title="Open Spec 的设计哲学"></a>Open Spec 的设计哲学</h2><p>Open Spec 有五条非常清晰的设计原则，理解了这五条，就理解了它为什么这么设计：</p>
+<ul>
+<li><strong>fluid not rigid</strong>：流畅而非死板。没有强制的阶段门禁，你可以随时回头改前面的制品</li>
+<li><strong>iterative not waterfall</strong>：迭代而非瀑布。规范是边写边完善的，不是一次性定死</li>
+<li><strong>easy not complex</strong>：简单而非复杂。5 分钟就能上手，不需要装一堆依赖</li>
+<li><strong>built for brownfield not just greenfield</strong>：为既有项目而生，不只是新项目。这是 Open Spec 最区别于其他工具的一点</li>
+<li><strong>scalable from personal projects to enterprises</strong>：从个人项目到企业都能用</li>
+</ul>
+<p>其中最值得关注的是 brownfield-first（既有项目优先）。市面上大多数 SDD 工具都假设你从零开始一个新项目，但现实里绝大多数人是在一个已经存在了很久、代码库已经很大的项目上加功能。Open Spec 不要求你一开始就把整个系统文档化，而是 “改到哪写到哪”，规范会随着你实际做的工作慢慢填充起来</p>
+<hr>
+<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><h2 id="Spec-规范"><a href="#Spec-规范" class="headerlink" title="Spec 规范"></a>Spec 规范</h2><p>Spec（规范）是 Open Spec 里描述系统行为的文档，用纯 Markdown 写成，不需要学任何特殊语法</p>
+<p>一个 Spec 的结构非常朴素：它包含若干个 Requirement（需求），每个 Requirement 又包含若干个 Scenario（场景）</p>
+<p>一个典型的 Spec 长这样：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Auth Specification</span></span><br><span class="line"></span><br><span class="line"><span class="section">## Purpose</span></span><br><span class="line">Authentication and session management for the application.</span><br><span class="line"></span><br><span class="line"><span class="section">### Requirement: User Authentication</span></span><br><span class="line">The system SHALL authenticate users via JWT tokens.</span><br><span class="line"></span><br><span class="line"><span class="section">#### Scenario: Invalid credentials</span></span><br><span class="line"><span class="bullet">-</span> GIVEN a user with invalid credentials</span><br><span class="line"><span class="bullet">-</span> WHEN the user attempts to log in</span><br><span class="line"><span class="bullet">-</span> THEN the system returns a 401 error</span><br></pre></td></tr></table></figure>
+
+<p>Spec 的核心思想是：它描述的是 “系统应该怎么表现”，而不是 “系统现在怎么实现”。代码会变，但规范相对稳定，所以规范是真相来源，代码是实现细节</p>
+<hr>
+<h2 id="Requirement-需求"><a href="#Requirement-需求" class="headerlink" title="Requirement 需求"></a>Requirement 需求</h2><p>Requirement（需求）是 Spec 里描述某一条具体系统行为的单位</p>
+<p>写 Requirement 时，Open Spec 借用了 RFC 2119 的关键词来表明需求的强度：</p>
+<ul>
+<li><strong>MUST</strong>：必须做到，没有任何商量余地</li>
+<li><strong>SHALL</strong>：应当做到，是规范层面的强制要求</li>
+<li><strong>SHOULD</strong>：建议做到，但有例外情况可以不这么做</li>
+<li><strong>MAY</strong>：可以选择做，是可选能力</li>
+</ul>
+<p>这些关键词不是装饰，它们让 AI 能准确判断一条需求的优先级。比如 “The system MUST require 2FA” 和 “The system MAY support 2FA” 在 AI 眼里是完全不同的指令</p>
+<p>写好 Requirement 的关键是要具体、可验证。不要写 “系统应该很好用” 这种模糊的话，而要写 “系统 SHALL 在用户点击提交后 200ms 内给出反馈”</p>
+<hr>
+<h2 id="Scenario-场景"><a href="#Scenario-场景" class="headerlink" title="Scenario 场景"></a>Scenario 场景</h2><p>Scenario（场景）是 Requirement 的具体例子，描述某条需求在实际中是怎么运作的</p>
+<p>Open Spec 推荐用 GIVEN&#x2F;WHEN&#x2F;THEN 的格式来写场景，这是行为驱动开发（BDD）里非常成熟的写法：</p>
+<ul>
+<li><strong>GIVEN</strong>：给定一个初始状态</li>
+<li><strong>WHEN</strong>：当某个动作发生</li>
+<li><strong>THEN</strong>：那么系统应该有什么样的结果</li>
+</ul>
+<p>举个例子：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">#### Scenario: OTP required</span></span><br><span class="line"><span class="bullet">-</span> GIVEN a user with 2FA enabled</span><br><span class="line"><span class="bullet">-</span> WHEN the user submits valid credentials</span><br><span class="line"><span class="bullet">-</span> THEN an OTP challenge is presented</span><br></pre></td></tr></table></figure>
+
+<p>Scenario 的价值在于把抽象的需求变成具体的例子。AI 在生成代码时，可以直接拿这些场景当测试用例来验证自己的实现是否正确，这比单纯一句 “实现登录功能” 靠谱得多</p>
+<hr>
+<h2 id="Delta-Spec-增量规范"><a href="#Delta-Spec-增量规范" class="headerlink" title="Delta Spec 增量规范"></a>Delta Spec 增量规范</h2><p>Delta Spec（增量规范）是 Open Spec 最核心、也最巧妙的概念</p>
+<p>很多 SDD 工具的做法是：每次改功能都要重写一遍完整的规范。这在既有项目上几乎不可能落地，因为没人愿意为了加一个暗色模式去重写整个系统的文档</p>
+<p>Open Spec 的做法是 Delta Spec：它只描述 “相对于当前规范，这次改了什么”，用三个段落来组织：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Delta for Auth</span></span><br><span class="line"></span><br><span class="line"><span class="section">## ADDED Requirements</span></span><br><span class="line"><span class="section">### Requirement: Two-Factor Authentication</span></span><br><span class="line">The system MUST require a second factor during login.</span><br><span class="line"></span><br><span class="line"><span class="section">## MODIFIED Requirements</span></span><br><span class="line"><span class="section">### Requirement: Session Timeout</span></span><br><span class="line">The system SHALL expire sessions after 30 minutes of inactivity.</span><br><span class="line">(Previously: 60 minutes)</span><br><span class="line"></span><br><span class="line"><span class="section">## REMOVED Requirements</span></span><br><span class="line"><span class="section">### Requirement: Remember Me</span></span><br><span class="line">(Deprecated in favor of 2FA)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>ADDED</strong>：新增了哪些需求</li>
+<li><strong>MODIFIED</strong>：修改了哪些已有需求</li>
+<li><strong>REMOVED</strong>：删除了哪些需求</li>
+</ul>
+<p>这种设计让既有项目的改造成本极低。你不需要一开始就写全整个系统的规范，只需要在每次改动时写一份 Delta，改完归档时再合并进主规范。规范库会随着你的工作自然生长</p>
+<hr>
+<h2 id="Change-变更"><a href="#Change-变更" class="headerlink" title="Change 变更"></a>Change 变更</h2><p>Change（变更）是 Open Spec 里一次修改的完整包装。每次你想给系统加功能、改行为、删东西，都对应一个 Change</p>
+<p>一个 Change 在文件系统里就是一个独立的文件夹，里面装着这次修改涉及的所有制品：提案、增量规范、设计文档、任务清单</p>
+<p>这样做的好处是：一次修改的所有上下文都集中在一起，不会散落在聊天记录里。你可以随时翻回去看 “当时这个功能是怎么想的”，也可以把一个 Change 交给同事或另一个 AI 审查</p>
+<p>当 Change 完成后，它会被归档（Archive），它的 Delta Spec 会合并进主规范库，文件夹本身会被移到 archive 目录里留档</p>
+<hr>
+<h2 id="Artifact-制品"><a href="#Artifact-制品" class="headerlink" title="Artifact 制品"></a>Artifact 制品</h2><p>Artifact（制品）是 Change 文件夹里的一份份文档。Open Spec 默认有四类标准制品：</p>
+<table>
+<thead>
+<tr>
+<th>制品</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>proposal.md</code></td>
+<td>“为什么做” 和 “做什么”，记录意图、范围、方案</td>
+</tr>
+<tr>
+<td><code>specs/</code></td>
+<td>增量规范，描述需求的变化</td>
+</tr>
+<tr>
+<td><code>design.md</code></td>
+<td>“怎么做”，技术方案和架构决策</td>
+</tr>
+<tr>
+<td><code>tasks.md</code></td>
+<td>实现清单，带复选框的任务列表</td>
+</tr>
+</tbody></table>
+<p>这四类制品是有依赖关系的：proposal 决定 specs，specs 决定 design，design 决定 tasks，tasks 驱动 implement</p>
+<p>但这个依赖不是单向的水流。Open Spec 强调 “边做边学”，你在实现阶段发现设计要改，完全可以回头去改 design 甚至 proposal，没有强制的阶段门禁</p>
+<hr>
+<h2 id="Domain-领域"><a href="#Domain-领域" class="headerlink" title="Domain 领域"></a>Domain 领域</h2><p>Domain（领域）是 Open Spec 组织规范的方式。规范不是一锅粥堆在一起，而是按业务领域分文件夹存放</p>
+<p>比如一个电商系统，规范目录可能是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">specs/</span><br><span class="line">├── auth/           # 认证领域</span><br><span class="line">├── payments/       # 支付领域</span><br><span class="line">├── orders/         # 订单领域</span><br><span class="line">└── inventory/      # 库存领域</span><br></pre></td></tr></table></figure>
+
+<p>每个领域一个文件夹，里面放该领域的 spec.md。这种组织方式让规范库天然和你的业务边界对齐，找一个功能该看哪份规范一目了然</p>
+<hr>
+<h2 id="Schema-模式"><a href="#Schema-模式" class="headerlink" title="Schema 模式"></a>Schema 模式</h2><p>Schema（模式）是 Open Spec 里定义 “有哪些制品类型、它们之间怎么依赖” 的元数据</p>
+<p>默认的 Schema 叫 spec-driven，包含前面提到的四类标准制品。如果你觉得默认工作流不适合自己，可以 fork 出一份自定义 Schema：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openspec schema fork spec-driven my-workflow</span><br></pre></td></tr></table></figure>
+
+<p>然后编辑它，比如加一类 “impact.md” 影响分析文档，或者去掉 design.md。这让 Open Spec 既能开箱即用，又能适配各种团队的特殊流程</p>
+<hr>
+<h2 id="Source-of-Truth-真相来源"><a href="#Source-of-Truth-真相来源" class="headerlink" title="Source of Truth 真相来源"></a>Source of Truth 真相来源</h2><p>Source of Truth（真相来源）在 Open Spec 里特指 <code>openspec/specs/</code> 目录，里面存放的是当前系统 “已经达成一致的、正在生效的” 行为规范</p>
+<p>整个 Open Spec 的工作流可以理解成一个 “真相来源的维护机制”：</p>
+<ul>
+<li>你想改东西，先写一份 Delta（提案中的增量规范）</li>
+<li>大家审核通过后才开始写代码</li>
+<li>代码写完、验证通过，Delta 就合并进主 specs，成为新的真相</li>
+</ul>
+<p>这样无论何时，任何人或 AI 想知道 “系统现在应该怎么表现”，去读 specs&#x2F; 就够了，不需要去翻代码、翻聊天记录、翻 wiki。规范库永远是最新、最权威的那一份</p>
+<hr>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><h2 id="openspec-目录结构"><a href="#openspec-目录结构" class="headerlink" title="openspec 目录结构"></a>openspec 目录结构</h2><p>运行 <code>openspec init</code> 之后，你的项目里会多出一个 <code>openspec/</code> 目录，整个 Open Spec 的所有内容都住在这里</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">openspec/</span><br><span class="line">├── specs/              # 真相来源（系统当前的行为规范）</span><br><span class="line">│   └── &lt;domain&gt;/</span><br><span class="line">│       └── spec.md</span><br><span class="line">├── changes/            # 进行中的变更（每个变更一个文件夹）</span><br><span class="line">│   └── &lt;change-name&gt;/</span><br><span class="line">│       ├── proposal.md</span><br><span class="line">│       ├── design.md</span><br><span class="line">│       ├── tasks.md</span><br><span class="line">│       └── specs/      # 增量规范</span><br><span class="line">│           └── &lt;domain&gt;/</span><br><span class="line">│               └── spec.md</span><br><span class="line">└── config.yaml         # 项目配置（可选）</span><br></pre></td></tr></table></figure>
+
+<p>把规范放在代码仓库里、和代码一起用 Git 管理，是 Open Spec 一个非常重要的设计。这样规范就跟着代码走，不会出现 “代码在 GitHub，规范在某个文档平台，两边各活各的” 这种脱节情况</p>
+<hr>
+<h2 id="specs-目录"><a href="#specs-目录" class="headerlink" title="specs 目录"></a>specs 目录</h2><p><code>specs/</code> 是整个项目的真相来源。它描述的是系统 “当前应该怎么表现”，而不是 “将来想怎么表现”</p>
+<p>这个目录是按领域（Domain）组织的，每个领域一个文件夹，里面放一份 spec.md。随着你做的 Change 越来越多，这个目录会自然地丰满起来</p>
+<p>一个常见的误区是想一开始就把整个系统文档化。Open Spec 明确反对这种做法，它的建议是：只为你正在改动的部分写规范，规范库会随着实际工作慢慢长出来。这就像写测试一样，不要为了覆盖率而写测试，要为了验证行为而写测试</p>
+<hr>
+<h2 id="changes-目录"><a href="#changes-目录" class="headerlink" title="changes 目录"></a>changes 目录</h2><p><code>changes/</code> 目录里放的是正在进行中的变更。每个变更一个独立的文件夹，文件夹名就是变更名，比如 <code>add-dark-mode</code>、<code>refactor-auth</code> 这种</p>
+<p>每个变更文件夹里装着这次修改的完整上下文：proposal、design、tasks、以及 delta specs。这样做的核心价值是 “上下文集中”——一次修改的所有思考过程都在一个地方，不会被聊天记录冲散</p>
+<p>当变更完成并归档后，文件夹会被移到 <code>changes/archive/</code> 下，并加上日期前缀，比如 <code>2026-07-21-add-dark-mode</code>。归档目录是审计历史，你可以随时翻回去看 “当时这个功能是怎么设计的”</p>
+<hr>
+<h2 id="config-yaml-配置文件"><a href="#config-yaml-配置文件" class="headerlink" title="config.yaml 配置文件"></a>config.yaml 配置文件</h2><p><code>config.yaml</code> 是 Open Spec 的项目级配置文件，是可选的。不写也能用，写了可以做一些定制化的事</p>
+<p>常见的配置项包括：选择哪个工作流 profile（core 还是 expanded）、自定义 Schema、指定支持的 AI 工具等</p>
+<p>如果你只是个人用默认工作流，完全可以不创建这个文件，Open Spec 会用合理的默认值</p>
+<hr>
+<h1 id="制品体系"><a href="#制品体系" class="headerlink" title="制品体系"></a>制品体系</h1><h2 id="proposal-md-提案"><a href="#proposal-md-提案" class="headerlink" title="proposal.md 提案"></a>proposal.md 提案</h2><p>proposal.md 是一次变更的 “为什么” 和 “做什么”，是整个变更的起点</p>
+<p>一份典型的 proposal 长这样：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Proposal: Add Dark Mode</span></span><br><span class="line"></span><br><span class="line"><span class="section">## Intent</span></span><br><span class="line">Users have requested a dark mode option to reduce eye strain</span><br><span class="line">during nighttime usage.</span><br><span class="line"></span><br><span class="line"><span class="section">## Scope</span></span><br><span class="line"><span class="bullet">-</span> Add theme toggle in settings</span><br><span class="line"><span class="bullet">-</span> Support system preference detection</span><br><span class="line"><span class="bullet">-</span> Persist preference in localStorage</span><br><span class="line"></span><br><span class="line"><span class="section">## Approach</span></span><br><span class="line">Use CSS custom properties for theming with a React context</span><br><span class="line">for state management.</span><br></pre></td></tr></table></figure>
+
+<p>proposal 一般包含三块内容：Intent（为什么做这个改动）、Scope（这次改动的范围有多大）、Approach（打算怎么做）</p>
+<p>proposal 的价值在于逼你把 “我到底想干嘛” 想清楚。很多时候我们脑子里觉得需求很明确，一写下来才发现其实自己也没想明白。proposal 就是把模糊的想法变成清晰文字的第一道关</p>
+<hr>
+<h2 id="specs-增量规范"><a href="#specs-增量规范" class="headerlink" title="specs 增量规范"></a>specs 增量规范</h2><p>变更文件夹里的 <code>specs/</code> 子目录放的是 Delta Spec，也就是这次变更会带来哪些需求上的变化</p>
+<p>它的格式前面讲 Delta Spec 时已经介绍过，用 ADDED &#x2F; MODIFIED &#x2F; REMOVED 三段来组织。这里补充一点：Delta Spec 是给审查者看的，也是给 AI 看的</p>
+<p>给审查者看：审查者不用读全部代码，只看 Delta 就能知道这次改动会怎么影响系统行为，判断是不是想要的</p>
+<p>给 AI 看：AI 在实现时会拿 Delta Spec 当 “验收标准”，每写完一个功能就对照场景检查一下，是不是符合规范要求</p>
+<hr>
+<h2 id="design-md-设计文档"><a href="#design-md-设计文档" class="headerlink" title="design.md 设计文档"></a>design.md 设计文档</h2><p>design.md 是一次变更的 “怎么做”，记录技术方案和架构决策</p>
+<p>不是所有变更都需要 design.md。如果改动很简单（比如改个文案、调个颜色），proposal 里说两句就够了。但如果改动涉及架构选择、数据模型变化、跨模块影响，就需要一份 design 来讲清楚技术上的取舍</p>
+<p>design.md 通常会回答这些问题：选了什么技术方案、为什么不选其他方案、会改哪些文件、有没有性能或安全影响</p>
+<p>一个常见的好习惯是在 design 里记录 “考虑过但没选” 的方案。这样以后回头看，能知道当时为什么做了这个决定，而不是只看到最终结果</p>
+<hr>
+<h2 id="tasks-md-任务清单"><a href="#tasks-md-任务清单" class="headerlink" title="tasks.md 任务清单"></a>tasks.md 任务清单</h2><p>tasks.md 是把 design 拆解成可执行的任务列表，带复选框</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Tasks</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 1. Theme Infrastructure</span></span><br><span class="line"><span class="bullet">-</span> [ ] 1.1 Create ThemeContext with light/dark state</span><br><span class="line"><span class="bullet">-</span> [ ] 1.2 Add CSS custom properties for colors</span><br><span class="line"><span class="bullet">-</span> [ ] 1.3 Implement localStorage persistence</span><br><span class="line"></span><br><span class="line"><span class="section">## 2. UI Components</span></span><br><span class="line"><span class="bullet">-</span> [ ] 2.1 Create ThemeToggle component</span><br><span class="line"><span class="bullet">-</span> [ ] 2.2 Add toggle to settings page</span><br></pre></td></tr></table></figure>
+
+<p>tasks.md 是 AI 实现（apply）阶段的直接输入。AI 会按这个清单一项一项地做，做完一项打个勾。这种带勾的清单有两个好处：一是进度一目了然，断了重连也能接着干；二是做完后可以拿这个清单当验收单，逐项确认</p>
+<p>任务拆解的粒度很关键。太粗了 AI 容易跑偏，太细了又显得啰嗦。一般建议每个任务对应一个可独立验证的小功能点</p>
+<hr>
+<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><h2 id="核心工作流"><a href="#核心工作流" class="headerlink" title="核心工作流"></a>核心工作流</h2><p>Open Spec 的默认工作流叫 core profile，包含五个斜杠命令，构成一个完整的闭环：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/opsx:explore ──► /opsx:propose ──► /opsx:apply ──► /opsx:sync ──► /opsx:archive</span><br><span class="line">   (可选)</span><br></pre></td></tr></table></figure>
+
+<p>一句话概括就是：先想清楚（explore），再写提案（propose），然后实现（apply），同步进度（sync），最后归档（archive）</p>
+<p>这里有一个最容易让新手踩坑的点：<code>openspec</code> 命令是在终端里跑的，而 <code>/opsx:</code> 命令是在 AI 助手的对话框里输入的。两者别搞混了，混了就跑不通</p>
+<hr>
+<h2 id="opsx-explore-探索"><a href="#opsx-explore-探索" class="headerlink" title="&#x2F;opsx:explore 探索"></a>&#x2F;opsx:explore 探索</h2><p><code>/opsx:explore</code> 是一个 “零成本思考伙伴”。当你只有一个模糊的想法、还不确定要做什么的时候，先用它</p>
+<p>它会读取你的代码库，列出几种可能的方案，帮你把模糊的想法打磨成一个具体的计划。整个过程不会产生任何制品，也不会写任何代码，纯粹是 “想”</p>
+<p>Open Spec 官方特别强调这是和 AI 协作时最值得养成的好习惯。因为 AI 是个特别自信的实习生，你给它一个模糊需求，它会立刻动手做，而且做的特别起劲——但很可能做的根本不是你想要的。explore 就是让 AI 在动手前先和你对齐方向</p>
+<p>当然，如果你已经想得很清楚了，也可以跳过 explore 直接 propose</p>
+<hr>
+<h2 id="opsx-propose-提案"><a href="#opsx-propose-提案" class="headerlink" title="&#x2F;opsx:propose 提案"></a>&#x2F;opsx:propose 提案</h2><p><code>/opsx:propose</code> 是核心命令，用来生成一份完整的变更计划</p>
+<p>用法很简单，在 AI 对话框里输入 <code>/opsx:propose add-dark-mode</code>，AI 就会：</p>
+<ol>
+<li>读取你的代码库，理解现状</li>
+<li>在 <code>openspec/changes/add-dark-mode/</code> 下创建四个制品：proposal.md、specs&#x2F;、design.md、tasks.md</li>
+<li>让你审核</li>
+</ol>
+<p>注意这一步只生成文档，不写代码。你要做的是仔细审核这四份制品，看看 AI 理解的需求和你想的是不是一致。如果不对，直接改文档，比改代码便宜得多</p>
+<p>propose 阶段的审核是整个 SDD 流程里性价比最高的一步。在这里改一个错别字的成本是 1 秒，等代码写完再发现理解错了，返工成本可能是 1 小时</p>
+<hr>
+<h2 id="opsx-apply-应用"><a href="#opsx-apply-应用" class="headerlink" title="&#x2F;opsx:apply 应用"></a>&#x2F;opsx:apply 应用</h2><p><code>/opsx:apply</code> 是让 AI 按 tasks.md 的清单开始写代码</p>
+<p>AI 会一项一项地实现任务，每完成一项就打个勾。实现过程中如果发现 design 需要调整，可以随时停下来改 design，再继续</p>
+<p>apply 阶段建议保持上下文干净。开始前清一下对话历史，让 AI 专注于当前变更的制品，不要被之前的对话干扰。Open Spec 官方推荐用高推理能力的模型（比如 Codex 5.5、Claude Opus 4.7）来做 apply，因为实现阶段需要严谨</p>
+<hr>
+<h2 id="opsx-sync-同步"><a href="#opsx-sync-同步" class="headerlink" title="&#x2F;opsx:sync 同步"></a>&#x2F;opsx:sync 同步</h2><p><code>/opsx:sync</code> 用来把实现过程中的进度同步回 tasks.md</p>
+<p>有时候你会手动改一些代码，或者 AI 在 apply 过程中偏离了原始任务清单。sync 就是让文档和实际进度重新对齐，避免 “文档说做完了，代码其实没做” 这种脱节</p>
+<p>这是一个保持真相来源可靠性的维护命令，建议在长任务里定期跑一下</p>
+<hr>
+<h2 id="opsx-archive-归档"><a href="#opsx-archive-归档" class="headerlink" title="&#x2F;opsx:archive 归档"></a>&#x2F;opsx:archive 归档</h2><p><code>/opsx:archive</code> 是变更生命周期的最后一步。当一个变更完成、验证通过后，运行它：</p>
+<ol>
+<li>ADDED 的需求被追加到主 specs</li>
+<li>MODIFIED 的需求替换主 specs 里的旧版本</li>
+<li>REMOVED 的需求从主 specs 里删除</li>
+<li>变更文件夹被移到 <code>changes/archive/</code> 下，加上日期前缀</li>
+</ol>
+<p>归档完成后，主规范库就是最新的真相来源，下一次变更又会基于这份新规范开始。整个系统的规范就这样随着工作自然演进</p>
+<hr>
+<h2 id="扩展工作流"><a href="#扩展工作流" class="headerlink" title="扩展工作流"></a>扩展工作流</h2><p>除了默认的 core profile，Open Spec 还提供了一套扩展工作流命令，适合需要更细粒度控制的场景：</p>
+<ul>
+<li><code>/opsx:new</code>：手动创建一个空的变更文件夹，不自动生成制品</li>
+<li><code>/opsx:continue</code>：增量式地继续推进一个变更，一次只做一步</li>
+<li><code>/opsx:ff</code>：fast forward，一次性把一个空变更快速填满制品</li>
+<li><code>/opsx:verify</code>：在归档前做一次验证，检查规范和实现是否一致</li>
+<li><code>/opsx:bulk-archive</code>：批量归档多个变更</li>
+<li><code>/opsx:onboard</code>：给新接手项目的人或 AI 做一次引导</li>
+</ul>
+<p>启用扩展工作流的方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openspec config profile</span><br><span class="line">openspec update</span><br></pre></td></tr></table></figure>
+
+<p>大多数个人用户用 core profile 就够了，扩展工作流更适合团队协作或者复杂项目</p>
+<hr>
+<h1 id="与其他工具对比"><a href="#与其他工具对比" class="headerlink" title="与其他工具对比"></a>与其他工具对比</h1><h2 id="vs-Spec-Kit"><a href="#vs-Spec-Kit" class="headerlink" title="vs Spec Kit"></a>vs Spec Kit</h2><p>Spec Kit 是 GitHub 在 2025 年 9 月开源的 SDD 工具包</p>
+<p>两者的定位很不一样：</p>
+<ul>
+<li><strong>Spec Kit</strong>：全面但偏重。有严格的阶段门禁，要写很多 Markdown，需要 Python 环境，初始配置大概要 30 分钟</li>
+<li><strong>Open Spec</strong>：轻量且自由。没有阶段门禁，可以随时回头改，不需要 Python，5 分钟就能上手</li>
+</ul>
+<p>打个比方，Spec Kit 像是一套正式的西装，出席重要场合很合适，但平时穿太累；Open Spec 像是一件合身的卫衣，日常用着舒服，正式场合也撑得住</p>
+<p>如果你是个人开发者或者小团队，Open Spec 几乎总是更顺手的选择。如果是大型企业、需要强流程管控的场景，Spec Kit 可能更合适</p>
+<hr>
+<h2 id="vs-Kiro"><a href="#vs-Kiro" class="headerlink" title="vs Kiro"></a>vs Kiro</h2><p>Kiro 是 AWS 推出的 AI 编程 IDE，也内置了 SDD 能力</p>
+<p>Open Spec 官方对 Kiro 的评价是：功能强大但被锁死在 Kiro 自己的 IDE 里，而且只能用 Claude 系列模型</p>
+<p>而 Open Spec 的核心优势是工具无关——它支持 30 多种 AI 编程助手，包括 Claude Code、Cursor、GitHub Copilot、Windsurf、Gemini CLI、Codex 等等。你今天用 Cursor，明天换 Claude Code，规范文件原封不动地跟着走，不会被任何一家厂商绑死</p>
+<p>这其实就是开放标准的价值。MCP 当年解决了 “AI 连接工具” 的标准化问题，Open Spec 想解决的是 “AI 读写规范” 的标准化问题</p>
+<hr>
+<h2 id="vs-无规范"><a href="#vs-无规范" class="headerlink" title="vs 无规范"></a>vs 无规范</h2><p>最值得对比的其实是 “什么规范都不用” 的状态</p>
+<p>不用任何规范框架时，你的需求只活在和 AI 的聊天记录里。问题是：</p>
+<ul>
+<li>聊天记录一长，AI 就忘了前面的约定</li>
+<li>换一次对话，所有上下文丢失</li>
+<li>同事想接手你的工作，没法看聊天记录</li>
+<li>半年后你想知道 “当时这个功能为什么这么设计”，无从查起</li>
+</ul>
+<p>Open Spec 把这些散落在聊天里的需求固化成文件、纳入 Git 管理，让需求有了和代码同等的地位。它带来的不是更重的流程，而是更可靠的协作基础</p>
+<hr>
+<h1 id="实践与生态"><a href="#实践与生态" class="headerlink" title="实践与生态"></a>实践与生态</h1><h2 id="既有项目改造"><a href="#既有项目改造" class="headerlink" title="既有项目改造"></a>既有项目改造</h2><p>Open Spec 是 brownfield-first 的，这是它和很多同类工具最大的区别</p>
+<p>在既有项目上用 Open Spec，不需要先把整个系统文档化。正确的做法是：</p>
+<ol>
+<li>跑 <code>openspec init</code> 初始化目录结构</li>
+<li>下次要改某个功能时，只为这次改动写一份 Delta Spec</li>
+<li>改完归档，主 specs 里就多出了这个领域的规范</li>
+<li>随着你不断做 Change，规范库自然覆盖到越来越多的领域</li>
+</ol>
+<p>这种 “改到哪写到哪” 的策略，让既有项目的接入成本极低。你不需要停下来专门写文档，而是在正常开发的过程中顺手把规范建起来</p>
+<hr>
+<h2 id="Stores-跨仓库规划"><a href="#Stores-跨仓库规划" class="headerlink" title="Stores 跨仓库规划"></a>Stores 跨仓库规划</h2><p>当项目大到需要多个仓库协作时（比如一个功能要改 API 服务、Web 应用、共享库三个仓库），单个仓库里的 <code>openspec/</code> 就不够用了</p>
+<p>Open Spec 提出了 Stores 的概念：把规范放在一个独立的仓库里，用 <code>git push</code> 像共享代码一样共享给所有仓库和所有 AI 编程助手。这样：</p>
+<ul>
+<li>跨仓库的功能：一次变更、一份计划，代码落在三个仓库</li>
+<li>平台团队拥有规范，业务团队只读引用</li>
+<li>计划先于代码：先在 Store 里把计划定下来，各代码仓库再跟进实现</li>
+</ul>
+<p>Stores 目前还是 beta 阶段，但思路很清晰——把规范当成和代码一样的一等公民来管理</p>
+<hr>
+<h2 id="支持的-AI-工具"><a href="#支持的-AI-工具" class="headerlink" title="支持的 AI 工具"></a>支持的 AI 工具</h2><p>Open Spec 不绑定任何特定 AI 工具，目前支持 30 多种主流 AI 编程助手，包括但不限于：</p>
+<ul>
+<li>Claude Code</li>
+<li>Cursor</li>
+<li>GitHub Copilot</li>
+<li>Windsurf</li>
+<li>RooCode</li>
+<li>Cline</li>
+<li>Amazon Q</li>
+<li>Codex</li>
+<li>Gemini CLI</li>
+</ul>
+<p>接入方式是 Open Spec 在初始化时会生成对应的 skills 和斜杠命令文件（比如在 <code>.claude/skills/</code> 下放技能文件），支持的工具会自动识别这些文件，不需要你手动配置</p>
+<hr>
+<h2 id="模型选择建议"><a href="#模型选择建议" class="headerlink" title="模型选择建议"></a>模型选择建议</h2><p>Open Spec 官方对模型选择有明确建议：推荐用高推理能力的模型，比如 Codex 5.5 和 Claude Opus 4.7，无论是规划阶段还是实现阶段都用它们</p>
+<p>原因很简单：SDD 的核心价值在于 “想清楚再动手”，而 “想清楚” 这件事对模型的推理能力要求很高。用一个便宜的弱模型来省钱，结果 AI 在 propose 阶段就把需求理解错了，后面 apply 写出来的代码全是错的，反而更费钱</p>
+<p>另外，Open Spec 强调上下文卫生（Context Hygiene）。每次开始 apply 之前清一下对话上下文，让 AI 专注于当前变更的制品，不要被无关历史干扰。这和前面在 Vibe Coding 概念里讲的上下文工程是一脉相承的思路</p>
+<hr>
+<h2 id="安装与快速上手"><a href="#安装与快速上手" class="headerlink" title="安装与快速上手"></a>安装与快速上手</h2><p>Open Spec 的安装非常简单，只需要 Node.js 20.19.0 或更高版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 全局安装 CLI</span></span><br><span class="line">npm install -g @fission-ai/openspec@latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入项目目录并初始化</span></span><br><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">openspec init</span><br></pre></td></tr></table></figure>
+
+<p>初始化完成后，整个工作流就活在 AI 对话框里：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/opsx:explore          (可选：先想清楚)</span><br><span class="line">/opsx:propose &lt;idea&gt;   (生成计划，你审核)</span><br><span class="line">/opsx:apply            (AI 实现)</span><br><span class="line">/opsx:archive          (归档，规范更新)</span><br></pre></td></tr></table></figure>
+
+<p>除了斜杠命令，Open Spec 还提供了一个交互式仪表盘，可以用 <code>openspec view</code> 在终端里打开，可视化地查看所有进行中的变更、规范库的状态和归档历史：</p>
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20260721231307511.png" alt="image-20260721231307511"></p>
+<p>升级也很简单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @fission-ai/openspec@latest</span><br><span class="line">openspec update    <span class="comment"># 在每个项目里刷新 AI 指令</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<hr>
+<h2 id="Open-Spec-与-Vibe-Coding-的关系"><a href="#Open-Spec-与-Vibe-Coding-的关系" class="headerlink" title="Open Spec 与 Vibe Coding 的关系"></a>Open Spec 与 Vibe Coding 的关系</h2><p>Open Spec 是 Vibe Coding 走向成熟的产物</p>
+<p>Vibe Coding 是 “跟着感觉写代码”，Agentic Engineering 是 “按流程管 AI”。Open Spec 就是 Agentic Engineering 在 “需求管理” 这一环上的具体落地工具</p>
+<p>Vibe Coding 时代，最大的瓶颈不是 AI 不会写代码，而是人不会提需求。Open Spec 通过一套结构化的规范文件，把 “提需求” 这件事从一门玄学变成了一个可重复、可审查、可归档的工程动作</p>
+<p>可以说，谁掌握了用 Open Spec 这类工具把需求管好，谁就真正掌握了 AI 编程时代的核心竞争力。模型是商品，工具是商品，唯有 “把想法变成清晰规范” 的能力，是 AI 替代不了的</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Simon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">http://yoursite.com/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://yoursite.com" target="_blank">Simon 的书柜</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/VibeCoding/">VibeCoding</a><a class="post-meta__tags" href="/tags/SDD/">SDD</a><a class="post-meta__tags" href="/tags/OpenSpec/">OpenSpec</a></div><div class="post-share"><div class="social-share" data-image="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/03/07/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/" title="Vibe Coding 概念大全"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Vibe Coding 概念大全</div></div><div class="info-2"><div class="info-item-1">AI 基础概念LLM大语言模型（Large Language Model）是一种能够理解和生成人类语言的 AI 系统。ChatGPT、Claude、Gemini、DeepSeek 都是大语言模型 为什么叫 “大” 模型呢？因为这些模型的参数量非常庞大，动辄几十亿甚至上万亿个参数。参数越多，模型通常越聪明，但也越消耗计算资源 可以把大语言模型理解成一个读过海量书籍和代码的超级学霸，它见过无数的编程案例，所以能帮你写代码、解释代码、修复 Bug  除了文本大语言模型之外，AI 领域还有专门处理图片的视觉模型（比如 Stable Diffusion）、处理语音的音频模型（比如 Whisper）、以及能同时处理文字、图片、音频的多模态模型（如 GPT-4o、Gemini）。在 AI 编程时，我们主要和文本大语言模型打交道  Token（词元）Token 是 AI 模型处理文本的基本单位，中文叫做 “词元”，是大模型把文字拆分后的最小单元  AI 服务通常按照 Token 收费。输入的文字和 AI 输出的文字都会消耗 Token。Token 用得越多，花的钱就越多 在英文中，一个 Toke...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/07/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/" title="Vibe Coding 概念大全"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-07</div><div class="info-item-2">Vibe Coding 概念大全</div></div><div class="info-2"><div class="info-item-1">AI 基础概念LLM大语言模型（Large Language Model）是一种能够理解和生成人类语言的 AI 系统。ChatGPT、Claude、Gemini、DeepSeek 都是大语言模型 为什么叫 “大” 模型呢？因为这些模型的参数量非常庞大，动辄几十亿甚至上万亿个参数。参数越多，模型通常越聪明，但也越消耗计算资源 可以把大语言模型理解成一个读过海量书籍和代码的超级学霸，它见过无数的编程案例，所以能帮你写代码、解释代码、修复 Bug  除了文本大语言模型之外，AI 领域还有专门处理图片的视觉模型（比如 Stable Diffusion）、处理语音的音频模型（比如 Whisper）、以及能同时处理文字、图片、音频的多模态模型（如 GPT-4o、Gemini）。在 AI 编程时，我们主要和文本大语言模型打交道  Token（词元）Token 是 AI 模型处理文本的基本单位，中文叫做 “词元”，是大模型把文字拆分后的最小单元  AI 服务通常按照 Token 收费。输入的文字和 AI 输出的文字都会消耗 Token。Token 用得越多，花的钱就越多 在英文中，一个 Toke...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Simon</div><div class="author-info-description">攀登亦是风景</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">64</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">68</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SDD-%E4%B8%8E-Open-Spec-%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">SDD 与 Open Spec 基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SDD-%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91"><span class="toc-number">1.1.</span> <span class="toc-text">SDD 规范驱动开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Open-Spec-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.2.</span> <span class="toc-text">Open Spec 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Open-Spec"><span class="toc-number">1.3.</span> <span class="toc-text">为什么需要 Open Spec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Open-Spec-%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6"><span class="toc-number">1.4.</span> <span class="toc-text">Open Spec 的设计哲学</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spec-%E8%A7%84%E8%8C%83"><span class="toc-number">2.1.</span> <span class="toc-text">Spec 规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Requirement-%E9%9C%80%E6%B1%82"><span class="toc-number">2.2.</span> <span class="toc-text">Requirement 需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scenario-%E5%9C%BA%E6%99%AF"><span class="toc-number">2.3.</span> <span class="toc-text">Scenario 场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Delta-Spec-%E5%A2%9E%E9%87%8F%E8%A7%84%E8%8C%83"><span class="toc-number">2.4.</span> <span class="toc-text">Delta Spec 增量规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Change-%E5%8F%98%E6%9B%B4"><span class="toc-number">2.5.</span> <span class="toc-text">Change 变更</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Artifact-%E5%88%B6%E5%93%81"><span class="toc-number">2.6.</span> <span class="toc-text">Artifact 制品</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Domain-%E9%A2%86%E5%9F%9F"><span class="toc-number">2.7.</span> <span class="toc-text">Domain 领域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Schema-%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.8.</span> <span class="toc-text">Schema 模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Source-of-Truth-%E7%9C%9F%E7%9B%B8%E6%9D%A5%E6%BA%90"><span class="toc-number">2.9.</span> <span class="toc-text">Source of Truth 真相来源</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">项目结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#openspec-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">openspec 目录结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#specs-%E7%9B%AE%E5%BD%95"><span class="toc-number">3.2.</span> <span class="toc-text">specs 目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#changes-%E7%9B%AE%E5%BD%95"><span class="toc-number">3.3.</span> <span class="toc-text">changes 目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#config-yaml-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.4.</span> <span class="toc-text">config.yaml 配置文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B6%E5%93%81%E4%BD%93%E7%B3%BB"><span class="toc-number">4.</span> <span class="toc-text">制品体系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#proposal-md-%E6%8F%90%E6%A1%88"><span class="toc-number">4.1.</span> <span class="toc-text">proposal.md 提案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#specs-%E5%A2%9E%E9%87%8F%E8%A7%84%E8%8C%83"><span class="toc-number">4.2.</span> <span class="toc-text">specs 增量规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#design-md-%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3"><span class="toc-number">4.3.</span> <span class="toc-text">design.md 设计文档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tasks-md-%E4%BB%BB%E5%8A%A1%E6%B8%85%E5%8D%95"><span class="toc-number">4.4.</span> <span class="toc-text">tasks.md 任务清单</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">5.</span> <span class="toc-text">工作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">5.1.</span> <span class="toc-text">核心工作流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#opsx-explore-%E6%8E%A2%E7%B4%A2"><span class="toc-number">5.2.</span> <span class="toc-text">&#x2F;opsx:explore 探索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#opsx-propose-%E6%8F%90%E6%A1%88"><span class="toc-number">5.3.</span> <span class="toc-text">&#x2F;opsx:propose 提案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#opsx-apply-%E5%BA%94%E7%94%A8"><span class="toc-number">5.4.</span> <span class="toc-text">&#x2F;opsx:apply 应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#opsx-sync-%E5%90%8C%E6%AD%A5"><span class="toc-number">5.5.</span> <span class="toc-text">&#x2F;opsx:sync 同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#opsx-archive-%E5%BD%92%E6%A1%A3"><span class="toc-number">5.6.</span> <span class="toc-text">&#x2F;opsx:archive 归档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">5.7.</span> <span class="toc-text">扩展工作流</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7%E5%AF%B9%E6%AF%94"><span class="toc-number">6.</span> <span class="toc-text">与其他工具对比</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#vs-Spec-Kit"><span class="toc-number">6.1.</span> <span class="toc-text">vs Spec Kit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vs-Kiro"><span class="toc-number">6.2.</span> <span class="toc-text">vs Kiro</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vs-%E6%97%A0%E8%A7%84%E8%8C%83"><span class="toc-number">6.3.</span> <span class="toc-text">vs 无规范</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E4%B8%8E%E7%94%9F%E6%80%81"><span class="toc-number">7.</span> <span class="toc-text">实践与生态</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A2%E6%9C%89%E9%A1%B9%E7%9B%AE%E6%94%B9%E9%80%A0"><span class="toc-number">7.1.</span> <span class="toc-text">既有项目改造</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stores-%E8%B7%A8%E4%BB%93%E5%BA%93%E8%A7%84%E5%88%92"><span class="toc-number">7.2.</span> <span class="toc-text">Stores 跨仓库规划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E7%9A%84-AI-%E5%B7%A5%E5%85%B7"><span class="toc-number">7.3.</span> <span class="toc-text">支持的 AI 工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9%E5%BB%BA%E8%AE%AE"><span class="toc-number">7.4.</span> <span class="toc-text">模型选择建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="toc-number">7.5.</span> <span class="toc-text">安装与快速上手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Open-Spec-%E4%B8%8E-Vibe-Coding-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">7.6.</span> <span class="toc-text">Open Spec 与 Vibe Coding 的关系</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Open Spec 学习笔记"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Open Spec 学习笔记"/></a><div class="content"><a class="title" href="/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Open Spec 学习笔记">Open Spec 学习笔记</a><time datetime="2026-04-09T00:47:15.000Z" title="发表于 2026-04-09 08:47:15">2026-04-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/07/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/" title="Vibe Coding 概念大全"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Vibe Coding 概念大全"/></a><div class="content"><a class="title" href="/2026/03/07/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/" title="Vibe Coding 概念大全">Vibe Coding 概念大全</a><time datetime="2026-03-06T18:42:08.000Z" title="发表于 2026-03-07 02:42:08">2026-03-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/26/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="JDK 18 ~ JDK 21 新特性"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JDK 18 ~ JDK 21 新特性"/></a><div class="content"><a class="title" href="/2026/01/26/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="JDK 18 ~ JDK 21 新特性">JDK 18 ~ JDK 21 新特性</a><time datetime="2026-01-26T13:45:49.000Z" title="发表于 2026-01-26 21:45:49">2026-01-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/09/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/DevOps/DevOps%20%E6%95%99%E7%A8%8B/" title="DevOps 教程"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/DevOps/DevOps%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps 教程"/></a><div class="content"><a class="title" href="/2026/01/09/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/DevOps/DevOps%20%E6%95%99%E7%A8%8B/" title="DevOps 教程">DevOps 教程</a><time datetime="2026-01-09T06:09:17.000Z" title="发表于 2026-01-09 14:09:17">2026-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/12/07/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/RocketMQ%20%E6%95%99%E7%A8%8B/" title="RocketMQ 教程"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/RocketMQ%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RocketMQ 教程"/></a><div class="content"><a class="title" href="/2025/12/07/%E6%A1%86%E6%9E%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/RocketMQ%20%E6%95%99%E7%A8%8B/" title="RocketMQ 教程">RocketMQ 教程</a><time datetime="2025-12-07T11:45:45.000Z" title="发表于 2025-12-07 19:45:45">2025-12-07</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Simon</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
