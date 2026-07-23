@@ -1,0 +1,511 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Spec Kit 学习笔记 | Simon 的书柜</title><meta name="author" content="Simon"><meta name="copyright" content="Simon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="SDD 与 Spec Kit 基础SDD 规范驱动开发SDD（Spec-Driven Development，规范驱动开发）是 AI 时代的一种新型开发方法论，强调在编码之前先创建明确的、AI 能直接理解和执行的规范文档 传统开发流程是：想到什么写什么，边写边改，最后再补文档。这样容易导致需求不清晰、代码和文档对不上 而 SDD 的思路正好相反：先把需求写成规范文档，并且把规范文档当作代码的唯一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spec Kit 学习笔记">
+<meta property="og:url" content="http://yoursite.com/2026/04/24/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Simon 的书柜">
+<meta property="og:description" content="SDD 与 Spec Kit 基础SDD 规范驱动开发SDD（Spec-Driven Development，规范驱动开发）是 AI 时代的一种新型开发方法论，强调在编码之前先创建明确的、AI 能直接理解和执行的规范文档 传统开发流程是：想到什么写什么，边写边改，最后再补文档。这样容易导致需求不清晰、代码和文档对不上 而 SDD 的思路正好相反：先把需求写成规范文档，并且把规范文档当作代码的唯一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg">
+<meta property="article:published_time" content="2026-04-23T23:22:40.000Z">
+<meta property="article:modified_time" content="2026-07-23T02:23:19.215Z">
+<meta property="article:author" content="Simon">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="VibeCoding">
+<meta property="article:tag" content="SDD">
+<meta property="article:tag" content="SpecKit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Spec Kit 学习笔记",
+  "url": "http://yoursite.com/2026/04/24/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/",
+  "image": "https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg",
+  "datePublished": "2026-04-23T23:22:40.000Z",
+  "dateModified": "2026-07-23T02:23:19.215Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Simon",
+      "url": "http://yoursite.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2026/04/24/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Spec Kit 学习笔记',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">65</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">69</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Simon 的书柜</span></a><a class="nav-page-title" href="/"><span class="site-name">Spec Kit 学习笔记</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Spec Kit 学习笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-23T23:22:40.000Z" title="发表于 2026-04-24 07:22:40">2026-04-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-07-23T02:23:19.215Z" title="更新于 2026-07-23 10:23:19">2026-07-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI/">AI</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20260723102212949.png" alt="image-20260723102212949"></p>
+<h1 id="SDD-与-Spec-Kit-基础"><a href="#SDD-与-Spec-Kit-基础" class="headerlink" title="SDD 与 Spec Kit 基础"></a>SDD 与 Spec Kit 基础</h1><h2 id="SDD-规范驱动开发"><a href="#SDD-规范驱动开发" class="headerlink" title="SDD 规范驱动开发"></a>SDD 规范驱动开发</h2><p>SDD（Spec-Driven Development，规范驱动开发）是 AI 时代的一种新型开发方法论，强调在编码之前先创建明确的、AI 能直接理解和执行的规范文档</p>
+<p>传统开发流程是：想到什么写什么，边写边改，最后再补文档。这样容易导致需求不清晰、代码和文档对不上</p>
+<p>而 SDD 的思路正好相反：先把需求写成规范文档，并且把规范文档当作代码的唯一真相来源</p>
+<p>你可以把规范文档理解成 “项目宪法”，它包含了详细的需求描述、系统设计和接口定义。AI 必须严格遵守这些条文来生成代码，确保产出完全符合预期</p>
+<br>
+
+<p>Spec Kit 就是 GitHub 官方为落地 SDD 方法论而推出的一套开源工具包，也是目前 SDD 领域最有代表性的实现之一</p>
+<hr>
+<h2 id="Spec-Kit-简介"><a href="#Spec-Kit-简介" class="headerlink" title="Spec Kit 简介"></a>Spec Kit 简介</h2><p>Spec Kit 是 GitHub 在 2025 年 8 月开源的 SDD 工具包，托管在 github&#x2F;spec-kit 仓库，采用 MIT 协议</p>
+<p>它由 GitHub 官方团队维护，目前已经有 12 万多 Star、240 多位贡献者，是当前 Vibe Coding 领域最受关注的规范框架之一。和它定位类似的 Open Spec 走的是轻量自由路线，而 Spec Kit 走的是结构化、可扩展、面向企业的路线</p>
+<p>Spec Kit 的核心思路可以用一句话概括：<strong>Define what to build before building it</strong>——在动手写代码之前，先定义清楚要做什么</p>
+<p>它通过一套斜杠命令，把 SDD 的完整流程固化到你的 AI 编程助手里：先写规范（spec），再做计划（plan），再拆任务（tasks），最后才让 AI 去实现（implement）。每一步都会产出一个 Markdown 制品，喂给下一步当上下文，让你的 AI 拿到的是结构化的输入，而不是一句随口的提示词</p>
+<p>打个比方，Vibe Coding 就像你口头跟实习生交代任务，说完就忘；Spec Kit 相当于给实习生发了一份正式的工单、设计图、施工清单，每一步都得按规矩来，谁都不能赖账</p>
+<hr>
+<h2 id="为什么需要-Spec-Kit"><a href="#为什么需要-Spec-Kit" class="headerlink" title="为什么需要 Spec Kit"></a>为什么需要 Spec Kit</h2><p>AI 编程助手虽然强大，但 Vibe Coding 在真实项目上会稳定地翻车，而且翻车方式高度可预测</p>
+<p>第一种是<strong>架构不一致</strong>。AI 读了你一部分代码，觉得某种模式合理，就照着做了，结果和你项目里其他地方的模式对不上，一个项目里出现了两套写法</p>
+<p>第二种是<strong>脑补需求</strong>。你说 “加个 issue 类型支持”，AI 自己决定这是什么意思：固定列表还是动态拉取、批量选还是单条选、Jira 拒绝了怎么办。它猜得特别自信，但猜出来的边界情况谁也没规划过</p>
+<p>第三种是<strong>没有共识</strong>。同事看你的 PR 只能看到代码，看不到代码背后的决策。”Epic” 是故意排除的吗？那个四项列表是业务决定还是临时原型？代码回答不了这些问题</p>
+<p>第四种最贵——<strong>返工</strong>。实现完、Review 完，才发现做出来的根本不是 stakeholder 想要的，回头重做。而这些问题，本来花五分钟写个 spec 就能避免</p>
+<p>Spec Kit 把 “写规范” 这件事从可有可无的文档工作，变成了开发流程的第一交付物。代码是实现细节，规范才是契约</p>
+<hr>
+<h2 id="Spec-Kit-的设计哲学"><a href="#Spec-Kit-的设计哲学" class="headerlink" title="Spec Kit 的设计哲学"></a>Spec Kit 的设计哲学</h2><p>Spec Kit 的设计理念可以归纳成几条非常清晰的原则：</p>
+<ul>
+<li><strong>Intent-driven 意图驱动</strong>：规范定义 “做什么”（what），计划定义 “怎么做”（how），二者严格分离</li>
+<li><strong>Multi-step refinement 多步精炼</strong>：不指望一次提示词就生成完美代码，而是通过多个阶段逐步打磨</li>
+<li><strong>Gate system 门禁系统</strong>：每个阶段都校验上一阶段的产出，没写 spec 就不能 plan，没 plan 就不能 tasks</li>
+<li><strong>Agent-agnostic 工具无关</strong>：支持 35+ 种 AI 编程助手，不绑死任何一家厂商</li>
+<li><strong>Extensible 可扩展</strong>：通过 presets、extensions、workflows、bundles 把流程拆成可组合的积木</li>
+</ul>
+<p>其中最值得品味的是 <strong>Spec 与 Plan 的分离</strong>。很多团队写规范写着写着就变成了架构讨论，还没搞清楚用户要什么就开始争论用什么框架。Spec Kit 强制把这两件事拆开：spec 只描述用户价值，plan 才描述技术方案。这样产出的文档既不会让 stakeholder 看不懂，也不会让开发者觉得太模糊</p>
+<p>另一条很关键的是 <strong>门禁系统</strong>。它不是官僚主义，而是和编译器拒绝链接未编译代码一个道理——每个阶段验证上一阶段的产出，过了才放行。这套机制让你不必靠记忆去维护流程纪律，工具替你守着</p>
+<hr>
+<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><h2 id="Constitution-准则"><a href="#Constitution-准则" class="headerlink" title="Constitution 准则"></a>Constitution 准则</h2><p>Constitution（准则）是 Spec Kit 里项目级的 “宪法”，记录的是跨功能、跨特性都要遵守的根本原则：架构模式、技术选型、安全要求、约束条件</p>
+<p>它和 spec 不一样：spec 是某一个功能的规范，constitution 是整个项目的底线。Constitution 只写一次，之后每个特性的 plan 阶段都会跑一次 Constitution Check，验证这次的设计没有违背这些根本原则</p>
+<p>打个比方，Constitution 就像公司的章程，spec 就像某个项目的立项书。立项书可以一个接一个地写，但章程是大家都要遵守的底线。没有章程，每个项目就各自为政，架构慢慢就漂移了；有了章程，AI 每次做 plan 都会对照着检查，从源头杜绝架构走偏</p>
+<p>典型用法是在项目初始化时跑一次：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/speckit.constitution Taskify 是一个 &quot;Security-First&quot; 应用。</span><br><span class="line">所有用户输入必须校验。我们使用微服务架构。代码必须完整文档化。</span><br></pre></td></tr></table></figure>
+
+<p>这条命令会把你的原则写进 <code>.specify/memory/constitution.md</code>，之后所有 plan 阶段都会自动对照它做检查</p>
+<hr>
+<h2 id="Spec-规范"><a href="#Spec-规范" class="headerlink" title="Spec 规范"></a>Spec 规范</h2><p>Spec（规范）是 Spec Kit 里描述 “要做什么” 的文档，用纯 Markdown 写成</p>
+<p>一个 spec 的核心内容是用户价值，而不是技术方案。它包含：用户故事（user stories）、验收场景（acceptance scenarios）、边界情况（edge cases）、功能需求（functional requirements）、关键实体（key entities）、成功标准（success criteria）</p>
+<p>spec 里<strong>不应该</strong>出现的东西：用什么框架、改哪些文件、数据模型长什么样。这些都属于 plan 的范畴。把 spec 和 plan 混在一起，会产出一个 stakeholder 看不懂、开发者又嫌太模糊的四不像</p>
+<p>Spec Kit 还有一个好习惯：把假设（assumptions）当成一等公民写进 spec。比如 “只支持四种类型，不做动态拉取”、”Epic 必填字段按 best-effort 处理”。把这些写下来，它们就不会变成日后没人说得清的隐性约束</p>
+<hr>
+<h2 id="Plan-计划"><a href="#Plan-计划" class="headerlink" title="Plan 计划"></a>Plan 计划</h2><p>Plan（计划）是 Spec Kit 里描述 “怎么做” 的技术文档，是 spec 之后的下一步</p>
+<p>plan 阶段会读取 spec.md，深入研究代码库，然后产出完整的技术设计。它包含：gap analysis（差距分析，已有 vs 缺失）、data model（数据模型）、API contracts（接口契约）、implementation map（改动地图）、quickstart（快速验证步骤）</p>
+<p>其中最有价值的产出是 <strong>gap analysis</strong>。它会清楚地告诉你：现有代码里已经有什么、还缺什么、这次改动要动几个文件、大约多少行代码。很多时候你会发现，基础设施其实已经在了，这次改动远比想象中小</p>
+<p>plan 在生成前还会先跑一次 Constitution Check，确保技术方案没有违背项目根本原则。这一步是 Spec Kit 防止架构漂移的关键机制</p>
+<hr>
+<h2 id="Tasks-任务"><a href="#Tasks-任务" class="headerlink" title="Tasks 任务"></a>Tasks 任务</h2><p>Tasks（任务）是把 plan 拆解成可执行清单的产物，用 <code>tasks.md</code> 承载</p>
+<p>Spec Kit 生成的任务列表有三个特点：</p>
+<ul>
+<li><strong>扁平</strong>：不是嵌套树，而是一个平铺的列表，每个任务一个编号（T001、T002……）</li>
+<li><strong>有序</strong>：按依赖关系排序，先做的排在前面，AI 可以从上往下依次执行</li>
+<li><strong>独立可实施</strong>：每个任务都是一个可以独立完成、独立验证的小功能点</li>
+</ul>
+<p>任务拆解的粒度很关键。太粗了 AI 容易跑偏，太细了又显得啰嗦。Spec Kit 的默认粒度是 “一个任务对应一个可独立验证的小功能点”</p>
+<p>tasks 阶段有强门禁：如果你没写完 plan.md 就跑 tasks，它会直接报错拒绝。这就是门禁系统在工作</p>
+<hr>
+<h2 id="Implement-实现"><a href="#Implement-实现" class="headerlink" title="Implement 实现"></a>Implement 实现</h2><p>Implement（实现）是让 AI 按 tasks.md 顺序写代码的阶段</p>
+<p>这一步把控制权交给 AI 编程助手，同时把完整上下文一起喂过去：spec、plan、research、data model、API contracts、有序任务列表。AI 按顺序做任务，做完一项标记一项完成</p>
+<p>因为所有决策都在前面阶段定好了，implement 阶段通常不会有惊喜。AI 不需要猜 “Epic 支持是什么意思”，不需要决定要不要加数据库迁移，不需要在批量选和单条选之间纠结——这些都已经在前面解决了。AI 只需要写代码</p>
+<p>对于大型特性，implement 可以分阶段跑，一次只做一个 phase，避免一次塞太多上下文</p>
+<hr>
+<h2 id="Converge-收敛"><a href="#Converge-收敛" class="headerlink" title="Converge 收敛"></a>Converge 收敛</h2><p>Converge（收敛）是 Spec Kit 工作流的收尾命令，用来验证代码和规范是否真的对齐</p>
+<p>它会把代码库和 spec&#x2F;plan&#x2F;tasks 三份制品做一次交叉比对。如果发现还有没实现的规范要求，它会把这些缺口作为新任务追加到 tasks.md 里。你接着跑一次 implement，再 converge，直到它报告 “已收敛”，就可以进入 review 或开 PR 了</p>
+<p>converge 解决的是 “文档说做完了，代码其实没做完” 的脱节问题。它是整个 SDD 闭环的最后一道保险</p>
+<hr>
+<h2 id="质量门：Clarify-Checklist-Analyze"><a href="#质量门：Clarify-Checklist-Analyze" class="headerlink" title="质量门：Clarify &#x2F; Checklist &#x2F; Analyze"></a>质量门：Clarify &#x2F; Checklist &#x2F; Analyze</h2><p>除了核心的五个命令，Spec Kit 完整工作流还提供三个质量门命令：</p>
+<ul>
+<li><strong><code>/speckit.clarify</code> 澄清</strong>：在 plan 之前跑，针对 spec 里没说清楚的地方提出结构化问题，把你的答案折叠回 spec。它让你不会在模糊的需求上盖楼</li>
+<li><strong><code>/speckit.checklist</code> 检查清单</strong>：在 plan 之后、tasks 之前跑，生成一份 “需求单元测试”，确认 spec 完整、清晰、一致。它把 “需求质量” 这件主观的事变成了可勾选的清单</li>
+<li><strong><code>/speckit.analyze</code> 分析</strong>：在 tasks 之后、implement 之前跑，跨 spec.md、plan.md、tasks.md 做一致性分析，报告冲突、缺口、歧义。它是只读的，发现问题就回到源头改，改完再跑</li>
+</ul>
+<p>这三个命令是 Spec Kit 比 Open Spec 更重的地方，也是它面向生产级特性的底气。短路径可以跳过它们，长路径（生产特性）建议都跑一遍</p>
+<hr>
+<h2 id="Gate-System-门禁系统"><a href="#Gate-System-门禁系统" class="headerlink" title="Gate System 门禁系统"></a>Gate System 门禁系统</h2><p>门禁系统（Gate System）是 Spec Kit 区别于很多轻量工具的核心机制</p>
+<p>它的规则很简单：每个阶段都校验上一阶段的产出，没过就不放行。具体来说：</p>
+<ul>
+<li>没 spec 就不能 plan</li>
+<li>没 plan 就不能 tasks</li>
+<li>没 tasks 就不能 implement</li>
+<li>plan 阶段会跑 Constitution Check，违背准则就不过</li>
+</ul>
+<p>这不是为了增加流程负担，而是为了让纪律变成工具的内置行为。你不必靠记忆去维护 “先想清楚再动手” 的习惯，工具替你守着。就像编译器不会让你链接没编译的代码一样，门禁系统从机制上杜绝了跳步</p>
+<hr>
+<h2 id="Spec-vs-Plan-分离"><a href="#Spec-vs-Plan-分离" class="headerlink" title="Spec vs Plan 分离"></a>Spec vs Plan 分离</h2><p>Spec 与 Plan 的分离，是 Spec Kit 工作流里最重要的一道分界线</p>
+<p>spec 是用户价值文档：用 stakeholder 也能看懂的语言描述用户需要什么，不提技术。plan 是技术文档：精确到改哪些文件、数据模型长什么样、API 契约是什么</p>
+<p>把它们合并会产生一个四不像文档：对 stakeholder 来说太技术，对开发者来说又太模糊。把它们分开，则各司其职——spec 让大家先就 “要什么” 达成一致，plan 再讨论 “怎么做”</p>
+<p>这个分离还有一个隐性好处：当你回头审查一个老特性时，你能清楚地看到 “当时用户想要什么” 和 “当时我们决定怎么做”，两件事不会糊在一起</p>
+<hr>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><h2 id="specify-目录"><a href="#specify-目录" class="headerlink" title=".specify 目录"></a>.specify 目录</h2><p>运行 <code>specify init</code> 之后，你的项目根目录会多出一个 <code>.specify/</code> 目录，这是 Spec Kit 的 “大脑”，存放着脚本、模板、和 AI 编程助手的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.specify/</span><br><span class="line">├── memory/</span><br><span class="line">│   └── constitution.md     # 项目准则（宪法）</span><br><span class="line">├── feature.json            # 当前活跃特性的状态</span><br><span class="line">├── scripts/                # 自动化脚本（.sh / .ps1）</span><br><span class="line">└── templates/              # 制品模板</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>feature.json</code> 是个很关键的设计。Spec Kit 通过它来追踪 “当前在做哪个特性”，而不是靠 Git 分支。也就是说，命令解析特性靠的是这个状态文件，而不是 <code>git checkout</code>。想切换到另一个特性，改这个文件（或设置 <code>SPECIFY_FEATURE_DIRECTORY</code> 环境变量）就行</p>
+<p>这个设计的好处是：你甚至不需要 Git 就能用 Spec Kit。Git 是可选的扩展，开了之后会自动给特性加编号分支（比如 <code>001-feature-name</code>），但活跃特性仍然由 <code>feature.json</code> 决定</p>
+<hr>
+<h2 id="specs-目录"><a href="#specs-目录" class="headerlink" title="specs 目录"></a>specs 目录</h2><p><code>specs/</code> 是整个项目的真相来源，存放着每个特性的所有制品。每个特性一个独立子目录，按编号命名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">specs/</span><br><span class="line">└── 001-jira-issue-types/</span><br><span class="line">    ├── spec.md             # 用户故事、验收场景、功能需求、成功标准</span><br><span class="line">    ├── plan.md              # 技术设计、差距分析、改动地图、Constitution Check</span><br><span class="line">    ├── research.md          # 代码库研究：已有 vs 缺失</span><br><span class="line">    ├── data-model.md        # 数据模型与实体定义</span><br><span class="line">    ├── quickstart.md        # 端到端手动验证场景</span><br><span class="line">    ├── tasks.md             # 有序、独立可实施的任务列表（T001–T008）</span><br><span class="line">    ├── checklists/          # 质量检查清单</span><br><span class="line">    └── contracts/</span><br><span class="line">        └── api-changes.md   # API 契约变更与请求/响应 schema</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20260723102232204.png" alt="image-20260723102232204"></p>
+<p>这些文件会和代码一起提交到仓库里。它们回答了未来关于这个特性的所有问题：为什么这么设计、考虑过但没选的方案是什么、显式假设是什么。它们也是下一个基于此特性的功能开发时的输入</p>
+<p>把规范放在代码仓库里、和代码一起用 Git 管理，是 Spec Kit 和 Open Spec 共享的设计。这样规范跟着代码走，不会出现 “代码在 GitHub，规范在某个文档平台，两边各活各的” 这种脱节</p>
+<hr>
+<h2 id="制品体系"><a href="#制品体系" class="headerlink" title="制品体系"></a>制品体系</h2><p>Spec Kit 默认的制品有七类，每一类都有明确的职责：</p>
+<table>
+<thead>
+<tr>
+<th>制品</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>spec.md</code></td>
+<td>用户故事、验收场景、功能需求、成功标准（”做什么”）</td>
+</tr>
+<tr>
+<td><code>plan.md</code></td>
+<td>技术设计、差距分析、改动地图、Constitution Check（”怎么做”）</td>
+</tr>
+<tr>
+<td><code>research.md</code></td>
+<td>代码库研究记录，已有 vs 缺失</td>
+</tr>
+<tr>
+<td><code>data-model.md</code></td>
+<td>数据模型与实体定义</td>
+</tr>
+<tr>
+<td><code>contracts/</code></td>
+<td>API 契约变更，请求&#x2F;响应 schema</td>
+</tr>
+<tr>
+<td><code>quickstart.md</code></td>
+<td>端到端手动验证场景</td>
+</tr>
+<tr>
+<td><code>tasks.md</code></td>
+<td>有序、独立可实施的任务列表</td>
+</tr>
+</tbody></table>
+<p>这些制品有严格的依赖关系：spec 决定 plan，plan 决定 tasks，tasks 驱动 implement。但这个依赖不是单向的水流——你在 implement 时发现 plan 要改，完全可以回头改 plan 甚至 spec，没有强制的阶段门禁会拦你（除了 “上一阶段必须存在” 这种基本门禁）</p>
+<p>这种 “制品驱动 + 可回溯” 的设计，让 Spec Kit 既有结构又不失灵活</p>
+<hr>
+<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><h2 id="核心工作流"><a href="#核心工作流" class="headerlink" title="核心工作流"></a>核心工作流</h2><p>Spec Kit 提供两条常用路径，按特性复杂度选择：</p>
+<p><strong>短路径</strong>——适合小特性：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/speckit.specify ──► /speckit.plan ──► /speckit.tasks ──► /speckit.implement ──► /speckit.converge</span><br></pre></td></tr></table></figure>
+
+<p><strong>完整路径</strong>——适合生产级特性，多了 clarify、checklist、analyze 三个质量门：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/speckit.constitution ──► /speckit.specify ──► /speckit.clarify ──► /speckit.plan</span><br><span class="line">───► /speckit.checklist ──► /speckit.tasks ──► /speckit.analyze ──► /speckit.implement ──► /speckit.converge</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/image-20260723102247372.png" alt="image-20260723102247372"></p>
+<p>一句话概括完整路径：先定准则（constitution），再写规范（specify），澄清疑问（clarify），做技术方案（plan），校验规范质量（checklist），拆任务（tasks），跨制品一致性分析（analyze），实现（implement），最后收敛验证（converge）</p>
+<p>有个新手容易踩坑的点：<code>specify</code> 是在终端里跑的 CLI 命令，而 <code>/speckit.*</code> 是在 AI 助手对话框里输入的斜杠命令。两者别搞混，混了就跑不通。另外，不同 AI 工具的调用形式可能略有不同——基于 skills 的工具（如 Codex、ZCode）用 <code>$speckit-*</code>，Kimi 用 <code>/skill:speckit-*</code>，但步骤完全一样</p>
+<hr>
+<h2 id="speckit-constitution-准则"><a href="#speckit-constitution-准则" class="headerlink" title="&#x2F;speckit.constitution 准则"></a>&#x2F;speckit.constitution 准则</h2><p><code>/speckit.constitution</code> 是项目初始化时跑一次的命令，用来建立项目准则</p>
+<p>它把你提供的原则写进 <code>.specify/memory/constitution.md</code>，之后每个特性的 plan 阶段都会自动对照它做 Constitution Check</p>
+<p>典型用法：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/speckit.constitution Taskify 是一个 &quot;Security-First&quot; 应用。</span><br><span class="line">所有用户输入必须校验。我们使用微服务架构。代码必须完整文档化。</span><br></pre></td></tr></table></figure>
+
+<p>Constitution 的价值在于它是 “项目记忆”。没有它，每个特性都是孤立写的，架构漂移悄悄积累；有了它，AI 每次做 plan 都会对照检查，从源头守住一致性</p>
+<hr>
+<h2 id="speckit-specify-规范"><a href="#speckit-specify-规范" class="headerlink" title="&#x2F;speckit.specify 规范"></a>&#x2F;speckit.specify 规范</h2><p><code>/speckit.specify</code> 是核心命令之一，用自然语言描述要做什么，AI 自动生成 spec</p>
+<p>它的工作流程是：feature 描述 → 创建 Git 分支 → 研究代码库 → 生成 <code>specs/NNN-feature-name/spec.md</code> → 跑质量检查清单</p>
+<p>典型用法：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/speckit.specify 开发 Taskify，一个团队生产力平台。</span><br><span class="line">预定义用户可以创建项目、分配任务、评论、在 Kanban 列之间移动任务</span><br><span class="line">（To Do、In Progress、In Review、Done）。五个用户（一个 PM、四个工程师），</span><br><span class="line">三个示例项目，第一期不做登录。</span><br></pre></td></tr></table></figure>
+
+<p>这一步只生成文档，不写代码。你要做的是仔细审核 spec.md，看 AI 理解的需求和你想的是不是一致。不对就直接改文档，比改代码便宜得多</p>
+<p>specify 阶段的审核是整个 SDD 流程里性价比最高的一步。这里改一个错别字成本是 1 秒，等代码写完再发现理解错了，返工成本可能是 1 小时</p>
+<hr>
+<h2 id="speckit-clarify-澄清"><a href="#speckit-clarify-澄清" class="headerlink" title="&#x2F;speckit.clarify 澄清"></a>&#x2F;speckit.clarify 澄清</h2><p><code>/speckit.clarify</code> 是质量门命令，在 specify 之后、plan 之前跑</p>
+<p>它会针对 spec 里没说清楚的地方提出有针对性的问题，把你的答案折叠回 spec.md。可以加一个聚焦参数，让它只问某个方面：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/speckit.clarify 聚焦任务卡片行为——状态变更、评论权限、用户分配。</span><br></pre></td></tr></table></figure>
+
+<p>clarify 解决的是 “在模糊需求上盖楼” 的问题。AI 是个特别自信的实习生，你给它模糊需求它会立刻动手，但很可能做偏。clarify 让 AI 在动手前先和你对齐边界</p>
+<hr>
+<h2 id="speckit-plan-计划"><a href="#speckit-plan-计划" class="headerlink" title="&#x2F;speckit.plan 计划"></a>&#x2F;speckit.plan 计划</h2><p><code>/speckit.plan</code> 是生成技术方案的命令，读取 spec.md，研究代码库，产出完整设计</p>
+<p>它包含：技术栈选择、gap analysis、data model、API contracts、implementation map、quickstart。在生成前会先跑 Constitution Check</p>
+<p>典型用法：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/speckit.plan 使用 .NET Aspire + Postgres。前端是 Blazor Server，</span><br><span class="line">支持拖拽看板和实时更新。对外暴露 projects、tasks、notifications 的 REST API。</span><br></pre></td></tr></table></figure>
+
+<p>这一步是技术细节真正该出现的地方。spec 阶段不谈技术，plan 阶段才谈。这种分离让 spec 保持纯净，plan 可以放心讨论框架、文件、模式、迁移</p>
+<p>plan 阶段最值钱的产出是 gap analysis。它清楚告诉你现有代码有什么、缺什么、这次要动几个文件、大约多少行。很多时候你会发现基础设施已经在了，改动远比想象中小</p>
+<hr>
+<h2 id="speckit-checklist-检查清单"><a href="#speckit-checklist-检查清单" class="headerlink" title="&#x2F;speckit.checklist 检查清单"></a>&#x2F;speckit.checklist 检查清单</h2><p><code>/speckit.checklist</code> 是质量门命令，在 plan 之后、tasks 之前跑</p>
+<p>它生成一份 “需求单元测试”——一份确认 spec 完整、清晰、一致的检查清单。把 “需求质量” 这件原本主观的事，变成了可勾选的清单</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/speckit.checklist</span><br></pre></td></tr></table></figure>
+
+<p>你可以把它理解成代码的单元测试，只不过测的是需求文档本身。在拆任务之前先确认需求没问题，比写完代码再发现需求漏洞便宜得多</p>
+<hr>
+<h2 id="speckit-tasks-任务"><a href="#speckit-tasks-任务" class="headerlink" title="&#x2F;speckit.tasks 任务"></a>&#x2F;speckit.tasks 任务</h2><p><code>/speckit.tasks</code> 是把 plan 拆成任务列表的命令，读取所有设计制品，生成 <code>tasks.md</code></p>
+<p>它产出的任务列表有三个特点：扁平（不是嵌套树）、有序（按依赖排序）、独立可实施（每个任务可独立完成和验证）</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/speckit.tasks</span><br></pre></td></tr></table></figure>
+
+<p>这一步有强门禁：没写完 plan.md 就跑 tasks，会直接报错。这就是门禁系统在工作——它不让你跳步</p>
+<hr>
+<h2 id="speckit-analyze-分析"><a href="#speckit-analyze-分析" class="headerlink" title="&#x2F;speckit.analyze 分析"></a>&#x2F;speckit.analyze 分析</h2><p><code>/speckit.analyze</code> 是质量门命令，在 tasks 之后、implement 之前跑</p>
+<p>它跨 spec.md、plan.md、tasks.md 做一致性分析，报告冲突、缺口、歧义。它是只读的——发现问题就回到源头改，改完再跑</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/speckit.analyze</span><br></pre></td></tr></table></figure>
+
+<p>analyze 是 implement 前的最后一道关。它确保三份制品彼此对得上，避免 “spec 说一套、plan 说另一套、tasks 又是第三套” 的脱节</p>
+<hr>
+<h2 id="speckit-implement-实现"><a href="#speckit-implement-实现" class="headerlink" title="&#x2F;speckit.implement 实现"></a>&#x2F;speckit.implement 实现</h2><p><code>/speckit.implement</code> 是让 AI 按 tasks.md 顺序写代码的命令</p>
+<p>它把完整上下文一起喂给 AI：spec、plan、research、data model、API contracts、有序任务列表。AI 按顺序做任务，做完一项标记一项完成</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/speckit.implement</span><br></pre></td></tr></table></figure>
+
+<p>因为所有决策都在前面阶段定好了，implement 阶段通常不会有惊喜。AI 不需要猜需求，不需要做架构决策，只需要写代码。对于大型特性，可以分阶段跑，一次只做一个 phase</p>
+<hr>
+<h2 id="speckit-converge-收敛"><a href="#speckit-converge-收敛" class="headerlink" title="&#x2F;speckit.converge 收敛"></a>&#x2F;speckit.converge 收敛</h2><p><code>/speckit.converge</code> 是收尾命令，验证代码和规范是否真的对齐</p>
+<p>它把代码库和 spec&#x2F;plan&#x2F;tasks 三份制品做交叉比对。发现缺口就把新任务追加到 tasks.md，你接着跑 implement，再 converge，直到它报告 “已收敛”</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/speckit.converge</span><br></pre></td></tr></table></figure>
+
+<p>converge 解决的是 “文档说做完了，代码其实没做完” 的脱节问题。它是 SDD 闭环的最后一道保险。收敛通过后，就可以进入 review 或开 PR 了</p>
+<hr>
+<h2 id="speckit-taskstoissues-任务转-Issue"><a href="#speckit-taskstoissues-任务转-Issue" class="headerlink" title="&#x2F;speckit.taskstoissues 任务转 Issue"></a>&#x2F;speckit.taskstoissues 任务转 Issue</h2><p><code>/speckit.taskstoissues</code> 是个辅助命令，把生成的任务列表转成 GitHub Issues，方便在 GitHub 上追踪和执行</p>
+<p>适合团队协作场景——任务不只是 AI 的待办，也是团队成员可以认领的工作项</p>
+<hr>
+<h1 id="扩展生态"><a href="#扩展生态" class="headerlink" title="扩展生态"></a>扩展生态</h1><h2 id="Integrations-集成"><a href="#Integrations-集成" class="headerlink" title="Integrations 集成"></a>Integrations 集成</h2><p>Spec Kit 不绑定任何特定 AI 工具，目前官方支持 35+ 种主流 AI 编程助手，包括但不限于：</p>
+<ul>
+<li>GitHub Copilot</li>
+<li>Claude Code</li>
+<li>Cursor</li>
+<li>Codex</li>
+<li>Gemini</li>
+<li>Windsurf</li>
+<li>Zed</li>
+<li>Cline</li>
+<li>Kilo Code</li>
+<li>Forge</li>
+<li>Kiro</li>
+</ul>
+<p>接入方式是 <code>specify init</code> 时选择你的 AI 工具，Spec Kit 会自动生成对应的命令文件和目录结构。如果你的工具不在列表里，还有 <code>generic</code> 集成作为万能逃生口</p>
+<p>切换 AI 工具只需要一条命令，规范文件原封不动地跟着走，不会被任何一家厂商绑死。这和 Open Spec 的工具无关理念是一致的——开放标准的价值在于不被锁死</p>
+<hr>
+<h2 id="Presets-预设"><a href="#Presets-预设" class="headerlink" title="Presets 预设"></a>Presets 预设</h2><p>Presets（预设）是用来微调核心 SDD 流程的积木。Spec Kit 官方提供 25 个预设，可以针对不同技术栈、不同场景调整默认行为</p>
+<p>比如 .NET 项目、Java 项目、前端项目可以各有各的 preset，让 plan 阶段生成的技术方案更贴合该栈的惯例。preset 不改变流程结构，只调整流程参数</p>
+<hr>
+<h2 id="Extensions-扩展"><a href="#Extensions-扩展" class="headerlink" title="Extensions 扩展"></a>Extensions 扩展</h2><p>Extensions（扩展）是给核心流程加新能力的积木。目前社区有 138 个扩展，由 70+ 位作者贡献</p>
+<p>典型扩展比如：</p>
+<ul>
+<li><strong>CI Guard</strong>：在 CI 里加合规门禁</li>
+<li><strong>Architecture Guard</strong>：加架构治理门禁</li>
+</ul>
+<p>扩展可以让你在不 fork 整个 Spec Kit 的前提下，往流程里插入团队需要的额外检查</p>
+<hr>
+<h2 id="Workflows-工作流"><a href="#Workflows-工作流" class="headerlink" title="Workflows 工作流"></a>Workflows 工作流</h2><p>Workflows（工作流）是用来编排多个步骤的积木。你可以把 specify → plan → tasks → implement 串成一个自动化的端到端流程，也可以拆成单步手动执行</p>
+<p>对于小特性，跑自动化 workflow 一气呵成；对于复杂特性，逐步手动跑、每步审核更稳妥</p>
+<hr>
+<h2 id="Bundles-打包"><a href="#Bundles-打包" class="headerlink" title="Bundles 打包"></a>Bundles 打包</h2><p>Bundles（打包）是把 preset + extension + workflow 组合在一起、方便分享的机制。团队可以把一套定制流程打包成 bundle，在组织内分享，甚至发布到社区</p>
+<p>Spec Kit 还支持企业自建 catalog，让组织内部统一管理推荐的集成、扩展、预设、workflow 和 bundle。这对企业落地非常重要——可以统一治理，而不是每个人各自装各自的</p>
+<hr>
+<h2 id="不止于-SDD"><a href="#不止于-SDD" class="headerlink" title="不止于 SDD"></a>不止于 SDD</h2><p>Spec Kit 最有意思的一点是：它的构建块足够通用，连 SDD 本身都可以被替换。社区已经基于它做出了完全不同的流程：</p>
+<ul>
+<li><strong>AIDE</strong>：7 步 AI 驱动的工程生命周期</li>
+<li><strong>Canon</strong>：基线驱动的工作流（spec-first、code-first、spec-drift）</li>
+<li><strong>Product Forge</strong>：面向产品管理的 SDD</li>
+<li><strong>FX→.NET</strong>：端到端的 .NET Framework 迁移，7 个阶段</li>
+<li><strong>MAQA</strong>：带质量保证门的多智能体编排</li>
+<li><strong>Fiction Book Writing</strong>：写长篇小说，从故事圣经到投稿</li>
+</ul>
+<p>也就是说，Spec Kit 本质上是一个 “流程编排框架”，SDD 只是它默认搭载的一个流程。这种设计让它远远超出了一个 SDD 工具的范畴</p>
+<hr>
+<h1 id="与其他工具对比"><a href="#与其他工具对比" class="headerlink" title="与其他工具对比"></a>与其他工具对比</h1><h2 id="vs-Open-Spec"><a href="#vs-Open-Spec" class="headerlink" title="vs Open Spec"></a>vs Open Spec</h2><p>Open Spec 是 Fission AI 团队在 2025 年 8 月开源的轻量级 SDD 框架，两者的定位很不一样：</p>
+<ul>
+<li><strong>Spec Kit</strong>：全面但偏重。有严格的阶段门禁，要写不少 Markdown，需要 Python 环境，初始配置大约 30 分钟，面向企业和生产级特性</li>
+<li><strong>Open Spec</strong>：轻量且自由。没有阶段门禁，可以随时回头改，不需要 Python，5 分钟就能上手，面向个人和小团队</li>
+</ul>
+<p>打个比方，Spec Kit 像是一套正式的西装，出席重要场合很合适，但平时穿太累；Open Spec 像是一件合身的卫衣，日常用着舒服，正式场合也撑得住</p>
+<p>如果你是个人开发者或者小团队，Open Spec 几乎总是更顺手的选择。如果是大型企业、需要强流程管控的场景，Spec Kit 可能更合适</p>
+<p>一个很直观的对比：Spec Kit 有 9 个斜杠命令和门禁系统，Open Spec 只有 5 个斜杠命令且无门禁。重不重，看你的场景配不配得上这份重</p>
+<hr>
+<h2 id="vs-Kiro"><a href="#vs-Kiro" class="headerlink" title="vs Kiro"></a>vs Kiro</h2><p>Kiro 是 AWS 推出的 AI 编程 IDE，也内置了 SDD 能力</p>
+<p>Spec Kit 的核心优势是工具无关——它支持 35+ 种 AI 编程助手，你今天用 Copilot，明天换 Claude Code，规范文件原封不动地跟着走，不会被任何一家厂商绑死</p>
+<p>而 Kiro 的 SDD 能力锁死在它自己的 IDE 里。功能强大但不自由</p>
+<p>这其实就是开放标准的价值。MCP 当年解决了 “AI 连接工具” 的标准化问题，Spec Kit 和 Open Spec 想解决的是 “AI 读写规范” 的标准化问题</p>
+<hr>
+<h2 id="vs-无规范"><a href="#vs-无规范" class="headerlink" title="vs 无规范"></a>vs 无规范</h2><p>最值得对比的其实是 “什么规范都不用” 的 Vibe Coding 状态</p>
+<p>不用任何规范框架时，你的需求只活在和 AI 的聊天记录里。问题是：</p>
+<ul>
+<li>聊天记录一长，AI 就忘了前面的约定</li>
+<li>换一次对话，所有上下文丢失</li>
+<li>同事想接手你的工作，没法看聊天记录</li>
+<li>半年后你想知道 “当时这个功能为什么这么设计”，无从查起</li>
+</ul>
+<p>Spec Kit 把这些散落在聊天里的需求固化成文件、纳入 Git 管理，让需求有了和代码同等的地位。它带来的不是更重的流程，而是更可靠的协作基础</p>
+<hr>
+<h1 id="实践与生态"><a href="#实践与生态" class="headerlink" title="实践与生态"></a>实践与生态</h1><h2 id="安装与快速上手"><a href="#安装与快速上手" class="headerlink" title="安装与快速上手"></a>安装与快速上手</h2><p>Spec Kit 的安装需要 Python 3.11+ 和 uv（一个 Python 包管理器）。安装非常简单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 全局安装 CLI</span></span><br><span class="line">uv tool install specify-cli</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入项目目录并初始化（交互式选择你的 AI 工具）</span></span><br><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line">specify init</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者直接指定 AI 工具</span></span><br><span class="line">specify init my-project --integration copilot</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<p>初始化完成后，整个工作流就活在 AI 对话框里：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/speckit.constitution   (一次性：建立项目准则)</span><br><span class="line">/speckit.specify &lt;idea&gt;  (生成规范，你审核)</span><br><span class="line">/speckit.clarify         (可选：澄清疑问)</span><br><span class="line">/speckit.plan            (生成技术方案)</span><br><span class="line">/speckit.checklist       (可选：校验规范质量)</span><br><span class="line">/speckit.tasks           (拆解任务)</span><br><span class="line">/speckit.analyze         (可选：跨制品一致性分析)</span><br><span class="line">/speckit.implement       (AI 实现)</span><br><span class="line">/speckit.converge        (收敛验证)</span><br></pre></td></tr></table></figure>
+
+<p>如果你不想全局安装，也可以用 <code>uvx</code> 做一次性运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uvx --from git+https://github.com/github/spec-kit.git specify init</span><br></pre></td></tr></table></figure>
+
+<p>升级也很简单，重新 <code>uv tool install specify-cli</code> 即可</p>
+<hr>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><p>Spec Kit 不是所有场景都适合。判断标准是：<strong>如果你在 AI 开始实现前需要回答不止一个澄清问题，就先写 spec</strong></p>
+<p><strong>适合用 Spec Kit 的场景</strong>：</p>
+<ul>
+<li>需求还没完全定义清楚的新功能</li>
+<li>AI 需要做多个判断决策的模糊需求</li>
+<li>多人需要就 “要做什么” 达成一致的团队协作</li>
+<li>触及代码库多个部分的特性</li>
+<li>返工成本高的特性</li>
+</ul>
+<p><strong>不太适合的场景</strong>：</p>
+<ul>
+<li>Bug 和修复都很明显的 hotfix</li>
+<li>行为不变的重构</li>
+<li>目标是发现需求而非实现需求的探索性原型</li>
+<li>一次性脚本，没有后续维护预期</li>
+</ul>
+<p>简单说，越重要、越复杂、越多人协作的特性，越值得用 Spec Kit；越简单、越一次性的事，Vibe Coding 直接上反而更快</p>
+<hr>
+<h2 id="既有项目改造（Brownfield）"><a href="#既有项目改造（Brownfield）" class="headerlink" title="既有项目改造（Brownfield）"></a>既有项目改造（Brownfield）</h2><p>Spec Kit 也支持既有项目改造，官方把开发阶段分为三类：</p>
+<ul>
+<li><strong>0-to-1 Development（Greenfield）</strong>：从零开始，先生成规范、再生成实现</li>
+<li><strong>Creative Exploration（创意探索）</strong>：并行探索多种实现方案、多种技术栈、多种 UX 模式</li>
+<li><strong>Iterative Enhancement（Brownfield）</strong>：在既有系统上迭代加功能、现代化遗留系统</li>
+</ul>
+<p>对于既有项目，你不需要一开始就把整个系统文档化。正确的做法是：下次要改某个功能时，只为这次改动跑一遍 specify → plan → tasks → implement。改完之后，<code>specs/</code> 里就多出了这个特性的完整规范。随着你不断做特性，规范库自然覆盖到越来越多的领域</p>
+<p>这种 “改到哪写到哪” 的策略，让既有项目的接入成本可控。你不需要停下来专门写文档，而是在正常开发过程中顺手把规范建起来</p>
+<hr>
+<h2 id="模型选择建议"><a href="#模型选择建议" class="headerlink" title="模型选择建议"></a>模型选择建议</h2><p>Spec Kit 官方推荐用高推理能力的模型，比如 Claude Opus 4.8、GPT-5.6 这类旗舰模型，无论是规范阶段还是实现阶段都用它们</p>
+<p>原因很简单：SDD 的核心价值在于 “想清楚再动手”，而 “想清楚” 这件事对模型的推理能力要求很高。用一个便宜的弱模型来省钱，结果 AI 在 specify 阶段就把需求理解错了，后面 plan、tasks、implement 全是错的，反而更费钱</p>
+<p>另外，Spec Kit 强调上下文卫生（Context Hygiene）。每次开始 implement 之前清一下对话上下文，让 AI 专注于当前特性的制品，不要被无关历史干扰。这和 Vibe Coding 概念里讲的上下文工程是一脉相承的思路</p>
+<hr>
+<h2 id="离线与企业部署"><a href="#离线与企业部署" class="headerlink" title="离线与企业部署"></a>离线与企业部署</h2><p>Spec Kit 对企业很友好：</p>
+<ul>
+<li>支持离线、防火墙后运行</li>
+<li>跨 Windows、macOS、Linux</li>
+<li>支持自建 catalog，统一治理组织内的集成、扩展、预设、workflow、bundle</li>
+<li>社区扩展如 CI Guard、Architecture Guard 提供合规门禁和治理能力</li>
+</ul>
+<p>对于有合规要求、需要统一流程的企业，Spec Kit 的企业能力比 Open Spec 完善不少</p>
+<hr>
+<h1 id="Spec-Kit-与-Vibe-Coding-的关系"><a href="#Spec-Kit-与-Vibe-Coding-的关系" class="headerlink" title="Spec Kit 与 Vibe Coding 的关系"></a>Spec Kit 与 Vibe Coding 的关系</h1><p>Spec Kit 是 Vibe Coding 走向成熟的产物</p>
+<p>Vibe Coding 是 “跟着感觉写代码”，Agentic Engineering 是 “按流程管 AI”。Spec Kit 就是 Agentic Engineering 在 “需求管理” 这一环上的具体落地工具，而且是最重、最完整的那一个</p>
+<p>Vibe Coding 时代，最大的瓶颈不是 AI 不会写代码，而是人不会提需求。Spec Kit 通过一套结构化的斜杠命令和门禁系统，把 “提需求” 这件事从一门玄学变成了一个可重复、可审查、可归档的工程动作</p>
+<p>它和 Open Spec 解决的是同一个问题，只是取向不同：Open Spec 追求轻量自由，Spec Kit 追求结构严谨。前者像合身的卫衣，后者像正式的西装——选哪件，看你要去什么场合</p>
+<p>可以说，谁掌握了用 Spec Kit 这类工具把需求管好，谁就真正掌握了 AI 编程时代的核心竞争力。模型是商品，工具是商品，唯有 “把想法变成清晰规范” 的能力，是 AI 替代不了的</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Simon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2026/04/24/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">http://yoursite.com/2026/04/24/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://yoursite.com" target="_blank">Simon 的书柜</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/VibeCoding/">VibeCoding</a><a class="post-meta__tags" href="/tags/SDD/">SDD</a><a class="post-meta__tags" href="/tags/SpecKit/">SpecKit</a></div><div class="post-share"><div class="social-share" data-image="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Open Spec 学习笔记"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Open Spec 学习笔记</div></div><div class="info-2"><div class="info-item-1"> SDD 与 Open Spec 基础SDD 规范驱动开发SDD（Spec-Driven Development，规范驱动开发）是 AI 时代的一种新型开发方法论，强调在编码之前先创建明确的、AI 能直接理解和执行的规范文档 传统开发流程是：想到什么写什么，边写边改，最后再补文档。这样容易导致需求不清晰、代码和文档对不上 而 SDD 的思路正好相反：先把需求写成规范文档，并且把规范文档当作代码的唯一真相来源 你可以把规范文档理解成 “项目宪法”，它包含了详细的需求描述、系统设计和接口定义。AI 必须严格遵守这些条文来生成代码，确保产出完全符合预期   为什么 SDD 越来越受重视 因为 AI 生成代码的质量直接取决于上下文的清晰度，而不仅仅是依靠提示词技巧。一个清晰的规范文档能比任何 Prompt 黑魔法更有效地减少错误 SDD 的典型工作流程如下：  Constitution 制定准则：定义项目的基本原则、代码规范、性能标准 Specify 编写规范：描述要做什么功能、为什么做、用户需求是什么 Clarify 澄清疑问：让 AI 提出结构化问题，明确边界情况和错误处理 Plan...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Open Spec 学习笔记"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-09</div><div class="info-item-2">Open Spec 学习笔记</div></div><div class="info-2"><div class="info-item-1"> SDD 与 Open Spec 基础SDD 规范驱动开发SDD（Spec-Driven Development，规范驱动开发）是 AI 时代的一种新型开发方法论，强调在编码之前先创建明确的、AI 能直接理解和执行的规范文档 传统开发流程是：想到什么写什么，边写边改，最后再补文档。这样容易导致需求不清晰、代码和文档对不上 而 SDD 的思路正好相反：先把需求写成规范文档，并且把规范文档当作代码的唯一真相来源 你可以把规范文档理解成 “项目宪法”，它包含了详细的需求描述、系统设计和接口定义。AI 必须严格遵守这些条文来生成代码，确保产出完全符合预期   为什么 SDD 越来越受重视 因为 AI 生成代码的质量直接取决于上下文的清晰度，而不仅仅是依靠提示词技巧。一个清晰的规范文档能比任何 Prompt 黑魔法更有效地减少错误 SDD 的典型工作流程如下：  Constitution 制定准则：定义项目的基本原则、代码规范、性能标准 Specify 编写规范：描述要做什么功能、为什么做、用户需求是什么 Clarify 澄清疑问：让 AI 提出结构化问题，明确边界情况和错误处理 Plan...</div></div></div></a><a class="pagination-related" href="/2026/03/07/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/" title="Vibe Coding 概念大全"><img class="cover" src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-07</div><div class="info-item-2">Vibe Coding 概念大全</div></div><div class="info-2"><div class="info-item-1">AI 基础概念LLM大语言模型（Large Language Model）是一种能够理解和生成人类语言的 AI 系统。ChatGPT、Claude、Gemini、DeepSeek 都是大语言模型 为什么叫 “大” 模型呢？因为这些模型的参数量非常庞大，动辄几十亿甚至上万亿个参数。参数越多，模型通常越聪明，但也越消耗计算资源 可以把大语言模型理解成一个读过海量书籍和代码的超级学霸，它见过无数的编程案例，所以能帮你写代码、解释代码、修复 Bug  除了文本大语言模型之外，AI 领域还有专门处理图片的视觉模型（比如 Stable Diffusion）、处理语音的音频模型（比如 Whisper）、以及能同时处理文字、图片、音频的多模态模型（如 GPT-4o、Gemini）。在 AI 编程时，我们主要和文本大语言模型打交道  Token（词元）Token 是 AI 模型处理文本的基本单位，中文叫做 “词元”，是大模型把文字拆分后的最小单元  AI 服务通常按照 Token 收费。输入的文字和 AI 输出的文字都会消耗 Token。Token 用得越多，花的钱就越多 在英文中，一个 Toke...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E5%B7%A5%E5%85%B7/%E5%8D%9A%E5%AE%A2/%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87/v2-bd12bc8dfb61abe313ad48b907c5da94_720w.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Simon</div><div class="author-info-description">攀登亦是风景</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">65</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">69</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/CK-shadow" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ck1996shadow@163.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SDD-%E4%B8%8E-Spec-Kit-%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">SDD 与 Spec Kit 基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SDD-%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91"><span class="toc-number">1.1.</span> <span class="toc-text">SDD 规范驱动开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spec-Kit-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.2.</span> <span class="toc-text">Spec Kit 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-Spec-Kit"><span class="toc-number">1.3.</span> <span class="toc-text">为什么需要 Spec Kit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spec-Kit-%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6"><span class="toc-number">1.4.</span> <span class="toc-text">Spec Kit 的设计哲学</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Constitution-%E5%87%86%E5%88%99"><span class="toc-number">2.1.</span> <span class="toc-text">Constitution 准则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spec-%E8%A7%84%E8%8C%83"><span class="toc-number">2.2.</span> <span class="toc-text">Spec 规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Plan-%E8%AE%A1%E5%88%92"><span class="toc-number">2.3.</span> <span class="toc-text">Plan 计划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tasks-%E4%BB%BB%E5%8A%A1"><span class="toc-number">2.4.</span> <span class="toc-text">Tasks 任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Implement-%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.5.</span> <span class="toc-text">Implement 实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Converge-%E6%94%B6%E6%95%9B"><span class="toc-number">2.6.</span> <span class="toc-text">Converge 收敛</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%A8%E9%87%8F%E9%97%A8%EF%BC%9AClarify-Checklist-Analyze"><span class="toc-number">2.7.</span> <span class="toc-text">质量门：Clarify &#x2F; Checklist &#x2F; Analyze</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gate-System-%E9%97%A8%E7%A6%81%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.8.</span> <span class="toc-text">Gate System 门禁系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spec-vs-Plan-%E5%88%86%E7%A6%BB"><span class="toc-number">2.9.</span> <span class="toc-text">Spec vs Plan 分离</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">项目结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#specify-%E7%9B%AE%E5%BD%95"><span class="toc-number">3.1.</span> <span class="toc-text">.specify 目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#specs-%E7%9B%AE%E5%BD%95"><span class="toc-number">3.2.</span> <span class="toc-text">specs 目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B6%E5%93%81%E4%BD%93%E7%B3%BB"><span class="toc-number">3.3.</span> <span class="toc-text">制品体系</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">工作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">4.1.</span> <span class="toc-text">核心工作流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#speckit-constitution-%E5%87%86%E5%88%99"><span class="toc-number">4.2.</span> <span class="toc-text">&#x2F;speckit.constitution 准则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#speckit-specify-%E8%A7%84%E8%8C%83"><span class="toc-number">4.3.</span> <span class="toc-text">&#x2F;speckit.specify 规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#speckit-clarify-%E6%BE%84%E6%B8%85"><span class="toc-number">4.4.</span> <span class="toc-text">&#x2F;speckit.clarify 澄清</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#speckit-plan-%E8%AE%A1%E5%88%92"><span class="toc-number">4.5.</span> <span class="toc-text">&#x2F;speckit.plan 计划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#speckit-checklist-%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">4.6.</span> <span class="toc-text">&#x2F;speckit.checklist 检查清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#speckit-tasks-%E4%BB%BB%E5%8A%A1"><span class="toc-number">4.7.</span> <span class="toc-text">&#x2F;speckit.tasks 任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#speckit-analyze-%E5%88%86%E6%9E%90"><span class="toc-number">4.8.</span> <span class="toc-text">&#x2F;speckit.analyze 分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#speckit-implement-%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.9.</span> <span class="toc-text">&#x2F;speckit.implement 实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#speckit-converge-%E6%94%B6%E6%95%9B"><span class="toc-number">4.10.</span> <span class="toc-text">&#x2F;speckit.converge 收敛</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#speckit-taskstoissues-%E4%BB%BB%E5%8A%A1%E8%BD%AC-Issue"><span class="toc-number">4.11.</span> <span class="toc-text">&#x2F;speckit.taskstoissues 任务转 Issue</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E7%94%9F%E6%80%81"><span class="toc-number">5.</span> <span class="toc-text">扩展生态</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Integrations-%E9%9B%86%E6%88%90"><span class="toc-number">5.1.</span> <span class="toc-text">Integrations 集成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Presets-%E9%A2%84%E8%AE%BE"><span class="toc-number">5.2.</span> <span class="toc-text">Presets 预设</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Extensions-%E6%89%A9%E5%B1%95"><span class="toc-number">5.3.</span> <span class="toc-text">Extensions 扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Workflows-%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">5.4.</span> <span class="toc-text">Workflows 工作流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bundles-%E6%89%93%E5%8C%85"><span class="toc-number">5.5.</span> <span class="toc-text">Bundles 打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E6%AD%A2%E4%BA%8E-SDD"><span class="toc-number">5.6.</span> <span class="toc-text">不止于 SDD</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7%E5%AF%B9%E6%AF%94"><span class="toc-number">6.</span> <span class="toc-text">与其他工具对比</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#vs-Open-Spec"><span class="toc-number">6.1.</span> <span class="toc-text">vs Open Spec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vs-Kiro"><span class="toc-number">6.2.</span> <span class="toc-text">vs Kiro</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vs-%E6%97%A0%E8%A7%84%E8%8C%83"><span class="toc-number">6.3.</span> <span class="toc-text">vs 无规范</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E4%B8%8E%E7%94%9F%E6%80%81"><span class="toc-number">7.</span> <span class="toc-text">实践与生态</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="toc-number">7.1.</span> <span class="toc-text">安装与快速上手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">7.2.</span> <span class="toc-text">适用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A2%E6%9C%89%E9%A1%B9%E7%9B%AE%E6%94%B9%E9%80%A0%EF%BC%88Brownfield%EF%BC%89"><span class="toc-number">7.3.</span> <span class="toc-text">既有项目改造（Brownfield）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9%E5%BB%BA%E8%AE%AE"><span class="toc-number">7.4.</span> <span class="toc-text">模型选择建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%BB%E7%BA%BF%E4%B8%8E%E4%BC%81%E4%B8%9A%E9%83%A8%E7%BD%B2"><span class="toc-number">7.5.</span> <span class="toc-text">离线与企业部署</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spec-Kit-%E4%B8%8E-Vibe-Coding-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">8.</span> <span class="toc-text">Spec Kit 与 Vibe Coding 的关系</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/04/24/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Spec Kit 学习笔记"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spec Kit 学习笔记"/></a><div class="content"><a class="title" href="/2026/04/24/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Spec%20Kit%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Spec Kit 学习笔记">Spec Kit 学习笔记</a><time datetime="2026-04-23T23:22:40.000Z" title="发表于 2026-04-24 07:22:40">2026-04-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Open Spec 学习笔记"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Open Spec 学习笔记"/></a><div class="content"><a class="title" href="/2026/04/09/AI/%E8%A7%84%E8%8C%83%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/Open%20Spec%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Open Spec 学习笔记">Open Spec 学习笔记</a><time datetime="2026-04-09T00:47:15.000Z" title="发表于 2026-04-09 08:47:15">2026-04-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/07/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/" title="Vibe Coding 概念大全"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Vibe Coding 概念大全"/></a><div class="content"><a class="title" href="/2026/03/07/AI/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/Vibe%20Coding%20%E6%A6%82%E5%BF%B5%E5%A4%A7%E5%85%A8/" title="Vibe Coding 概念大全">Vibe Coding 概念大全</a><time datetime="2026-03-06T18:42:08.000Z" title="发表于 2026-03-07 02:42:08">2026-03-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/26/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="JDK 18 ~ JDK 21 新特性"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JDK 18 ~ JDK 21 新特性"/></a><div class="content"><a class="title" href="/2026/01/26/Java/%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/JDK%2018%20~%20JDK%2021%20%E6%96%B0%E7%89%B9%E6%80%A7/" title="JDK 18 ~ JDK 21 新特性">JDK 18 ~ JDK 21 新特性</a><time datetime="2026-01-26T13:45:49.000Z" title="发表于 2026-01-26 21:45:49">2026-01-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/09/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/DevOps/DevOps%20%E6%95%99%E7%A8%8B/" title="DevOps 教程"><img src="https://simon-blog-bucket.oss-cn-shanghai.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/DevOps/DevOps%20%E6%95%99%E7%A8%8B/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DevOps 教程"/></a><div class="content"><a class="title" href="/2026/01/09/%E4%BA%91%E5%8E%9F%E7%94%9F%E4%B8%8E%E8%BF%90%E7%BB%B4/DevOps/DevOps%20%E6%95%99%E7%A8%8B/" title="DevOps 教程">DevOps 教程</a><time datetime="2026-01-09T06:09:17.000Z" title="发表于 2026-01-09 14:09:17">2026-01-09</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Simon</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
